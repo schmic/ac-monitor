@@ -1,0 +1,6 @@
+[submodule "acCtrl"]
+	path = acCtrl
+	url = https://github.com/schmic/acCtrl.git
+[submodule "vendor/acCtrl"]
+	path = vendor/acCtrl
+	url = https://github.com/schmic/acCtrl.git
