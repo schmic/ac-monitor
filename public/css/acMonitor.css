@@ -1,0 +1,35 @@
+/* CSS declarations go here */
+
+ul,
+ol,
+li {
+	list-style-type: none;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table td {
+	vertical-align: top;
+}
+
+body > footer {
+    padding: 2em;
+    text-align: center;
+}
+
+.navbar-brand {
+	padding: 10px 15px;
+}
+
+.navbar-brand img {
+	margin-right: 0.5em;
+}
+
+#drivers td:first-child,
+#session td:first-child {
+	font-weight: bold;
+	padding-right: 1em;
+	text-align: left;
+}

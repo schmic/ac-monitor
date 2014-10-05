@@ -1,0 +1,14 @@
+/* TEAM */
+Your title: Michael Scherer
+Site: http://github.com/schmic
+Twitter: @theSchMic
+Location: Bensheim, Germany
+
+/* THANKS */
+Name: Virtual Racing e.V. -- http://www.virtualracing.org
+
+/* SITE */
+Last update: 1970/01/01
+Standards: HTML5, CSS3
+Components: NodeJS, Socket.IO, jQuery, bootstrap, handlebars
+Software: WebStorm8, Sublime Text 3

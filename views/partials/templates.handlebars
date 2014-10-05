@@ -1,0 +1,92 @@
+    <script id="hb-header-template" type="text/x-handlebars-template">
+      <h2 id="servername">
+        <img src="/img/icons/vr48.png" alt="vr icon"/>
+        \{{ ini.SERVER.NAME }}
+        <small class="pull-right">
+          \{{#if ini.SERVER.PASSWORD}}
+          <span class="label label-warning">Protected</span>
+          \{{else}}
+          <span class="label label-success">Free for all</span>
+          \{{/if}}
+        </small>
+      </h2>
+      <div id="sessionList"></div>
+    </script>
+
+    <script id="hb-session-list-template" type="text/x-handlebars-template">
+      \{{#if ini.BOOK}}
+        \{{#if typeBooking}}
+        <span class="label label-primary">\{{ ini.BOOK.NAME }}</span>
+        \{{else}}
+        <span class="label label-default">\{{ ini.BOOK.NAME }}</span>
+        \{{/if}}
+      \{{/if}}
+      \{{#if ini.PRACTICE}}
+        \{{#if typePractice}}
+        <span class="label label-success">\{{ ini.PRACTICE.NAME }}</span>
+        \{{else}}
+        <span class="label label-default">\{{ ini.PRACTICE.NAME }}</span>
+        \{{/if}}
+      \{{/if}}
+      \{{#if ini.QUALIFY}}
+        \{{#if typeQualify}}
+        <span class="label label-warning">\{{ ini.QUALIFY.NAME }}</span>
+        \{{else}}
+        <span class="label label-default">\{{ ini.QUALIFY.NAME }}</span>
+        \{{/if}}
+      \{{/if}}
+      \{{#if ini.RACE}}
+        \{{#if typeRace}}
+        <span class="label label-danger">\{{ ini.RACE.NAME }}</span>
+        \{{else}}
+        <span class="label label-default">\{{ ini.RACE.NAME }}</span>
+        \{{/if}}
+      \{{/if}}
+    </script>
+
+    <script id="hb-session-details-template" type="text/x-handlebars-template">
+    <h2>Session</h2>
+    <div id="session">
+      <table>
+        <tr><td>Ends at</td><td>\{{ endtime }}</td></tr>
+        <tr><td colspan="2"><hr/></td></tr>
+        <tr><td>Time</td><td>\{{formatTimeOfDay timeofday }}</td></tr>
+        <tr><td>Pits</td><td>\{{ max_clients }}</td></tr>
+        <tr><td>Track</td><td>\{{formatTrack track }}</td></tr>
+        <tr><td>Cars</td><td>\{{#cars}}<li>\{{formatCar this}}</li>\{{/cars}}</td></tr>
+        <tr><td colspan="2"><hr/></td></tr>
+      </table>
+    </div>
+    </script>
+
+    <script id="hb-drivers-template" type="text/x-handlebars-template">
+    <h2>Drivers <span class="badge pull-right">\{{ drivers.length }}</span></h2>
+    <table id="drivers">
+    \{{#each drivers}}
+      <tr><td>#\{{ @key }}</td><td>\{{ name }}</td></tr>
+      <tr><td style="padding-bottom: 1em" colspan="2"><span title="Skin: \{{ skin }}" class="label label-default">\{{formatCar model }}</span></td></tr>
+    \{{/each}}
+    </table>
+    </script>
+
+    <script id="hb-timing-template" type="text/x-handlebars-template">
+    <h2>Timing</h2>
+    <table id="timing">
+      <thead>
+        <tr>
+          <th id="position">Pos</th>
+          <th id="name">Name</th>
+          <th id="car">Car</th>
+          <th id="laps">Laps</th>
+          <th id="time">Time</th>
+          <th id="besttime">Best</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="20"> &raquo;&raquo; &laquo;&laquo;</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><a onclick="toggleSessionView()" class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+    </script>
