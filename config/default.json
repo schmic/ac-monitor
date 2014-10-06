@@ -1,0 +1,17 @@
+{
+    "AC": {
+        // please reference the path to your AC server installation
+        "installpath": "C:\\Program Files (x86)\\Steam\\SteamApps\\common\\Assetto Corsa Dedicated Server"
+    },
+    "http": {
+        // must match the Domainname you created the Steam API Key for!
+        "host": "STEAM_API_DOMAINNAME",
+        "port": 80
+    },
+    "steam" : {
+        "api": {
+            // get your API key at: http://steamcommunity.com/dev/
+            "key": "FILL_IN_API_KEY"
+        }
+    }
+}

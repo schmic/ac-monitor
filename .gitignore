@@ -1,3 +1,4 @@
 .idea
 *.log
+/config/local*
 /node_modules

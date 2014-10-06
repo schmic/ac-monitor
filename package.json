@@ -25,7 +25,8 @@
         "express-handlebars": "*",
         "socket.io": "*",
         "passport": "*",
-        "passport-steam": "*"
+        "passport-steam": "*",
+        "config": "*"
     },
     "scripts": {
         "start": "node app.js start -v -p VRXX"

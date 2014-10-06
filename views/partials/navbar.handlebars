@@ -11,6 +11,15 @@
             <span>AC-Monitor</span>
         </a>
     </div>
+    <div class="navbar-collapse collapse pull-right">
+        <ul class="nav navbar-nav">
+            {{#unless session.passport.user}}
+                <li>
+                    <a href="/auth/login"><img src="/img/icons/sits_small.png" alt="Steam Login"/></a>
+                </li>
+            {{/unless}}
+        </ul>
+    </div>
     <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
             {{#if session.passport.user }}
@@ -18,10 +27,6 @@
                     <a href="/user">
                         <span>Profile</span>
                     </a>
-                </li>
-            {{else }}
-                <li>
-                    <a href="/auth/login"><img src="/img/icons/sits_small.png" alt="Steam Login"/></a>
                 </li>
             {{/if}}
             <li class="dropdown">
