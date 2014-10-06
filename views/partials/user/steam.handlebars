@@ -1,0 +1,7 @@
+<div id="avatarView" class="col-md-1">
+    <img src="{{ session.passport.user._json.avatarmedium }}" alt="steam.avatar"/>
+</div>
+<div id="profileView" class="col-md-3">
+    <p>Name: {{ session.passport.user.displayName }}</p>
+    <p>Steam GUID: <span class="label label-success">{{ session.passport.user.id }}</span></p>
+</div>

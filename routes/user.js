@@ -1,11 +1,13 @@
 var router = require('express').Router();
 
-router.get('/', function(req, res) {
-    req.session.passport.user ? res.redirect('/user/profile') : res.redirect('/');
-});
+function isAuthenticated(req, res, next) {
+    req.session.isAuthenticated ? next() : res.redirect('/');
+}
 
-router.get('/profile', function(req, res) {
-    res.render('userProfile', { session: req.session });
+router.all('*', isAuthenticated);
+
+router.get('/', function (req, res) {
+    res.render('profile', { session: req.session });
 });
 
 module.exports = router;

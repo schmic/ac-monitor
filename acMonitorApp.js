@@ -26,6 +26,12 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(function(req, res, next) {
+    req.session.isAdmin = req.session.passport.user && req.session.passport.user.id === '76561197960428057';
+    req.session.isAuthenticated = req.session.passport.user !== undefined;
+    next();
+});
+
 app.use('/', require('./routes/index'));
 app.use('/user', require('./routes/user'));
 app.use('/auth', require('./routes/auth'));
