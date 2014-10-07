@@ -73,23 +73,11 @@ Handlebars.registerHelper("formatCar", function(car) {
 		p45_2011: 'P4/5 Competizione',
 		pagani_huayra: 'Pagani Huayra',
 		pagani_zonda_r: 'Pagani Zonda R',
-		tatuusfa1: 'Tatuus F.Abarth',
-	}
+		tatuusfa1: 'Tatuus F.Abarth'
+	};
 	return cars[car] != undefined ? cars[car] : car;
 });
 
-
-
-function toggleSessionView() {
-	if($('#sessionView').hasClass('col-md-3')) {
-		$('#sessionView').removeClass('col-md-3').addClass('hidden');
-		$('#timingView').removeClass('col-md-9').addClass('col-md-12');
-	}
-	else {
-		$('#sessionView').addClass('col-md-3').removeClass('hidden');
-		$('#timingView').addClass('col-md-9').removeClass('col-md-12');
-	}
-}
 
 function replaceContent(html) {
 	$('body div#content').html(html);
@@ -97,67 +85,24 @@ function replaceContent(html) {
 
 // -------------------------------------------------------------------------- //
 
-io = io.connect();
+var socket = io.connect();
 
-io.emit('connect');
-
-io.on('reconnect', function() {
-	window.location = '/';
+socket.on('reconnect', function() {
+	//window.location = '/';
 });
 
-io.on('disconnect', function() {
-	replaceContent('<div class="container"><div class="jumbotron"><b>Connection lost, reconnecting...</b></div></div>');
+socket.on('disconnect', function() {
+	//replaceContent('<div class="container"><div class="jumbotron"><b>Connection lost, reconnecting...</b></div></div>');
 });
 
-io.on('err', function(data) {
+socket.on('err', function(data) {
 	console.log('ERROR:', data);
 });
 
-io.on('replaceContent', replaceContent);
+socket.on('replaceContent', replaceContent);
 
 // -------------------------------------------------------------------------- //
 
-io.on('welcome', function(welcome) {
-	console.log('welcome', welcome);
-	$('.navbar-brand span').html(welcome.app + ' <small>' + welcome.version + '</small>');
-});
-
-io.on('activePresets', function(activePresets) {
-	console.log('active presets:', activePresets);
-	$('#serverList').empty();
-	$.each(activePresets, function(idx, preset) {
-		var li = $('<li><a href="#">'+preset.serverName+'</a></li>');
-		li.click(function(evt) {
-			io.emit('selectServer', { presetName: preset.presetName });
-		});
-		li.appendTo($('#serverList'));
-	})
-});
-
-// -------------------------------------------------------------------------- //
-
-io.on('serverCfg', function (serverCfg) {
-	console.log('serverCfg', serverCfg);
-	var hbHeaderTmpl = Handlebars.compile($('#hb-header-template').html());
-	$('#header').html(hbHeaderTmpl(serverCfg));
-});
-
-io.on('sessionUpdate', function (data) {
-	console.log('session-template', data);
-
-	var hbSessionTmpl = Handlebars.compile($('#hb-session-list-template').html());
-	$('#sessionList').html(hbSessionTmpl(data));
-
-	var hbSessionTmpl = Handlebars.compile($('#hb-session-details-template').html());
-	$('#sessionView').html(hbSessionTmpl(data));
-
-	var hbDriversTmpl = Handlebars.compile($('#hb-drivers-template').html());
-	$('#driversView').html(hbDriversTmpl(data));
-});
-
-io.on('timingUpdate', function (data) {
-	// FIXME
-	console.log('timingUpdate', timingUpdate);
-});
-
-//EOF
+function getPresets() {
+    socket.emit('getPresets', { });
+}

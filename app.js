@@ -52,6 +52,25 @@ var server = app.listen(cfg.get('http.port'), function() {
     console.log('acMonitor running at', 'http://' + cfg.http.host + (cfg.http.port !== 80 ? ':'+cfg.http.port : ''));
 });
 
+var io = require('socket.io').listen(server);
+
+io.on('connection', function (socket) {
+    console.log('new connection', socket.id);
+
+    socket.on('disconnect', function() {
+       console.log('client disconnected', socket.id);
+    });
+
+    socket.on('xxx', function(data) {
+        console.log(data);
+    });
+
+});
+
+io.sockets.on('xxx', function(data) {
+    console.log('hello xxx');
+});
+
 module.exports = app;
 
 // -------------------------------------------------------------------------- //
