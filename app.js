@@ -1,25 +1,21 @@
 #!/usr/bin/env node
-var cfg = require('config');
-var path     = require('path');
-var express  = require('express');
-var serveStatic = require('serve-static');
-var cookieParser = require('cookie-parser');
-var session  = require('express-session');
 var passport = require('./libs/passport-steam');
+var path     = require('path');
+var cfg      = require('config');
+var app      = require('express')();
 
-var app = express();
-
-app.use(serveStatic(path.join(__dirname, 'public')));
+app.use(require('serve-static')(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'handlebars');
 app.engine('handlebars',
     require('express-handlebars')({
-        defaultLayout: 'main'
+        defaultLayout: 'main',
+        helpers: require('./libs/hbs-helpers')
     })
 );
 
-app.use(cookieParser());
-app.use(session({
+app.use(require('cookie-parser')());
+app.use(require('express-session')({
     saveUninitialized: false,
     resave: false,
     secret: 'f58e3e18f01ba80ae1472abbd2884b28'
@@ -61,8 +57,9 @@ io.on('connection', function (socket) {
        console.log('client disconnected', socket.id);
     });
 
-    socket.on('xxx', function(data) {
-        console.log(data);
+    socket.on('admin.tracks.delete', function(data, fn) {
+        console.log('admin.tracks.delete', data);
+        socket.send('Track ' + data.track + ' deleted');
     });
 
 });
