@@ -1,0 +1,9 @@
+<div id="adminMenu" class="col-md-2">
+    <ul class="nav nav-pills nav-stacked">
+        <li {{#if f.index}}class="active"{{/if}}><a href="/admin/index" ">Overview</a></li>
+        <li {{#if f.servers}}class="active"{{/if}}><a href="/admin/servers" ">Servers</a></li>
+        <li {{#if f.presets}}class="active"{{/if}}><a href="/admin/presets" ">Presets</a></li>
+        <li {{#if f.tracks}}class="active"{{/if}}><a href="/admin/tracks" ">Tracks</a></li>
+        <li {{#if f.cars}}class="active"{{/if}}><a href="/admin/cars" ">Cars</a></li>
+    </ul>
+</div>

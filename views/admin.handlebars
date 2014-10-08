@@ -2,17 +2,12 @@
     <h2>Administration</h2>
 </div>
 <div class="row">
-    <div id="adminMenu" class="col-md-2">
-        <ul>
-            <li><a href="#" onclick="socket.emit('getServers', { running: true })">Servers</a></li>
-            <li><a href="#" onclick="getPresets">Presets</a></li>
-        </ul>
-    </div>
-    <div id="adminView" class="col-md-6">
-        AdminView, status about running (and stopped?) servers ...
-    </div>
+    {{> admin/menu }}
+    {{#if f.index }}{{> admin/index}}{{/if}}
+    {{#if f.servers }}{{> admin/servers}}{{/if}}
+    {{#if f.presets }}{{> admin/presets}}{{/if}}
+    {{#if f.tracks }}{{> admin/tracks}}{{/if}}
+    {{#if f.cars }}{{> admin/cars}}{{/if}}
 </div>
 
-<script id="admin-template" type="text/x-handlebars-template">
-    template content
-</script>
+{{> admin/templates}}
