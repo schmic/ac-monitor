@@ -10,4 +10,4 @@ I would be happy to merge your [pull-requests](https://help.github.com/articles/
  * [npm](https://www.npmjs.org/) integrated into your NodeJS
 
 ## Screenshot
-![acMonitorScreenshot](https://thumb5.wuala.com/previewImage/schmic/VR/AC/acMonitor-20140525.png/)
+![acMonitorScreenshot](https://thumb5.wuala.com/previewImage/schmic/VR/AC/acMonitor-20141009.png/)
