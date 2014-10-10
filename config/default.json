@@ -1,4 +1,7 @@
 {
+    "x": {
+        "admins": { "STEAM_ID_1": {}, "STEAM_ID_2": {} }
+    },
     "AC": {
         "installpath": "C:\\Program Files (x86)\\Steam\\SteamApps\\common\\Assetto Corsa Dedicated Server"
     },

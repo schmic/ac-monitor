@@ -1,8 +1,8 @@
-// http://steamcommunity.com/dev
-
 var passport = require('passport');
 var SteamStrategy = require('passport-steam').Strategy;
 var cfg = require('config');
+
+// http://steamcommunity.com/dev
 
 // Passport session setup.
 passport.serializeUser(function (user, done) {

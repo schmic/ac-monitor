@@ -8,6 +8,7 @@ li {
 
 table {
 	border-collapse: collapse;
+    width: 100%;
 }
 
 table td {
@@ -27,9 +28,7 @@ body > footer {
 	margin-right: 0.5em;
 }
 
-#drivers td:first-child,
-#session td:first-child {
-	font-weight: bold;
-	padding-right: 1em;
-	text-align: left;
+#adminTracks td,
+#adminCars td {
+    line-height: 2em;
 }

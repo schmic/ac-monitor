@@ -4,34 +4,39 @@
             <h3 class="panel-title">Available Tracks</h3>
         </div>
         <div class="panel-body">
+            {{#if tracks}}
             <table>
                 {{#each tracks}}
                     <tr>
                         <td>{{#formatTrack}}{{this}}{{/formatTrack}}</td>
                         <td>
                             <button title="Delete track" type="button" class="btn btn-danger btn-xs"
-                                    onclick="socket.emit('admin.tracks.delete', { track: '{{this}}'});">
+                                    onclick="socket.emit('admin.tracks.delete', { track: '{{this}}'}, socket.cb);">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>
                         </td>
                     </tr>
                 {{/each}}
             </table>
+            {{else}}
+                <div>No tracks found in server content directory.</div>
+            {{/if}}
         </div>
     </div>
 </div>
-<div id="adminTracksUpload" class="col-md-6">
+<div id="adminTracksUpload" class="col-md-5">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Track Upload</h3>
         </div>
         <div class="panel-body">
+            <label for="trackname">Enter track name</label>
+            <input type="text" id="trackname" name="track" onkeyup="checkTrackName()"/>
             <label for="files">Please select surface.ini</label>
-            <input type="file" id="files" name="files[]" multiple onchange="checkTracks"/>
-            <p class="help-block">Must be in its track folder!</p>
+            <input type="file" id="files" name="files[]"/>
         </div>
         <div class="panel-footer" style="text-align: right">
-            <button class="btn btn-success" onclick="uploadTracks">Upload</button>
+            <button class="btn btn-success" onclick="uploadTracks()">Upload</button>
         </div>
     </div>
 </div>

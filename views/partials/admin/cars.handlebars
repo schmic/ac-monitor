@@ -1,7 +1,42 @@
-<div id="adminCars" class="col-md-10">
-    <ul>
-        {{#each cars}}
-            <li>{{ this }}</li>
-        {{/each}}
-    </ul>
+<div id="adminCars" class="col-md-4">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Available Cars</h3>
+        </div>
+        <div class="panel-body">
+            {{#if cars}}
+            <table>
+                {{#each cars}}
+                    <tr>
+                        <td>{{#formatCar}}{{this}}{{/formatCar}}</td>
+                        <td>
+                            <button title="Delete car" type="button" class="btn btn-danger btn-xs"
+                                    onclick="socket.emit('admin.cars.delete', { car: '{{this}}'});">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </td>
+                    </tr>
+                {{/each}}
+            </table>
+            {{else}}
+                <div>No cars found in server content directory.</div>
+            {{/if}}
+        </div>
+    </div>
+</div>
+<div id="adminCarsUpload" class="col-md-5">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Car Upload</h3>
+        </div>
+        <div class="panel-body">
+            <label for="carname">Enter car name</label>
+            <input type="text" id="carname" name="car" onkeyup="checkCarName()"/>
+            <label for="files">Please select surface.ini</label>
+            <input type="file" id="files" name="files[]"/>
+        </div>
+        <div class="panel-footer" style="text-align: right">
+            <button class="btn btn-success" onclick="uploadCars()">Upload</button>
+        </div>
+    </div>
 </div>

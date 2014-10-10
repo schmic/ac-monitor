@@ -1,7 +1,6 @@
 var router = require('express').Router();
 
 function isAdmin(req, res, next) {
-    req.session.isAdmin = true;
     req.session.isAdmin ? next() : res.redirect('/');
 }
 
@@ -23,15 +22,11 @@ router.get('/:f', function (req, res) {
 
 var ctxHandler = {}
 ctxHandler.index = function(ctx) {};
-
 ctxHandler.servers = function(ctx) {};
-
 ctxHandler.presets = function(ctx) {};
-
 ctxHandler.tracks = function (ctx) {
     ctx.tracks = require('../vendor/acCtrl/libs/env').getTrackNames();
 };
-
 ctxHandler.cars = function (ctx) {
     ctx.cars = require('../vendor/acCtrl/libs/env').getCarNames();
 };

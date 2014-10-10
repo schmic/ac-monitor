@@ -2,7 +2,7 @@ var router = require('express').Router();
 var passport = require('../libs/passport-steam');
 
 router.get('/', function (req, res) {
-    res.redirect('/user');
+    res.redirect('/auth/login');
 });
 
 router.get('/login', passport.authenticate('steam', { failureRedirect: '/error' }), function (req, res) {
