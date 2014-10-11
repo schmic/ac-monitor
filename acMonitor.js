@@ -1,4 +1,5 @@
-#!/usr/bin/env node
+var acServer = require('./libs/server');
+
 var passport = require('./libs/passport-steam');
 var path     = require('path');
 var cfg      = require('config');
@@ -45,7 +46,7 @@ app.use(function(req, res, next) {
 });
 
 app.use('/', require('./routes/index'));
-app.use('/user', require('./routes/user'));
+app.use('/view', require('./routes/view'));
 app.use('/auth', require('./routes/auth'));
 app.use('/admin', require('./routes/admin'));
 
@@ -66,7 +67,7 @@ io.on('connection', function (socket) {
 
     socket.on('admin.tracks.delete', function(data, fn) {
         console.log('admin.tracks.delete', data);
-        data.valid = require('./vendor/acCtrl/libs/env').deleteTrack(data.name);
+        data.valid = require('./libs/env').deleteTrack(data.name);
         data.msg = printf('Track %s %s', data.name, data.valid ? 'deleted' : 'could not be deleted');
         socket.send(data.msg);
         fn(data);
@@ -74,7 +75,7 @@ io.on('connection', function (socket) {
 
     socket.on('admin.tracks.validate', function(data, fn) {
         console.log('admin.tracks.validate', data);
-        data.valid = require('./vendor/acCtrl/libs/env').hasTrack(data.name) ? false: true;
+        data.valid = require('./libs/env').hasTrack(data.name) ? false: true;
         data.msg = printf('Track %s %s', data.name, data.valid ? 'validated' : 'already exists');
         socket.send(data.msg);
         fn(data);
@@ -82,7 +83,7 @@ io.on('connection', function (socket) {
 
     socket.on('admin.tracks.upload', function(data, fn) {
         console.log('admin.tracks.upload', data);
-        data.valid = require('./vendor/acCtrl/libs/env').createTrack(data.name, data.content);
+        data.valid = require('./libs/env').createTrack(data.name, data.content);
         data.msg = printf('Track %s %s', data.name, data.valid ? 'created' : 'could not be created');
         socket.send(data.msg);
         fn(data);
@@ -90,7 +91,7 @@ io.on('connection', function (socket) {
 
     socket.on('admin.cars.delete', function(data, fn) {
         console.log('admin.cars.delete', data);
-        data.valid = require('./vendor/acCtrl/libs/env').deleteCar(data.name);
+        data.valid = require('./libs/env').deleteCar(data.name);
         data.msg = printf('Car %s %s', data.name, data.valid ? 'deleted' : 'could not be deleted');
         socket.send(data.msg);
         fn(data);
@@ -98,7 +99,7 @@ io.on('connection', function (socket) {
 
     socket.on('admin.cars.validate', function(data, fn) {
         console.log('admin.cars.validate', data);
-        data.valid = require('./vendor/acCtrl/libs/env').hasCar(data.name) ? false: true;
+        data.valid = require('./libs/env').hasCar(data.name) ? false: true;
         data.msg = printf('Car %s %s', data.name, data.valid ? 'validated' : 'already exists');
         socket.send(data.msg);
         fn(data);
@@ -106,14 +107,14 @@ io.on('connection', function (socket) {
 
     socket.on('admin.cars.upload', function(data, fn) {
         console.log('admin.cars.upload', data);
-        data.valid = require('./vendor/acCtrl/libs/env').createCar(data.name, data.content);
+        data.valid = require('./libs/env').createCar(data.name, data.content);
         data.msg = printf('Car %s %s', data.name, data.valid ? 'created' : 'could not be created');
         socket.send(data.msg);
         fn(data);
     });
 
     socket.on('admin.presets.delete', function(data, fn) {
-        data.valid = require('./vendor/acCtrl/libs/env').deletePreset(data.name);
+        data.valid = require('./libs/env').deletePreset(data.name);
         data.msg = printf('Preset %s %s', data.name, data.valid ? 'deleted' : 'could not be deleted');
         console.log('admin.presets.delete', data);
         socket.send(data.msg);
@@ -121,7 +122,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('admin.presets.validate', function(data, fn) {
-        data.valid = require('./vendor/acCtrl/libs/env').hasPreset(data.name) ? false: true;
+        data.valid = require('./libs/env').hasPreset(data.name) ? false: true;
         data.msg = printf('Preset %s %s', data.name, data.valid ? 'validated' : 'already exists');
         console.log('admin.presets.validate', data);
         socket.send(data.msg);
@@ -129,23 +130,39 @@ io.on('connection', function (socket) {
     });
 
     socket.on('admin.presets.upload', function(data, fn) {
-        data.valid = require('./vendor/acCtrl/libs/env').createPreset(data.name, data.content);
+        data.valid = require('./libs/env').createPreset(data.name, data.content);
         data.msg = printf('Preset %s %s', data.name, data.valid ? 'created' : 'could not be created');
         console.log('admin.presets.upload', data);
         socket.send(data.msg);
         fn(data);
     });
 
+    socket.on('admin.server.start', function(data, fn) {
+        var server = new acServer(data.name);
+        app.ac.servers[data.name] = server;
+        data.valid = server.start();
+        console.log('admin.server.start', data);
+        fn(data);
+    });
+
+    socket.on('admin.server.stop', function(data, fn) {
+        app.ac.servers[data.name].stop();
+        data.valid = delete app.ac.servers[data.name];
+        console.log('admin.server.stop', data);
+        fn(data);
+    });
 });
 
 module.exports = app;
 
 // -------------------------------------------------------------------------- //
 
-var ac = {};
-ac.servers = {
+app.ac = {};
+app.ac.servers = {
     // container for running AC servers
 };
+
+var ac = {};
 ac.isActive = function isActive(presetName) {
     return Object.keys(ac.getServers()).indexOf(presetName) >= 0;
 };

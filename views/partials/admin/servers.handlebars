@@ -1,3 +1,50 @@
-<div id="adminServers" class="col-md-8">
-    Servers ... nope, not yet.
+<div id="adminServers" class="col-md-4">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Running Servers</h3>
+        </div>
+        <div class="panel-body">
+            {{#if servers}}
+                <table>
+                    {{#each servers}}
+                        <tr>
+                            <td>{{this.name}}</td>
+                            <td>
+                                <button title="Stop Server" type="button" class="btn btn-danger btn-xs" onclick="handleStopServer('{{this.preset}}')">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </table>
+            {{else}}
+                <div>None.</div>
+            {{/if}}
+        </div>
+    </div>
+</div>
+<div id="adminServersControl" class="col-md-4">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Start Server</h3>
+        </div>
+        <div class="panel-body">
+            {{#if presets}}
+                <table>
+                    {{#each presets}}
+                        <tr>
+                            <td>{{this}}</td>
+                            <td>
+                                <button title="Start Server" type="button" class="btn btn-success btn-xs" onclick="handleStartServer('{{this}}')">
+                                    <span class="glyphicon glyphicon-play-circle"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </table>
+            {{else}}
+                <div>None available.</div>
+            {{/if}}
+        </div>
+    </div>
 </div>

@@ -146,6 +146,21 @@ function getUploadFiles() {
     return $('#files').prop('files');
 }
 
+function handleStartServer(presetName) {
+    var wsfunc = 'admin.server.start';
+    var data = { name: presetName };
+    data.reload = true;
+    socket.emit(wsfunc, data, socket.cb);
+}
+
+function handleStopServer(presetName) {
+    var wsfunc = 'admin.server.stop';
+    var data = { name: presetName };
+    data.reload = true;
+    socket.emit(wsfunc, data, socket.cb);
+}
+
+
 // -------------------------------------------------------------------------- //
 
 function closeMessageBox() {
