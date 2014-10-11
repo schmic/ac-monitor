@@ -2,7 +2,7 @@
     "name": "acMonitor",
     "description": "Assetto Corsa Server Control & Monitor",
     "version": "0.1.0",
-    "main": "app.js",
+    "main": "acMonitor.js",
     "private": true,
     "repository": {
         "type": "git",
@@ -26,11 +26,16 @@
         "socket.io": "*",
         "passport": "*",
         "passport-steam": "*",
-        "config": "*"
+        "config": "*",
+        "minimist": "*",
+        "ini": "*",
+        "fs-sync": "*",
+        "event-stream": "*",
+        "fs-extra": "*"
     },
     "devDependencies": {
     },
     "scripts": {
-        "start": "node app.js start -v -p VRXX"
+        "start": "node acMonitor.js start -v -p VRXX"
     }
 }
