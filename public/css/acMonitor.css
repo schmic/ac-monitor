@@ -28,6 +28,8 @@ body > footer {
 	margin-right: 0.5em;
 }
 
+#adminServers td,
+#adminPresets td,
 #adminTracks td,
 #adminCars td {
     line-height: 2em;

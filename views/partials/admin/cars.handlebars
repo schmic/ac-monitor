@@ -11,7 +11,7 @@
                         <td>{{#formatCar}}{{this}}{{/formatCar}}</td>
                         <td>
                             <button title="Delete car" type="button" class="btn btn-danger btn-xs"
-                                    onclick="socket.emit('admin.cars.delete', { car: '{{this}}'});">
+                                    onclick="handleDelete('{{this}}')">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>
                         </td>
@@ -30,13 +30,20 @@
             <h3 class="panel-title">Car Upload</h3>
         </div>
         <div class="panel-body">
-            <label for="carname">Enter car name</label>
-            <input type="text" id="carname" name="car" onkeyup="checkCarName()"/>
-            <label for="files">Please select surface.ini</label>
-            <input type="file" id="files" name="files[]"/>
+            <div class="form-group has-error has-feedback">
+                <label class="control-label" for="contentname">Enter car name:</label>
+                <input class="form-control" type="text" id="contentname" name="cars" onkeyup="checkUploadForm()"/>
+                <span class="glyphicon glyphicon-remove form-control-feedback" id="contentnamefeedback"></span>
+                <span class="help-block">The name of the &lt;car&gt; folder "must" be entered here.</span>
+            </div>
+            <div class="form-group has-error has-feedback">
+                <label class="control-label" for="files">Select: ".../content/&lt;car&gt;/ui/small_preview.png"</label>
+                <input class="form-control" type="file" id="files" name="files[]" onchange="checkUploadForm()"/>
+                <span class="glyphicon glyphicon-remove form-control-feedback" id="contentfilesfeedback"></span>
+            </div>
         </div>
         <div class="panel-footer" style="text-align: right">
-            <button class="btn btn-success" onclick="uploadCars()">Upload</button>
+            <button id="uploadbutton" class="btn btn-success" disabled onclick="handleUpload()">Upload</button>
         </div>
     </div>
 </div>

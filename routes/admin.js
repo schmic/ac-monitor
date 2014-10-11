@@ -23,7 +23,9 @@ router.get('/:f', function (req, res) {
 var ctxHandler = {}
 ctxHandler.index = function(ctx) {};
 ctxHandler.servers = function(ctx) {};
-ctxHandler.presets = function(ctx) {};
+ctxHandler.presets = function(ctx) {
+    ctx.presets = require('../vendor/acCtrl/libs/env').getPresetNames();
+};
 ctxHandler.tracks = function (ctx) {
     ctx.tracks = require('../vendor/acCtrl/libs/env').getTrackNames();
 };

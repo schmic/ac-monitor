@@ -28,6 +28,8 @@
         "passport-steam": "*",
         "config": "*"
     },
+    "devDependencies": {
+    },
     "scripts": {
         "start": "node app.js start -v -p VRXX"
     }

@@ -26,7 +26,7 @@ app.use(passport.session());
 
 app.use(function(req, res, next) {
     req.session.isAdmin = req.session.passport.user && req.session.passport.user.id in cfg.x.admins;
-    req.session.isAuthenticated = req.session.passport.user !== undefined;
+    req.session.isAuthenticated = req.session.passport.user ? true : false;
 
     if(app.get('env') === 'development') {
         // enable admin interface without authorization
@@ -66,48 +66,72 @@ io.on('connection', function (socket) {
 
     socket.on('admin.tracks.delete', function(data, fn) {
         console.log('admin.tracks.delete', data);
-        data.valid = require('./vendor/acCtrl/libs/env').deleteTrack(data.track);
-        data.msg = printf('Track %s %s', data.track, data.valid ? 'deleted' : 'could not be deleted');
+        data.valid = require('./vendor/acCtrl/libs/env').deleteTrack(data.name);
+        data.msg = printf('Track %s %s', data.name, data.valid ? 'deleted' : 'could not be deleted');
         socket.send(data.msg);
         fn(data);
     });
 
     socket.on('admin.tracks.validate', function(data, fn) {
         console.log('admin.tracks.validate', data);
-        data.valid = require('./vendor/acCtrl/libs/env').hasTrack(data.track) ? false: true;
-        data.msg = printf('Track %s %s', data.track, data.valid ? 'validated' : 'already exists');
+        data.valid = require('./vendor/acCtrl/libs/env').hasTrack(data.name) ? false: true;
+        data.msg = printf('Track %s %s', data.name, data.valid ? 'validated' : 'already exists');
         socket.send(data.msg);
         fn(data);
     });
 
     socket.on('admin.tracks.upload', function(data, fn) {
         console.log('admin.tracks.upload', data);
-        data.valid = require('./vendor/acCtrl/libs/env').createTrack(data.track, data.ini);
-        data.msg = printf('Track %s %s', data.track, data.valid ? 'created' : 'could not be created');
+        data.valid = require('./vendor/acCtrl/libs/env').createTrack(data.name, data.content);
+        data.msg = printf('Track %s %s', data.name, data.valid ? 'created' : 'could not be created');
         socket.send(data.msg);
         fn(data);
     });
 
     socket.on('admin.cars.delete', function(data, fn) {
         console.log('admin.cars.delete', data);
-        data.valid = require('./vendor/acCtrl/libs/env').deleteCar(data.car);
-        data.msg = printf('Car %s %s', data.car, data.valid ? 'deleted' : 'could not be deleted');
+        data.valid = require('./vendor/acCtrl/libs/env').deleteCar(data.name);
+        data.msg = printf('Car %s %s', data.name, data.valid ? 'deleted' : 'could not be deleted');
         socket.send(data.msg);
         fn(data);
     });
 
     socket.on('admin.cars.validate', function(data, fn) {
         console.log('admin.cars.validate', data);
-        data.valid = require('./vendor/acCtrl/libs/env').hasCar(data.car) ? false: true;
-        data.msg = printf('Car %s %s', data.car, data.valid ? 'validated' : 'already exists');
+        data.valid = require('./vendor/acCtrl/libs/env').hasCar(data.name) ? false: true;
+        data.msg = printf('Car %s %s', data.name, data.valid ? 'validated' : 'already exists');
         socket.send(data.msg);
         fn(data);
     });
 
     socket.on('admin.cars.upload', function(data, fn) {
         console.log('admin.cars.upload', data);
-        data.valid = require('./vendor/acCtrl/libs/env').createCar(data.car, data.ini);
-        data.msg = printf('Car %s %s', data.car, data.valid ? 'created' : 'could not be created');
+        data.valid = require('./vendor/acCtrl/libs/env').createCar(data.name, data.content);
+        data.msg = printf('Car %s %s', data.name, data.valid ? 'created' : 'could not be created');
+        socket.send(data.msg);
+        fn(data);
+    });
+
+    socket.on('admin.presets.delete', function(data, fn) {
+        data.valid = require('./vendor/acCtrl/libs/env').deletePreset(data.name);
+        data.msg = printf('Preset %s %s', data.name, data.valid ? 'deleted' : 'could not be deleted');
+        console.log('admin.presets.delete', data);
+        socket.send(data.msg);
+        fn(data);
+    });
+
+    socket.on('admin.presets.validate', function(data, fn) {
+        data.valid = require('./vendor/acCtrl/libs/env').hasPreset(data.name) ? false: true;
+        data.msg = printf('Preset %s %s', data.name, data.valid ? 'validated' : 'already exists');
+        console.log('admin.presets.validate', data);
+        socket.send(data.msg);
+        fn(data);
+    });
+
+    socket.on('admin.presets.upload', function(data, fn) {
+        data.valid = require('./vendor/acCtrl/libs/env').createPreset(data.name, data.content);
+        data.msg = printf('Preset %s %s', data.name, data.valid ? 'created' : 'could not be created');
+        console.log('admin.presets.upload', data);
         socket.send(data.msg);
         fn(data);
     });
