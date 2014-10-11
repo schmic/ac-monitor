@@ -9,8 +9,8 @@
         "installpath": "C:\\Program Files (x86)\\Steam\\SteamApps\\common\\Assetto Corsa Dedicated Server"
     },
     "http": {
-        "host": "STEAM_API_DOMAINNAME",
-        "port": 80
+        "host": "localhost",
+        "port": 8081
     },
     "steam" : {
         "api": {
