@@ -3,9 +3,9 @@
         <div class="panel-heading">
             <h3 class="panel-title">Available Cars</h3>
         </div>
-        <div class="panel-body">
-            {{#if cars}}
-            <table>
+        {{#if cars}}
+            <table class="table">
+                <tr><th>Name</th><th>Delete</th></tr>
                 {{#each cars}}
                     <tr>
                         <td>{{#formatCar}}{{this}}{{/formatCar}}</td>
@@ -18,10 +18,11 @@
                     </tr>
                 {{/each}}
             </table>
-            {{else}}
-                <div>No cars found in server content directory.</div>
-            {{/if}}
-        </div>
+        {{else}}
+            <div class="panel-body">
+                No cars found in server content directory.
+            </div>
+        {{/if}}
     </div>
 </div>
 <div id="adminCarsUpload" class="col-md-5">

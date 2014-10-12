@@ -3,9 +3,9 @@
         <div class="panel-heading">
             <h3 class="panel-title">Available Tracks</h3>
         </div>
-        <div class="panel-body">
-            {{#if tracks}}
-            <table>
+        {{#if tracks}}
+            <table class="table">
+                <tr><th>Name</th><th>Delete</th></tr>
                 {{#each tracks}}
                     <tr>
                         <td>{{#formatTrack}}{{this}}{{/formatTrack}}</td>
@@ -18,10 +18,11 @@
                     </tr>
                 {{/each}}
             </table>
-            {{else}}
-                <div>No tracks found in server content directory.</div>
-            {{/if}}
-        </div>
+        {{else}}
+            <div class="panel-body">
+                No tracks found in server content directory.
+            </div>
+        {{/if}}
     </div>
 </div>
 <div id="adminTracksUpload" class="col-md-5">
