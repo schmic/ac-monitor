@@ -27,7 +27,51 @@ Preset.prototype.getTimeOfDay = function () {
 };
 
 Preset.prototype.getMaxClients = function () {
-    return parseInt(this.ini.MAX_CLIENTS)
+    return parseInt(this.ini.SERVER.MAX_CLIENTS);
+};
+
+Preset.prototype.hasPickupMode = function() {
+    return parseInt(this.ini.SERVER.PICKUP_MODE_ENABLED);
+};
+
+Preset.prototype.hasRegisterToLobby = function() {
+    return parseInt(this.ini.SERVER.REGISTER_TO_LOBBY);
+};
+
+Preset.prototype.hasBookingSession = function() {
+    return this.ini.BOOK !== undefined;
+};
+
+Preset.prototype.getBookingSession = function() {
+    return this.ini.BOOK;
+};
+
+Preset.prototype.hasPracticeSession = function() {
+    return this.ini.PRACTICE !== undefined;
+};
+
+Preset.prototype.getPracticeSession = function() {
+    return this.ini.PRACTICE;
+};
+
+Preset.prototype.hasQualifySession = function() {
+    return this.ini.QUALIFY !== undefined;
+};
+
+Preset.prototype.getQualifySession = function() {
+    return this.ini.QUALIFY;
+};
+
+Preset.prototype.hasRaceSession = function() {
+    return this.ini.RACE !== undefined;
+};
+
+Preset.prototype.getRaceSession = function() {
+    return this.ini.RACE;
+};
+
+Preset.prototype.hasPenalties = function() {
+    return this.ini.SERVER.ALLOWED_TYRES_OUT < 4;
 };
 
 Preset.prototype.getDriversFromEntryList = function () {

@@ -34,8 +34,11 @@
         "fs-extra": "*"
     },
     "devDependencies": {
+        "assert": "*",
+        "mocha": "*"
     },
     "scripts": {
-        "start": "node acMonitor.js start -v -p VRXX"
+        "start": "node acMonitor.js",
+        "test": "node node_modules\\mocha\\bin\\mocha --reporter list"
     }
 }
