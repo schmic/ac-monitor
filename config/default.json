@@ -1,9 +1,12 @@
 {
-    "x": {
+    "ACM": {
         "admins": {
             "STEAM_ID_1": { "name": "AdminName1" },
             "STEAM_ID_2": { "name": "AdminName2" }
-        }
+        },
+        "autostart": [
+            "dev01"
+        ]
     },
     "AC": {
         "installpath": "C:\\Program Files (x86)\\Steam\\SteamApps\\common\\Assetto Corsa Dedicated Server"

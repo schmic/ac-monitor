@@ -1,4 +1,4 @@
-var acServer = require('./libs/server');
+var Server = require('./libs/server');
 
 var passport = require('./libs/passport-steam');
 var path     = require('path');
@@ -26,7 +26,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(function(req, res, next) {
-    req.session.isAdmin = req.session.passport.user && req.session.passport.user.id in cfg.x.admins;
+    req.session.isAdmin = req.session.passport.user && req.session.passport.user.id in cfg.ACM.admins;
     req.session.isAuthenticated = req.session.passport.user ? true : false;
 
     if(app.get('env') === 'development') {
@@ -62,7 +62,7 @@ io.on('connection', function (socket) {
     console.log('new connection', socket.id);
 
     socket.on('disconnect', function() {
-       console.log('client disconnected', socket.id);
+        console.log('client disconnected', socket.id);
     });
 
     socket.on('admin.tracks.delete', function(data, fn) {
@@ -138,7 +138,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('admin.server.start', function(data, fn) {
-        var server = new acServer(data.name);
+        var server = new Server(data.name);
         app.ac.servers[data.name] = server;
         data.valid = server.start();
         console.log('admin.server.start', data);
