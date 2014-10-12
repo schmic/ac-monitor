@@ -19,7 +19,7 @@ I would be happy to merge your [pull-requests](https://help.github.com/articles/
 * Extract in anywhere on your system
 * Open a shell/dos-box and change into your `acMonitor` folder
 * install NodeJS modules by executing:
-    > npm install
+    > npm install --production
 
 ## Configuration
 
