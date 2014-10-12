@@ -1,4 +1,4 @@
-var acPreset = require('./preset');
+var Preset = require('./preset');
 
 var path = require('path');
 var fs = require('fs');
@@ -127,7 +127,7 @@ Server.prototype.stop = function () {
 };
 
 function Server(presetName) {
-    this.preset = new acPreset(presetName);
+    this.preset = new Preset(presetName);
     this.prepareServerPath();
 }
 
