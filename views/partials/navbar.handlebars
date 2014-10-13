@@ -12,7 +12,13 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Servers<b class="caret"></b></a>
                 <ul class="dropdown-menu" role="menu" id="serverList">
-                    <li><a href="#">No active servers.</a></li>
+                    {{#if session.servers}}
+                        {{#each session.servers}}
+                            <li><a href="/view/server/{{this.preset}}">{{this.name}}</a></li>
+                        {{/each}}
+                    {{else}}
+                        <li><a href="#">No active servers.</a></li>
+                    {{/if}}
                 </ul>
             </li>
             {{> nav/links}}

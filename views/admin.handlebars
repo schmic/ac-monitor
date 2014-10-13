@@ -3,11 +3,11 @@
 </div>
 <div class="row">
     {{> admin/menu }}
-    {{#if f.index }}{{> admin/index}}{{/if}}
-    {{#if f.servers }}{{> admin/servers}}{{/if}}
-    {{#if f.presets }}{{> admin/presets}}{{/if}}
-    {{#if f.tracks }}{{> admin/tracks}}{{/if}}
-    {{#if f.cars }}{{> admin/cars}}{{/if}}
+    {{#if_eq f 'index' }}{{> admin/index}}{{/if_eq}}
+    {{#if_eq f 'servers' }}{{> admin/servers}}{{/if_eq}}
+    {{#if_eq f 'presets' }}{{> admin/presets}}{{/if_eq}}
+    {{#if_eq f 'tracks' }}{{> admin/tracks}}{{/if_eq}}
+    {{#if_eq f 'cars' }}{{> admin/cars}}{{/if_eq}}
 </div>
 
 {{> admin/templates}}

@@ -11,18 +11,13 @@ router.get('/', function(req, res) {
     res.redirect('/admin/index');
 });
 
-router.get('/:f', function (req, res) {
-    var ctx = { f: {}, session: {}};
-    ctx.session = req.session;
-    ctx.f[req.params.f] = true;
-    ctxHandler[req.params.f](ctx);
+router.get('/index', function (req, res) {
+    var ctx = { f: 'index', session: req.session };
     res.render('admin', ctx);
 });
 
-var ctxHandler = {};
-ctxHandler.index = function(ctx) {};
-
-ctxHandler.servers = function(ctx) {
+router.get('/servers', function(req, res) {
+    var ctx = { f: 'servers', session: req.session };
     ctx.presets = require('../libs/env').getPresetNames();
     ctx.servers = [];
     for(var presetName in ac.servers) {
@@ -35,16 +30,30 @@ ctxHandler.servers = function(ctx) {
             ctx.presets.splice(ctx.presets.indexOf(presetName), 1);
         }
     }
-};
+    res.render('admin', ctx);
+});
 
-ctxHandler.presets = function(ctx) {
+router.get('/presets', function(req, res) {
+    var ctx = { f: 'presets', session: req.session };
     ctx.presets = require('../libs/env').getPresetNames();
-};
-ctxHandler.tracks = function (ctx) {
+    res.render('admin', ctx);
+});
+
+router.get('/presets/:preset', function (req, res) {
+    var preset = require('../libs/preset')(req.params.preset);
+    res.render('preset', { session: req.session, preset: preset });
+});
+
+router.get('/tracks', function(req, res) {
+    var ctx = { f: 'tracks', session: req.session };
     ctx.tracks = require('../libs/env').getTrackNames();
-};
-ctxHandler.cars = function (ctx) {
+    res.render('admin', ctx);
+});
+
+router.get('/cars', function(req, res) {
+    var ctx = { f: 'cars', session: req.session };
     ctx.cars = require('../libs/env').getCarNames();
-};
+    res.render('admin', ctx);
+});
 
 module.exports = router;

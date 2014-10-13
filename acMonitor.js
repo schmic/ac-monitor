@@ -1,6 +1,7 @@
 var path     = require('path');
 var cfg      = require('config');
 var passport = require('./libs/passport-steam');
+var ac       = require('./libs/server-handler');
 
 var app      = require('express')();
 app.use(require('serve-static')(path.join(__dirname, 'public')));
@@ -26,6 +27,17 @@ app.use(passport.session());
 app.use(function(req, res, next) {
     req.session.isAdmin = req.session.passport.user && req.session.passport.user.id in cfg.ACM.admins;
     req.session.isAuthenticated = req.session.passport.user ? true : false;
+
+    if(Object.keys(ac.servers).length > 0) {
+        req.session.servers = {};
+        for(var p in ac.servers) {
+            console.log('server', p);
+            req.session.servers[p] = {
+                name: ac.servers[p].name,
+                preset: p
+            }
+        }
+    }
 
     if(app.get('env') === 'development') {
         // enable admin interface without authorization
@@ -75,11 +87,9 @@ require('./libs/server-autostart').start();
 
 module.exports = app;
 
-// -------------------------------------------------------------------------- //
+/*** OBSOLETE / UNUSED ***
 
-var ac = {};
-
-ac.handleOutput = function handleOutput(buffer) {
+ ac.handleOutput = function handleOutput(buffer) {
     buffer = buffer.toString('UTF-8');
 
     var callingRegisterRegExp = /CALLING (http.*\/register.*)/;
@@ -150,3 +160,5 @@ ac.handleOutput = function handleOutput(buffer) {
         console.log('>>>', buffer, '<<<');
     }
 };
+
+***/

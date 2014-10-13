@@ -1,0 +1,50 @@
+<div id="header" class="page-header">
+    <h2>Preset</h2>
+</div>
+{{#with preset.ini}}
+<div class="row">
+    <div id="presetServer" class="col-md-4">
+        <ul>
+            {{#each SERVER}}
+                <li>{{@key}}: {{this}}</li>
+            {{/each}}
+        </ul>
+    </div>
+    {{#if BOOK}}
+    <div id="presetBook" class="col-md-2">
+        <ul>
+            {{#each BOOK}}
+                <li>{{@key}}: {{this}}</li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/if}}
+    {{#if PRACTICE}}
+    <div id="presetPractice" class="col-md-2">
+        <ul>
+            {{#each PRACTICE}}
+                <li>{{@key}}: {{this}}</li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/if}}
+    {{#if QUALIFY}}
+    <div id="presetQualify" class="col-md-2">
+        <ul>
+            {{#each QUALIFY}}
+                <li>{{@key}}: {{this}}</li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/if}}
+    {{#if RACE}}
+    <div id="presetRace" class="col-md-2">
+        <ul>
+            {{#each RACE}}
+                <li>{{@key}}: {{this}}</li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/if}}
+</div>
+{{/with}}
