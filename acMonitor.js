@@ -39,7 +39,7 @@ app.use(function(req, res, next) {
                 message: err.message,
                 error: err
             });
-            next();
+            // next();
         });
     }
     next();
@@ -140,14 +140,17 @@ io.on('connection', function (socket) {
     socket.on('admin.server.start', function(data, fn) {
         var server = new Server(data.name);
         app.ac.servers[data.name] = server;
-        data.valid = server.start();
+        data.valid = require('./libs/server-handler').start(server);
         console.log('admin.server.start', data);
         fn(data);
     });
 
     socket.on('admin.server.stop', function(data, fn) {
-        app.ac.servers[data.name].stop();
-        data.valid = delete app.ac.servers[data.name];
+        var server = app.ac.servers[data.name];
+        data.valid = require('./libs/server-handler').stop(server);
+        if(data.valid) {
+            delete app.ac.servers[data.name];
+        }
         console.log('admin.server.stop', data);
         fn(data);
     });

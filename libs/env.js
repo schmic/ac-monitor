@@ -181,5 +181,3 @@ if(!fs.existsSync(exports.getServerExecutable())) {
     console.error(' Please execute acCtrl from within the AC Dedicated Server Directory');
     process.exit(1);
 }
-
-//EOF
