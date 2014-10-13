@@ -15,9 +15,8 @@ var checkServers = function() {
 var autoRestart = function(presetName) {
     var restart = cfg.ACM.autostart[presetName]
     if(restart) {
-        var server = require('./server')(presetName);
-        console.log('Restarting', server.preset.presetName, '/', server.name);
-        ac.start(server);
+        console.log('Restarting', presetName);
+        ac.start(presetName);
     }
 };
 
