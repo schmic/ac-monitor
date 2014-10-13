@@ -14,3 +14,7 @@ exports.if_eq = function(a, b, opts) {
     else
         return opts.inverse(this);
 };
+
+exports.json = function(obj) {
+    return JSON.stringify(obj);
+};
