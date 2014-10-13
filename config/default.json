@@ -1,27 +1,23 @@
 {
     "ACM": {
-        "admins": {
-            "STEAM_ID_1": { "name": "AdminName1", "email": "notify@foobar.xyz" },
-            "STEAM_ID_2": { "name": "AdminName2" }
-        },
+        "admins": {},
         "watchdog": {
             "interval": 10000,
-            "smtp": "your.smtp.server:25"
+            "smtp": ""
         },
-        "autostart": [
-        ]
+        "autostart": []
     },
     "AC": {
         "installpath": "C:\\Program Files (x86)\\Steam\\SteamApps\\common\\Assetto Corsa Dedicated Server"
     },
+    "Steam" : {
+        "api": {
+            "key": ""
+        }
+    },
     "http": {
         "host": "localhost",
         "port": 8081
-    },
-    "steam" : {
-        "api": {
-            "key": "STEAM_API_KEY"
-        }
     },
     "tracks": {
         "drag400": "Dragstrip 400",
