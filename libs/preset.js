@@ -2,108 +2,79 @@ var fs = require('fs');
 var path = require('path');
 var env = require('./env');
 
-Preset.prototype.ini = undefined;
-Preset.prototype.entries = undefined;
-Preset.prototype.presetName = undefined;
-
-Preset.prototype.getServerName = function () {
-    return this.ini.SERVER.NAME;
-};
-
-Preset.prototype.getUdpPort = function() {
-    return parseInt(this.ini.SERVER.PORT);
-};
-
-Preset.prototype.getHttpPort = function () {
-    return parseInt(this.ini.SERVER.HTTP_PORT);
-};
-
-Preset.prototype.getTimeOfDay = function () {
-    // base time for angle=0: 1PM // 13:00
-    // min/max: -/+ 80
-    var someDate = new Date(1970, 1, 1, 13, 0, 0, 0);
-    someDate.setMinutes(someDate.getMinutes() + (this.ini.SERVER.SUN_ANGLE / 16 * 60));
-    return someDate.toLocaleTimeString();
-};
-
-Preset.prototype.getMaxClients = function () {
-    return parseInt(this.ini.SERVER.MAX_CLIENTS);
-};
-
-Preset.prototype.hasPickupMode = function() {
-    return parseInt(this.ini.SERVER.PICKUP_MODE_ENABLED);
-};
-
-Preset.prototype.hasRegisterToLobby = function() {
-    return parseInt(this.ini.SERVER.REGISTER_TO_LOBBY);
-};
-
-Preset.prototype.hasBookingSession = function() {
-    return this.ini.BOOK !== undefined;
-};
-
-Preset.prototype.getBookingSession = function() {
-    return this.ini.BOOK;
-};
-
-Preset.prototype.hasPracticeSession = function() {
-    return this.ini.PRACTICE !== undefined;
-};
-
-Preset.prototype.getPracticeSession = function() {
-    return this.ini.PRACTICE;
-};
-
-Preset.prototype.hasQualifySession = function() {
-    return this.ini.QUALIFY !== undefined;
-};
-
-Preset.prototype.getQualifySession = function() {
-    return this.ini.QUALIFY;
-};
-
-Preset.prototype.hasRaceSession = function() {
-    return this.ini.RACE !== undefined;
-};
-
-Preset.prototype.getRaceSession = function() {
-    return this.ini.RACE;
-};
-
-Preset.prototype.hasPenalties = function() {
-    return this.ini.SERVER.ALLOWED_TYRES_OUT < 4;
-};
-
-Preset.prototype.getDriversFromEntryList = function () {
+var getDrivers = function (entries) {
     var drivers = {};
-    for (i = 0; i < Object.keys(this.entries).length; i++) {
+    for (var i = 0; i < Object.keys(entries).length; i++) {
         var driver = {
             sid: i,
-            model: this.entries['CAR_' + i].MODEL,
-            name: this.entries['CAR_' + i].DRIVERNAME,
-            skin: this.entries['CAR_' + i].SKIN,
-            guid: this.entries['CAR_' + i].GUID
+            model: entries['CAR_' + i].MODEL,
+            name: entries['CAR_' + i].DRIVERNAME,
+            skin: entries['CAR_' + i].SKIN,
+            guid: entries['CAR_' + i].GUID
         };
         drivers[driver.sid] = driver;
     }
     return drivers;
 };
 
-Preset.prototype.getPresetPath = function () {
-    return env.getPresetPath(this.presetName);
+var readIni = function(filePath, fileName, callback) {
+    var content = fs.readFileSync(path.join(filePath, fileName)).toString('UTF-8');
+    return require('ini').parse(content);
 };
 
-Preset.prototype.getPresetName = function () {
-    return this.presetName;
+var getTimeOfDay = function(sunAngle) {
+    // base time for angle=0: 1PM // 13:00
+    // min/max: -/+ 80
+    var someDate = new Date(1970, 1, 1, 13, 0, 0, 0);
+    someDate.setMinutes(someDate.getMinutes() + (sunAngle / 16 * 60));
+    return someDate.toLocaleTimeString();
 };
 
-function Preset(thePresetName) {
-    this.presetName = thePresetName;
-    this.ini = require('ini').parse(fs.readFileSync(path.join(this.getPresetPath(), 'server_cfg.ini'), 'utf-8'));
-    this.entries = require('ini').parse(fs.readFileSync(path.join(this.getPresetPath(), 'entry_list.ini'), 'utf-8'));
-    console.log('Preset', this.getPresetName(), 'loaded');
+var getCars = function(c) {
+    return c.split(';');
+};
+
+var getTracks = function(t) {
+    return t.split(';');
+};
+
+function Preset(presetName) {
+    var ini = readIni(env.getPresetPath(presetName), 'server_cfg.ini');
+    var entries = readIni(env.getPresetPath(presetName), 'entry_list.ini');
+    return {
+        presetPath: env.getPresetPath(presetName),
+        presetName: presetName,
+        serverName: ini.SERVER.NAME,
+        cars: getCars(ini.SERVER.CARS),
+        tracks: getTracks(ini.SERVER.TRACK),
+        timeOfDay: getTimeOfDay(ini.SERVER.SUN_ANGLE),
+        hasPassword: ini.PASSWORD !== undefined,
+        hasPenalties : ini.SERVER.ALLOWED_TYRES_OUT < 4,
+        hasPickupMode: ini.SERVER.PICKUP_MODE_ENABLED === 1,
+        hasRegisterToLobby: ini.SERVER.REGISTER_TO_LOBBY === 1,
+        hasTyreWear: ini.SERVER.TYRE_WEAR_RATE > 0,
+        hasFuelUsage: ini.SERVER.FUEL_RATE > 0,
+        hasDamage: ini.SERVER.DAMAGE_MULTIPLIER > 0,
+        hasDynamicTrack: ini.DYNAMIC_TRACK !== undefined,
+        dynamicTrack: ini.DYNAMIC_TRACK,
+        hasBookingSession: ini.BOOK !== undefined,
+        bookingSession: ini.BOOK,
+        hasPracticeSession: ini.PRACTICE !== undefined,
+        practiceSession: ini.PRACTICE,
+        hasQualifySession: ini.QUALIFY !== undefined,
+        qualifySession: ini.QUALIFY,
+        hasRaceSession: ini.RACE !== undefined,
+        raceSession: ini.RACE,
+        ini: ini,
+        get: function(p) {
+            return ini.SERVER[p];
+        },
+        set: function(p, v) {
+            ini.SERVER[p] = v;
+        },
+        entries : entries,
+        drivers: getDrivers(entries)
+    };
 }
 
 module.exports = Preset;
-
-//EOF
