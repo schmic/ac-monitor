@@ -1,8 +1,11 @@
 <div id="header" class="page-header">
-    <h2>Server</h2>
+    <h2>Server
+        <small>_ {{ server.name }} _</small>
+    </h2>
+    {{#if server.preset.hasPassword}}<span class="label label-warning">Password</span>{{/if}}
+    {{#if server.preset.hasPenalties}}<span class="label label-danger">Penalties</span>{{/if}}
+    {{#if server.preset.hasDynamicTrack}}<span class="label label-info">Dynamic Track</span>{{/if}}
+    {{#if server.preset.hasPickupMode}}<span class="label label-success">Pickup Mode</span>{{/if}}
 </div>
-<div class="row">
-    {{> server/settings}}
-</div>
-<div class="row">
-</div>
+{{> server/settings}}
+{{> server/live}}

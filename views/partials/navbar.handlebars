@@ -1,27 +1,29 @@
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="navbar">
-    {{> nav/header }}
-    <div class="navbar-collapse collapse pull-right">
-        <ul class="nav navbar-nav">
-            {{> nav/login}}
-        </ul>
-    </div>
-    <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-            {{> nav/user}}
-            {{> nav/admin}}
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Servers<b class="caret"></b></a>
-                <ul class="dropdown-menu" role="menu" id="serverList">
-                    {{#if session.servers}}
-                        {{#each session.servers}}
-                            <li><a href="/view/server/{{this.preset}}">{{this.name}}</a></li>
-                        {{/each}}
-                    {{else}}
-                        <li><a href="#">No active servers.</a></li>
-                    {{/if}}
-                </ul>
-            </li>
-            {{> nav/links}}
-        </ul>
+    <div class="container">
+        {{> nav/header }}
+        <div class="navbar-collapse collapse pull-right">
+            <ul class="nav navbar-nav">
+                {{> nav/login}}
+            </ul>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                {{> nav/user}}
+                {{> nav/admin}}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Servers<b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu" id="serverList">
+                        {{#if session.servers}}
+                            {{#each session.servers}}
+                                <li><a href="/view/server/{{this.preset}}">{{this.name}}</a></li>
+                            {{/each}}
+                        {{else}}
+                            <li><a href="#">No active servers.</a></li>
+                        {{/if}}
+                    </ul>
+                </li>
+                {{> nav/links}}
+            </ul>
+        </div>
     </div>
 </div>
