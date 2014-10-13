@@ -1,4 +1,5 @@
 var router = require('express').Router();
+var ac = require('../libs/server-handler');
 
 function isAdmin(req, res, next) {
     req.session.isAdmin ? next() : res.redirect('/');
@@ -20,21 +21,22 @@ router.get('/:f', function (req, res) {
 
 var ctxHandler = {};
 ctxHandler.index = function(ctx) {};
+
 ctxHandler.servers = function(ctx) {
-    var acServers = require('../acMonitor').ac.servers;
-    var acPresets = require('../libs/env').getPresetNames();
+    ctx.presets = require('../libs/env').getPresetNames();
     ctx.servers = [];
-    Object.keys(acServers).forEach(function(presetName) {
-        if(require('../libs/server-handler').isRunning(acServers[presetName])) {
+    for(var presetName in ac.servers) {
+        var server = ac.servers[presetName];
+        if(ac.isRunning(server)) {
             ctx.servers.push({
-                preset: acServers[presetName].preset.presetName,
-                name: acServers[presetName].name
+                preset: server.preset.presetName,
+                name: server.name
             });
-            acPresets.splice(acPresets.indexOf(presetName), 1);
+            ctx.presets.splice(ctx.presets.indexOf(presetName), 1);
         }
-    });
-    ctx.presets = acPresets;
+    }
 };
+
 ctxHandler.presets = function(ctx) {
     ctx.presets = require('../libs/env').getPresetNames();
 };

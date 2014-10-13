@@ -3,6 +3,12 @@ var fs = require('fs');
 var path = require('path');
 var env = require('./env');
 
+/**
+ * Container for (running) AC servers
+ * @type {{}}
+ */
+var servers = {};
+
 var start = function(server) {
     if (isRunning(server)) {
         throw new Error('Preset ' + preset.presetName + ' is already active');
@@ -27,12 +33,15 @@ var start = function(server) {
     });
 
     console.log('Started server', server.name, 'PID:', server.proc.pid);
+    servers[server.preset.presetName] = server;
     return true;
 };
 
-var stop = function(server) {
+var stop = function(presetName) {
+    var server = servers[presetName];
     server.proc.kill();
     console.log('Stopped server', server.name, 'PID:', server.proc.pid);
+    delete servers[presetName];
     return true;
 };
 
@@ -63,6 +72,7 @@ var isRunning = function(server) {
 };
 
 module.exports = {
+    servers: servers,
     start: start,
     stop: stop,
     status: status,

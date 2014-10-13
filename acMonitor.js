@@ -1,8 +1,6 @@
-var Server = require('./libs/server');
-
-var passport = require('./libs/passport-steam');
 var path     = require('path');
 var cfg      = require('config');
+var passport = require('./libs/passport-steam');
 
 var app      = require('express')();
 app.use(require('serve-static')(path.join(__dirname, 'public')));
@@ -50,143 +48,33 @@ app.use('/view', require('./routes/view'));
 app.use('/auth', require('./routes/auth'));
 app.use('/admin', require('./routes/admin'));
 
+// Start HTTP-Server with App
+//
 var server = app.listen(cfg.get('http.port'), function() {
     console.log('acMonitor running at', 'http://' + cfg.http.host + (cfg.http.port !== 80 ? ':'+cfg.http.port : ''));
 });
 
+// Start Socket.IO-Listener
+//
 var io = require('socket.io').listen(server);
-
 io.on('connection', function (socket) {
-    var printf = require('util').format;
-
     console.log('new connection', socket.id);
+
+    require('./libs/socket-handler-admin')(socket);
 
     socket.on('disconnect', function() {
         console.log('client disconnected', socket.id);
     });
-
-    socket.on('admin.tracks.delete', function(data, fn) {
-        console.log('admin.tracks.delete', data);
-        data.valid = require('./libs/env').deleteTrack(data.name);
-        data.msg = printf('Track %s %s', data.name, data.valid ? 'deleted' : 'could not be deleted');
-        socket.send(data.msg);
-        fn(data);
-    });
-
-    socket.on('admin.tracks.validate', function(data, fn) {
-        console.log('admin.tracks.validate', data);
-        data.valid = require('./libs/env').hasTrack(data.name) ? false: true;
-        data.msg = printf('Track %s %s', data.name, data.valid ? 'validated' : 'already exists');
-        socket.send(data.msg);
-        fn(data);
-    });
-
-    socket.on('admin.tracks.upload', function(data, fn) {
-        console.log('admin.tracks.upload', data);
-        data.valid = require('./libs/env').createTrack(data.name, data.content);
-        data.msg = printf('Track %s %s', data.name, data.valid ? 'created' : 'could not be created');
-        socket.send(data.msg);
-        fn(data);
-    });
-
-    socket.on('admin.cars.delete', function(data, fn) {
-        console.log('admin.cars.delete', data);
-        data.valid = require('./libs/env').deleteCar(data.name);
-        data.msg = printf('Car %s %s', data.name, data.valid ? 'deleted' : 'could not be deleted');
-        socket.send(data.msg);
-        fn(data);
-    });
-
-    socket.on('admin.cars.validate', function(data, fn) {
-        console.log('admin.cars.validate', data);
-        data.valid = require('./libs/env').hasCar(data.name) ? false: true;
-        data.msg = printf('Car %s %s', data.name, data.valid ? 'validated' : 'already exists');
-        socket.send(data.msg);
-        fn(data);
-    });
-
-    socket.on('admin.cars.upload', function(data, fn) {
-        console.log('admin.cars.upload', data);
-        data.valid = require('./libs/env').createCar(data.name, data.content);
-        data.msg = printf('Car %s %s', data.name, data.valid ? 'created' : 'could not be created');
-        socket.send(data.msg);
-        fn(data);
-    });
-
-    socket.on('admin.presets.delete', function(data, fn) {
-        data.valid = require('./libs/env').deletePreset(data.name);
-        data.msg = printf('Preset %s %s', data.name, data.valid ? 'deleted' : 'could not be deleted');
-        console.log('admin.presets.delete', data);
-        socket.send(data.msg);
-        fn(data);
-    });
-
-    socket.on('admin.presets.validate', function(data, fn) {
-        data.valid = require('./libs/env').hasPreset(data.name) ? false: true;
-        data.msg = printf('Preset %s %s', data.name, data.valid ? 'validated' : 'already exists');
-        console.log('admin.presets.validate', data);
-        socket.send(data.msg);
-        fn(data);
-    });
-
-    socket.on('admin.presets.upload', function(data, fn) {
-        data.valid = require('./libs/env').createPreset(data.name, data.content);
-        data.msg = printf('Preset %s %s', data.name, data.valid ? 'created' : 'could not be created');
-        console.log('admin.presets.upload', data);
-        socket.send(data.msg);
-        fn(data);
-    });
-
-    socket.on('admin.server.start', function(data, fn) {
-        var server = new Server(data.name);
-        app.ac.servers[data.name] = server;
-        data.valid = require('./libs/server-handler').start(server);
-        console.log('admin.server.start', data);
-        fn(data);
-    });
-
-    socket.on('admin.server.stop', function(data, fn) {
-        var server = app.ac.servers[data.name];
-        data.valid = require('./libs/server-handler').stop(server);
-        if(data.valid) {
-            delete app.ac.servers[data.name];
-        }
-        console.log('admin.server.stop', data);
-        fn(data);
-    });
 });
+
+// Start Watchdog
+require('./libs/server-watchdog').start();
 
 module.exports = app;
 
 // -------------------------------------------------------------------------- //
 
-app.ac = {};
-app.ac.servers = {
-    // container for running AC servers
-};
-
 var ac = {};
-ac.isActive = function isActive(presetName) {
-    return Object.keys(ac.getServers()).indexOf(presetName) >= 0;
-};
-ac.getPresetNames = function getPresetNames() {
-    return Object.keys(ac.getServers());
-};
-ac.getServers = function getServers() {
-    return ac.servers;
-};
-ac.getServer = function getServer(presetName) {
-    if(ac.isActive(presetName))
-        return ac.getServers()[presetName];
-    return undefined;
-};
-
-ac.handleExit = function handleExit() {
-    var presetName = this.pcfg.presetName;
-    console.log('removing dead server:', presetName);
-    delete ac.servers[presetName];
-    broadcastActivePresets();
-};
 
 ac.handleOutput = function handleOutput(buffer) {
     buffer = buffer.toString('UTF-8');
@@ -259,38 +147,3 @@ ac.handleOutput = function handleOutput(buffer) {
         console.log('>>>', buffer, '<<<');
     }
 };
-
-ac.stopServer = function(presetPrefix) {
-    var presetName = cfg.validatePreset(presetPrefix);
-    if(app.ac.isActive(presetName))
-        app.ac.getServer(presetName).stop();
-    else
-        console.error('preset is not active:', presetName);
-};
-
-ac.startServer = function(presetPrefix) {
-    var presetName = cfg.validatePreset(presetPrefix);
-    if(app.ac.isActive(presetName)) {
-        console.error('preset is already active:', presetName);
-        return;
-    }
-    /*
-     var acServer = require('./libs/acServer')(presetName);
-     acServer.start();
-     app.ac.servers[acServer.pcfg.presetName] = acServer;
-     acServer.proc.on('exit', app.ac.handleExit.bind(acServer));
-     acServer.proc.stdout.on('data', app.ac.handleOutput.bind(acServer));
-     acServer.proc.stderr.on('data', app.ac.handleOutput.bind(acServer));
-     */
-    broadcastActivePresets();
-};
-
-// -------------------------------------------------------------------------- //
-
-function mergeObjects(obj1,obj2){
-    var obj3 = {};
-    var attrname;
-    for (attrname in obj1) { obj3[attrname] = obj1[attrname]; }
-    for (attrname in obj2) { obj3[attrname] = obj2[attrname]; }
-    return obj3;
-}

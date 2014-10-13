@@ -4,8 +4,10 @@
             "STEAM_ID_1": { "name": "AdminName1" },
             "STEAM_ID_2": { "name": "AdminName2" }
         },
+        "watchdog": {
+            "interval": 10000
+        },
         "autostart": [
-            "dev01"
         ]
     },
     "AC": {

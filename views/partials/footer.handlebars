@@ -8,5 +8,8 @@
     <script src="/js/vendor/bootstrap.js"></script>
     <script src="/js/vendor/handlebars.js"></script>
     <script src="/js/acClient.js"></script>
+    {{#if session.isAdmin}}
+        <script src="/js/acAdmin.js"></script>
+    {{/if}}
   </body>
 </html>
