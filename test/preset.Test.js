@@ -34,6 +34,9 @@ describe('Preset', function(){
         it('tracks isArray()', function() {
             assert.equal(true, Array.isArray(this.preset.tracks));
         });
+        it('hasPassword should be true', function() {
+            assert.equal(true, this.preset.hasPassword);
+        });
         it('hasPenalties should be false', function() {
             assert.equal(false, this.preset.hasPenalties);
         });

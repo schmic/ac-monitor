@@ -48,7 +48,7 @@ function Preset(presetName) {
         cars: getCars(ini.SERVER.CARS),
         tracks: getTracks(ini.SERVER.TRACK),
         timeOfDay: getTimeOfDay(ini.SERVER.SUN_ANGLE),
-        hasPassword: ini.PASSWORD !== undefined,
+        hasPassword: ini.SERVER.PASSWORD !== undefined,
         hasPenalties : ini.SERVER.ALLOWED_TYRES_OUT < 4,
         hasPickupMode: ini.SERVER.PICKUP_MODE_ENABLED === 1,
         hasRegisterToLobby: ini.SERVER.REGISTER_TO_LOBBY === 1,
