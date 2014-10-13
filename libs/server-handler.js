@@ -3,13 +3,10 @@ var fs = require('fs');
 var path = require('path');
 var env = require('./env');
 
-/**
- * Container for (running) AC servers
- * @type {{}}
- */
 var servers = {};
 
-var start = function(server) {
+var start = function(presetName) {
+    var server = require('./server')(presetName);
     if (isRunning(server)) {
         throw new Error('Preset ' + preset.presetName + ' is already active');
     }

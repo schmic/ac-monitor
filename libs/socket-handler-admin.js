@@ -56,8 +56,7 @@ function savePreset(data, fn) {
     fn(data);
 }
 function startServer(data, fn) {
-    var server = require('./server')(data.name);
-    data.valid = require('./server-handler').start(server);
+    data.valid = require('./server-handler').start(data.name);
     data.msg = printf('Preset %s %s', data.name, data.valid ? 'started' : 'could not be started');
     console.log('admin.server.start', data);
     fn(data);

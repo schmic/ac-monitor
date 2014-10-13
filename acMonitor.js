@@ -67,8 +67,11 @@ io.on('connection', function (socket) {
     });
 });
 
-// Start Watchdog
+// Server Watchdog
 require('./libs/server-watchdog').start();
+
+// Server Autostart
+require('./libs/server-autostart').start();
 
 module.exports = app;
 
