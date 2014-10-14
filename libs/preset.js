@@ -12,7 +12,7 @@ var getDrivers = function (entries) {
             skin: entries['CAR_' + i].SKIN,
             guid: entries['CAR_' + i].GUID
         };
-        drivers[driver.sid] = driver;
+        drivers[driver.guid] = driver;
     }
     return drivers;
 };
@@ -68,9 +68,6 @@ function Preset(presetName) {
         ini: ini,
         get: function(p) {
             return ini.SERVER[p];
-        },
-        set: function(p, v) {
-            ini.SERVER[p] = v;
         },
         entries : entries,
         drivers: getDrivers(entries)
