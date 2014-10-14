@@ -2,24 +2,24 @@ var fs = require('fs');
 var path = require('path');
 var env = require('./env');
 
-var getDrivers = function (entries) {
-    var drivers = {};
-    for (var i = 0; i < Object.keys(entries).length; i++) {
-        var driver = {
-            sid: i,
-            model: entries['CAR_' + i].MODEL,
-            name: entries['CAR_' + i].DRIVERNAME,
-            skin: entries['CAR_' + i].SKIN,
-            guid: entries['CAR_' + i].GUID
-        };
-        drivers[driver.guid] = driver;
-    }
-    return drivers;
-};
-
-var readIni = function(filePath, fileName, callback) {
+var readIni = function(filePath, fileName) {
     var content = fs.readFileSync(path.join(filePath, fileName)).toString('UTF-8');
     return require('ini').parse(content);
+};
+
+var saveIni = function(filePath, fileName, content) {
+    content = require('ini').encode(content);
+    fs.writeFileSync(path.join(filePath, fileName), content);
+    return true;
+};
+
+var getNextFreeCar = function(entries) {
+    for(var i = 0; i < 100; i++) {
+        var car = 'CAR_'+i;
+        if(entries[car])
+            continue;
+        return i;
+    }
 };
 
 var getTimeOfDay = function(sunAngle) {
@@ -70,7 +70,42 @@ function Preset(presetName) {
             return ini.SERVER[p];
         },
         entries : entries,
-        drivers: getDrivers(entries)
+        isBooked: function(guid) {
+            for(var car in entries) {
+                if(guid === entries[car].GUID) {
+                    return true;
+                }
+            }
+            return false;
+        },
+        getBooking: function(guid) {
+            for(var car in entries) {
+                if(guid === entries[car].GUID) {
+                    return entries[car];
+                }
+            }
+            return undefined;
+        },
+        setBooking: function(booking) {
+            for(var car in entries) {
+                if(booking.GUID === entries[car].GUID) {
+                    entries[car] = booking;
+                    return saveIni(env.getPresetPath(), 'entry_list.ini', entries);
+                }
+            }
+            var car = 'CAR_' + getNextFreeCar(entries);
+            entries[car] = booking;
+            return saveIni(env.getPresetPath(), 'entry_list.ini', entries);
+        },
+        deleteBooking: function(guid) {
+            for(var car in entries) {
+                if(guid === entries[car].GUID) {
+                    delete entries[car];
+                    return saveIni(env.getPresetPath(), 'entry_list.ini', entries);
+                }
+            }
+            return false;
+        }
     };
 }
 

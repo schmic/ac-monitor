@@ -13,7 +13,7 @@ var checkServers = function() {
 };
 
 var autoRestart = function(presetName) {
-    var restart = cfg.ACM.autostart[presetName]
+    var restart = cfg.ACM.autostart[presetName];
     if(restart) {
         console.log('Restarting', presetName);
         ac.start(presetName);

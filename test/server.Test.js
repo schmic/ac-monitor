@@ -3,7 +3,7 @@ var serverHandler = require('../libs/server-handler');
 
 describe('Server', function(){
     before(function() {
-        this.server = require('../libs/server')('dev01');
+        this.server = require('../libs/server')('test01');
 
     });
     after(function() {
@@ -16,7 +16,7 @@ describe('Server', function(){
             assert.notEqual(undefined, this.server);
         });
         it('should have an -init logfile', function() {
-            assert.equal(true, this.server.logFile);
+            assert.notEqual(null, this.server.logFile.match(/-init-server\.log$/));
         });
     });
 
