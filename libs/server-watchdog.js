@@ -5,8 +5,8 @@ var db = require('./db');
 var checkServers = function () {
     for (var presetName in ac.servers) {
         if(ac.status(ac.servers[presetName]) < 1) {
-            console.error('Preset', presetName, 'found dead');
-            db.addHistory({user: 'watchdog', msg:'Preset ' + presetName + ' found dead'});
+            console.error('Dead server', presetName, 'found');
+            db.addHistory({user: 'Watchdog', msg:'Preset ' + presetName + ' found dead'});
             delete ac.servers[presetName];
             autoRestart(presetName);
         }
@@ -17,7 +17,7 @@ var checkServers = function () {
 var autoRestart = function (presetName) {
     var restart = cfg.ACM.autostart[presetName];
     if (restart) {
-        db.addHistory({user: 'watchdog', msg:'Restart ' + presetName + ''});
+        db.addHistory({user: 'Watchdog', msg:'Restart ' + presetName + ''});
         console.log('Restarting', presetName);
         ac.start(presetName);
     }
@@ -26,8 +26,11 @@ var autoRestart = function (presetName) {
 var autoStart = function () {
     var autostarts = cfg.ACM.autostart;
     for (var presetName in autostarts) {
-        db.addHistory({user: 'watchdog', msg:'Autostart ' + presetName + ''});
-        autostarts[presetName] ? ac.start(presetName) : false;
+        if(autostarts[presetName]) {
+            db.addHistory({user: 'Watchdog', msg:'Autostart ' + presetName + ''});
+            console.log('Autostarting', presetName);
+            ac.start(presetName);
+        }
     }
 };
 

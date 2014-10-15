@@ -3,13 +3,6 @@ var cfg      = require('config');
 var passport = require('./libs/passport-steam');
 var ac       = require('./libs/server-handler');
 
-var cookieMiddleware = require('cookie-parser')();
-var sessionMiddleware = require('express-session')({
-    saveUninitialized: false,
-    resave: false,
-    secret: 'f58e3e18f01ba80ae1472abbd2884b28'
-});
-
 var app      = require('express')();
 app.use(require('serve-static')(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
@@ -21,7 +14,14 @@ app.engine('handlebars',
     })
 );
 
+var cookieMiddleware = require('cookie-parser')();
 app.use(cookieMiddleware);
+
+var sessionMiddleware = require('express-session')({
+    saveUninitialized: false,
+    resave: false,
+    secret: 'f58e3e18f01ba80ae1472abbd2884b28'
+});
 app.use(sessionMiddleware);
 
 app.use(passport.initialize());
@@ -44,16 +44,7 @@ app.use(function(req, res, next) {
 
     if(app.get('env') === 'development') {
         // enable admin interface without authorization
-        // req.session.isAdmin = true;
-        // will print stacktrace on error
-        app.use(function(err, req, res, next) {
-            res.status(err.status || 500);
-            res.render('error', {
-                message: err.message,
-                error: err
-            });
-            // next();
-        });
+        req.session.isAdmin = true;
     }
     next();
 });
@@ -94,7 +85,6 @@ io.on('connection', function (socket) {
 
     socket.on('disconnect', function() {
         console.log('client disconnected', socket.id);
-        console.log('socket.handshake.session', socket.handshake.session);
     });
 });
 

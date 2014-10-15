@@ -14,7 +14,7 @@ exports.getACPath = function() {
 };
 
 exports.getServersPath = function() {
-    return path.join(this.getACPath(), 'server');
+    return path.join(this.getACPath(), 'servers');
 };
 
 exports.getCarsPath = function() {
