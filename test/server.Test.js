@@ -4,7 +4,6 @@ var serverHandler = require('../libs/server-handler');
 describe('Server', function(){
     before(function() {
         this.server = require('../libs/server')('test01');
-
     });
     after(function() {
         delete this.server;

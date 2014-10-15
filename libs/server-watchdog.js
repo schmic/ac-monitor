@@ -17,7 +17,7 @@ var checkServers = function () {
 var autoRestart = function (presetName) {
     var restart = cfg.ACM.autostart[presetName];
     if (restart) {
-        db.addHistory({user: 'watchdog', msg:'Autorestart ' + presetName + ''});
+        db.addHistory({user: 'watchdog', msg:'Restart ' + presetName + ''});
         console.log('Restarting', presetName);
         ac.start(presetName);
     }

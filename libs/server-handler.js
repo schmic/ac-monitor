@@ -3,7 +3,7 @@ var fs = require('fs');
 var path = require('path');
 var env = require('./env');
 
-var servers = {};
+var servers = [];
 
 var start = function(presetName) {
     var server = require('./server')(presetName);
@@ -30,7 +30,7 @@ var start = function(presetName) {
     });
 
     console.log('Started server', server.name, 'PID:', server.proc.pid);
-    servers[server.preset.presetName] = server;
+    servers[presetName] = server;
     return true;
 };
 

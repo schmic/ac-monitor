@@ -1,5 +1,6 @@
 var router = require('express').Router();
 var ac = require('../libs/server-handler');
+var db = require('../libs/db');
 
 function isAdmin(req, res, next) {
     req.session.isAdmin ? next() : res.redirect('/');
@@ -13,7 +14,11 @@ router.get('/', function(req, res) {
 
 router.get('/index', function (req, res) {
     var ctx = { f: 'index', session: req.session };
-    res.render('admin', ctx);
+    db.history.find().sort('_id', -1).limit(5).toArray(function(err, historyItems) {
+        ctx.history = historyItems;
+        res.render('admin', ctx);
+    });
+
 });
 
 router.get('/servers', function(req, res) {

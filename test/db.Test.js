@@ -1,30 +1,29 @@
 var assert = require('assert');
 var db = require('../libs/db');
 
-describe('Database', function(){
+describe('Database', function () {
     // before(function() {});
     // after(function() {});
     // beforeEach(function() {});
     // afterEach(function() {});
-    describe('objectCheck', function() {
-        it('should not be undefined', function() {
+    describe('objectCheck', function () {
+        it('should not be undefined', function () {
             assert.notEqual(undefined, db);
-            db.users.insert({user: 'foo', name: 'bar', email: 'foo@bar.org'}, function(err, result) {
-                assert.equal(null, err);
-                console.log('result:', result);
-                db.users.findOne({user: 'foo'}, function(err, item) {
-                    assert.equal(null, err);
-                    assert.equal('foo', item.user);
-                    console.log('user', item.user);
-                    db.users.delete({user: 'foo'}, function(err, item) {
-                        assert.equal(null, err);
-                        assert.equal('foo', item.user);
-                        console.log('user', item.user);
-                    });
-
+        });
+    });
+    describe('History', function () {
+        it('should have some entries ...', function () {
+            db.history
+                .find()
+                .sort('_id', -1)
+                .limit(5)
+                .each(function(err, item) {
+                    if(item.tstamp)
+                        console.error('tstamp', new Date((item.tstamp*1000)).toISOString());
+                    else
+                        console.error('h', item);
                 });
-
-            });
+            assert.equal(true, false);
         });
     });
 });
