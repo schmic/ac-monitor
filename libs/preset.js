@@ -2,18 +2,18 @@ var fs = require('fs');
 var path = require('path');
 var env = require('./env');
 
-var readIni = function(filePath, fileName) {
+var readIni = function (filePath, fileName) {
     var content = fs.readFileSync(path.join(filePath, fileName)).toString('UTF-8');
     return require('ini').parse(content);
 };
 
-var saveIni = function(filePath, fileName, content) {
+var saveIni = function (filePath, fileName, content) {
     content = require('ini').encode(content);
     fs.writeFileSync(path.join(filePath, fileName), content);
     return true;
 };
 
-var getNextFreeCar = function(entries) {
+var getNextFreeCar = function (entries) {
     for(var i = 0; i < 100; i++) {
         var car = 'CAR_'+i;
         if(entries[car])
@@ -22,7 +22,7 @@ var getNextFreeCar = function(entries) {
     }
 };
 
-var getTimeOfDay = function(sunAngle) {
+var getTimeOfDay = function (sunAngle) {
     // base time for angle=0: 1PM // 13:00
     // min/max: -/+ 80
     var someDate = new Date(1970, 1, 1, 13, 0, 0, 0);
@@ -30,13 +30,26 @@ var getTimeOfDay = function(sunAngle) {
     return someDate.toLocaleTimeString();
 };
 
-var getCars = function(c) {
+var getCars = function (c) {
     return c.split(';');
 };
 
-var getTracks = function(t) {
+var getTracks = function (t) {
     return t.split(';');
 };
+
+var asString = function (allowedValue) {
+    switch(allowedValue) {
+        case '0':
+            return false;
+        case '1':
+            return true;
+        case '2':
+            return 'factory';
+        default:
+            return undefined;
+    }
+}
 
 function Preset(presetName) {
     var ini = readIni(env.getPresetPath(presetName), 'server_cfg.ini');
@@ -48,6 +61,10 @@ function Preset(presetName) {
         cars: getCars(ini.SERVER.CARS),
         tracks: getTracks(ini.SERVER.TRACK),
         timeOfDay: getTimeOfDay(ini.SERVER.SUN_ANGLE),
+        getTCAllowed: asString(ini.SERVER.TC_ALLOWED),
+        getABSAllowed: asString(ini.SERVER.ABS_ALLOWED),
+        getStabilityAllowed: asString(ini.SERVER.STABILITY_ALLOWED),
+        getAutoClutchAllowed: asString(ini.SERVER.AUTOCLUTCH_ALLOWED),
         hasPassword: ini.SERVER.PASSWORD !== undefined,
         hasPenalties : ini.SERVER.ALLOWED_TYRES_OUT < 4,
         hasPickupMode: ini.SERVER.PICKUP_MODE_ENABLED === 1,
@@ -66,11 +83,11 @@ function Preset(presetName) {
         hasRaceSession: ini.RACE !== undefined,
         raceSession: ini.RACE,
         ini: ini,
-        get: function(p) {
+        get: function (p) {
             return ini.SERVER[p];
         },
         entries : entries,
-        isBooked: function(guid) {
+        isBooked: function (guid) {
             for(var car in entries) {
                 if(guid === entries[car].GUID) {
                     return true;
@@ -78,7 +95,7 @@ function Preset(presetName) {
             }
             return false;
         },
-        getBooking: function(guid) {
+        getBooking: function (guid) {
             for(var car in entries) {
                 if(guid === entries[car].GUID) {
                     return entries[car];
@@ -86,7 +103,7 @@ function Preset(presetName) {
             }
             return undefined;
         },
-        setBooking: function(booking) {
+        setBooking: function (booking) {
             for(var car in entries) {
                 if(booking.GUID === entries[car].GUID) {
                     entries[car] = booking;
@@ -97,7 +114,7 @@ function Preset(presetName) {
             entries[car] = booking;
             return saveIni(env.getPresetPath(), 'entry_list.ini', entries);
         },
-        deleteBooking: function(guid) {
+        deleteBooking: function (guid) {
             for(var car in entries) {
                 if(guid === entries[car].GUID) {
                     delete entries[car];
