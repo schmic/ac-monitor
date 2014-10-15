@@ -35,7 +35,7 @@ app.use(function(req, res, next) {
             req.session.servers[p] = {
                 name: ac.servers[p].name,
                 preset: p
-            }
+            };
         }
     }
 
@@ -81,9 +81,6 @@ io.on('connection', function (socket) {
 
 // Server Watchdog
 require('./libs/server-watchdog').start();
-
-// Server Autostart
-require('./libs/server-autostart').start();
 
 module.exports = app;
 
