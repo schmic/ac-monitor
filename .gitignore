@@ -1,4 +1,5 @@
 .idea
 *.log
 /config/local*
+/config/db/*
 /node_modules

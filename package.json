@@ -31,10 +31,10 @@
         "ini": "*",
         "fs-sync": "*",
         "event-stream": "*",
-        "fs-extra": "*"
+        "fs-extra": "*",
+        "tingodb": "*"
     },
     "devDependencies": {
-        "assert": "*",
         "mocha": "*"
     },
     "scripts": {
