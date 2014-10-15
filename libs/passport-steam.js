@@ -17,7 +17,7 @@ passport.use(
     new SteamStrategy({
             returnURL: 'http://' + cfg.get('http.host') + ':' + cfg.get('http.port') + '/auth/return',
             realm: 'http://' + cfg.get('http.host') + ':' + cfg.get('http.port') + '/',
-            apiKey: cfg.get('Steam.api.key')
+            apiKey: cfg.get('steam.api.key')
         },
         function (identifier, profile, done) {
             profile.url = identifier;
@@ -25,5 +25,9 @@ passport.use(
         }
     )
 );
+
+if(cfg.steam.api.key.length !== 32) {
+    throw new Error('Steam API Key is missing/wrong, must be 32 characters long!');
+}
 
 module.exports = passport;

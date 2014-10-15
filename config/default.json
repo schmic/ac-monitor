@@ -11,7 +11,7 @@
     "AC": {
         "installpath": "C:\\Program Files (x86)\\Steam\\SteamApps\\common\\Assetto Corsa Dedicated Server"
     },
-    "Steam" : {
+    "steam" : {
         "api": {
             "key": ""
         }

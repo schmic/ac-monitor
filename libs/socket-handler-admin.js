@@ -1,4 +1,6 @@
 var env = require('./env');
+var db = require('./db');
+
 var printf   = require('util').format;
 
 function deleteTrack(data, fn) {
@@ -55,13 +57,13 @@ function savePreset(data, fn) {
     console.log('admin.presets.upload', data);
     fn(data);
 }
-function startServer(data, fn) {
+function startServer(socket, data, fn) {
     data.valid = require('./server-handler').start(data.name);
     data.msg = printf('Preset %s %s', data.name, data.valid ? 'started' : 'could not be started');
     console.log('admin.server.start', data);
     fn(data);
 }
-function stopServer(data, fn) {
+function stopServer(socket, data, fn) {
     data.valid = require('./server-handler').stop(data.name);
     data.msg = printf('Preset %s %s', data.name, data.valid ? 'stopped' : 'could not be stopped');
     console.log('admin.server.stop', data);
@@ -77,6 +79,6 @@ module.exports = function(socket) {
     socket.on('admin.presets.delete', deletePreset);
     socket.on('admin.presets.validate', validatePreset);
     socket.on('admin.presets.upload', savePreset);
-    socket.on('admin.server.start', startServer);
-    socket.on('admin.server.stop', stopServer);
+    socket.on('admin.server.start', startServer.bind(null, socket));
+    socket.on('admin.server.stop', stopServer.bind(null, socket));
 };
