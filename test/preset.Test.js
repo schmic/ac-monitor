@@ -89,12 +89,14 @@ describe('Preset', function(){
         });
         it('should have bookings for GUIDs', function() {
             var presets = env.getPresetNames();
+            var isBooked = false;
             for(var i = 0; i < presets.length; i++) {
                 var p = require('../libs/preset')(presets[i]);
                 if(p.isBooked(this.p_test01_guid)) {
-                    console.log('booked in', p.presetName, '\n');
+                    isBooked = true;
                 }
             }
+            assert.equal(true, isBooked);
         });
         it('get booking for GUID', function() {
             var booking = require('../libs/preset')('test-booking').getBooking(this.p_test01_guid);
@@ -121,9 +123,5 @@ describe('Preset', function(){
             assert.equal(true, require('../libs/preset')('test-booking').deleteBooking(guid));
             assert.equal(null, require('../libs/preset')('test-booking').getBooking(guid));
         });
-    });
-    describe('entryListModification', function() {
-    });
-    describe('acMonitorExtension', function() {
     });
 });
