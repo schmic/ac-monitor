@@ -1,5 +1,6 @@
 var path = require('path');
 var fs = require('fs');
+    fs.extra = require('fs-extra');
 var env = require('./env');
 
 var getLogfile = function(workPath, prefix) {
@@ -56,7 +57,7 @@ var getPidFile = function(preset) {
 
 var prepareServerPath = function(preset) {
     var serverPath = getServerWorkPath(preset);
-    var rc = fs.existsSync(serverPath) ? true : fs.mkdirSync(serverPath);
+    var rc = fs.existsSync(serverPath) ? true : fs.extra.ensureDirSync(serverPath);
     if(rc !== false) {
         ['server_cfg.ini', 'entry_list.ini'].forEach(
             function (fileName) {
