@@ -1,52 +1,54 @@
-<div id="adminServers" class="col-md-5">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Running Servers</h3>
-        </div>
-        {{#if servers}}
-            <table class="table">
-                <tr><th>Name</th><th>Stop</th></tr>
-                {{#each servers}}
-                    <tr>
-                        <td><a href="/view/server/{{this.preset}}">{{this.name}}</a></td>
-                        <td>
-                            <button title="Stop Server" type="button" class="btn btn-danger btn-xs" onclick="handleStopServer('{{this.preset}}')">
-                                <span class="glyphicon glyphicon-stop"></span>
-                            </button>
-                        </td>
-                    </tr>
-                {{/each}}
-            </table>
-        {{else}}
-            <div class="panel-body">
-                None.
+<div class="row">
+    <div id="adminServers" class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Running Servers</h3>
             </div>
-        {{/if}}
+            {{#if servers}}
+                <table class="table">
+                    <tr><th>Name</th><th>Stop</th></tr>
+                    {{#each servers}}
+                        <tr>
+                            <td><a href="/view/server/{{this.preset}}">{{this.name}}</a></td>
+                            <td>
+                                <button title="Stop Server" type="button" class="btn btn-danger btn-xs" onclick="handleStopServer('{{this.preset}}')">
+                                    <span class="glyphicon glyphicon-stop"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </table>
+            {{else}}
+                <div class="panel-body">
+                    None.
+                </div>
+            {{/if}}
+        </div>
     </div>
-</div>
-<div id="adminServersControl" class="col-md-5">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Start Server</h3>
-        </div>
-        {{#if presets}}
-            <table class="table">
-                <tr><th>Name</th><th>Start</th></tr>
-                {{#each presets}}
-                    <tr>
-                        <td>{{this}}</td>
-                        <td>
-                            <button title="Start Server" type="button" class="btn btn-success btn-xs" onclick="handleStartServer('{{this}}')">
-                                <span class="glyphicon glyphicon-play"></span>
-                            </button>
-                        </td>
-                    </tr>
-                {{/each}}
-            </table>
-        {{else}}
-            <div class="panel-body">
-                <div>None available.</div>
+    <div id="adminServersControl" class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Start Server</h3>
             </div>
-        {{/if}}
+            {{#if presets}}
+                <table class="table">
+                    <tr><th>Name</th><th>Start</th></tr>
+                    {{#each presets}}
+                        <tr>
+                            <td>{{this}}</td>
+                            <td>
+                                <button title="Start Server" type="button" class="btn btn-success btn-xs" onclick="handleStartServer('{{this}}')">
+                                    <span class="glyphicon glyphicon-play"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </table>
+            {{else}}
+                <div class="panel-body">
+                    <div>None available.</div>
+                </div>
+            {{/if}}
+        </div>
     </div>
 </div>

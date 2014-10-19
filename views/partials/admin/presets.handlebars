@@ -1,50 +1,75 @@
-<div id="adminPresets" class="col-md-4">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Available Presets</h3>
-        </div>
-        {{#if presets}}
-            <table class="table">
-                <tr><th>Name</th><th>Delete</th></tr>
-                {{#each presets}}
-                    <tr>
-                        <td><a href="/admin/presets/{{this}}">{{this}}</a></td>
-                        <td>
-                            <button title="Delete preset" type="button" class="btn btn-danger btn-xs"
-                                    onclick="handleDelete('{{this}}')">
-                                <span class="glyphicon glyphicon-remove"></span>
-                            </button>
-                        </td>
-                    </tr>
-                {{/each}}
-            </table>
-        {{else}}
-            <div class="panel-body">
-                No presets found in server content directory.
+<div class="row">
+    <div id="adminPresets" class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Available Presets</h3>
             </div>
-        {{/if}}
+            {{#if presets}}
+                <table class="table">
+                    <tr>
+                        <th>Name</th>
+                        <th>Edit</th>
+                        <th>Export</th>
+                        <th>Delete</th>
+                    </tr>
+                    {{#each presets}}
+                        <tr>
+                            <td>{{this}}</td>
+                            <td>
+                                <a href="/admin/presets/{{this}}">
+                                    <button title="Edit preset" type="button" class="btn btn-success btn-xs">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/admin/presets/{{this}}/export">
+                                    <button title="Export preset" type="button" class="btn btn-info btn-xs">
+                                        <span class="glyphicon glyphicon-download-alt"></span>
+                                    </button>
+                                </a>
+                            </td>
+                            <td>
+                                <button title="Delete preset" type="button" class="btn btn-danger btn-xs"
+                                        onclick="handleDelete('{{this}}')">
+                                    <span class="glyphicon glyphicon-fire"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </table>
+            {{else}}
+                <div class="panel-body">
+                    No presets found in server content directory.
+                </div>
+            {{/if}}
+        </div>
     </div>
 </div>
-<div id="adminPresetsUpload" class="col-md-6">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Preset Upload</h3>
-        </div>
-        <div class="panel-body">
-            <div class="form-group has-error has-feedback">
-                <label class="control-label" for="contentname">Enter preset name:</label>
-                <input class="form-control" type="text" id="contentname" name="presets" onkeyup="checkUploadForm()"/>
-                <span class="glyphicon glyphicon-remove form-control-feedback" id="contentnamefeedback"></span>
-                <span class="help-block">The name of the &lt;preset&gt; folder "must" be entered here.</span>
+<div class="row">
+    <div id="adminPresetsUpload" class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Preset Upload</h3>
             </div>
-            <div class="form-group has-error has-feedback">
-                <label class="control-label" for="files">Select: "server_cfg.ini & entry_list.ini"</label>
-                <input class="form-control" type="file" id="files" name="files[]" multiple onchange="checkUploadForm()"/>
-                <span class="glyphicon glyphicon-remove form-control-feedback" id="contentfilesfeedback"></span>
+            <div class="panel-body">
+                <div class="form-group has-error has-feedback">
+                    <label class="control-label" for="contentname">Enter preset name:</label>
+                    <input class="form-control" type="text" id="contentname" name="presets"
+                           onkeyup="checkUploadForm()"/>
+                    <span class="glyphicon glyphicon-remove form-control-feedback" id="contentnamefeedback"></span>
+                    <span class="help-block">The name of the &lt;preset&gt; folder "must" be entered here.</span>
+                </div>
+                <div class="form-group has-error has-feedback">
+                    <label class="control-label" for="files">Select: "server_cfg.ini & entry_list.ini"</label>
+                    <input class="form-control" type="file" id="files" name="files[]" multiple
+                           onchange="checkUploadForm()"/>
+                    <span class="glyphicon glyphicon-remove form-control-feedback" id="contentfilesfeedback"></span>
+                </div>
             </div>
-        </div>
-        <div class="panel-footer" style="text-align: right">
-            <button id="uploadbutton" class="btn btn-success" disabled onclick="handleUpload()">Upload</button>
+            <div class="panel-footer" style="text-align: right">
+                <button id="uploadbutton" class="btn btn-success" disabled onclick="handleUpload()">Upload</button>
+            </div>
         </div>
     </div>
 </div>
