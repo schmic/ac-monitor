@@ -49,7 +49,7 @@ var asString = function (allowedValue) {
         default:
             return undefined;
     }
-}
+};
 
 function Preset(presetName) {
     var ini = readIni(env.getPresetPath(presetName), 'server_cfg.ini');

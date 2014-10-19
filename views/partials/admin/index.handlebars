@@ -7,7 +7,7 @@
             <table class="table">
                 <tr><th>who</th><th>what</th><th>when</th></tr>
                 {{#each history}}
-                <tr><td>{{this.user}}</td><td>{{this.msg}}</td><td>{{#formatTimestamp}}{{this.tstamp}}{{/formatTimestamp}}</td></tr>
+                <tr><td>{{this.user}}</td><td>{{this.entry}}</td><td>{{#formatTimestamp}}{{this.tstamp}}{{/formatTimestamp}}</td></tr>
                 {{/each}}
                 </table>
         </div>

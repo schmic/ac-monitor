@@ -1,5 +1,5 @@
 var env = require('./env');
-var db = require('./db');
+var History = require('../models/history');
 
 var printf   = require('util').format;
 
@@ -61,13 +61,23 @@ function startServer(socket, data, fn) {
     data.valid = require('./server-handler').start(data.name);
     data.msg = printf('Preset %s %s', data.name, data.valid ? 'started' : 'could not be started');
     console.log('admin.server.start', data);
-    fn(data);
+
+    var user = socket.handshake.session.passport.user ? socket.handshake.session.passport.user.displayName : 'Nobody';
+    History.add(user, 'Preset ' + data.name + ' started', function(err, res) {
+        if(err) return console.error(err);
+        fn(data);
+    });
 }
 function stopServer(socket, data, fn) {
     data.valid = require('./server-handler').stop(data.name);
     data.msg = printf('Preset %s %s', data.name, data.valid ? 'stopped' : 'could not be stopped');
     console.log('admin.server.stop', data);
-    fn(data);
+
+    var user = socket.handshake.session.passport.user ? socket.handshake.session.passport.user.displayName : 'Nobody';
+    History.add(user, 'Preset ' + data.name + ' stopped', function(err, res) {
+        if(err) return console.error(err);
+        fn(data);
+    });
 }
 module.exports = function(socket) {
     socket.on('admin.tracks.delete', deleteTrack);

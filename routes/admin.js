@@ -1,6 +1,7 @@
 var router = require('express').Router();
 var ac = require('../libs/server-handler');
-var db = require('../libs/db');
+var env = require('../libs/env');
+var History = require('../models/history');
 
 function isAdmin(req, res, next) {
     req.session.isAdmin ? next() : res.redirect('/');
@@ -14,11 +15,10 @@ router.get('/', function(req, res) {
 
 router.get('/index', function (req, res) {
     var ctx = { f: 'index', session: req.session };
-    db.history.find().sort('_id', -1).limit(5).toArray(function(err, historyItems) {
-        ctx.history = historyItems;
+    History.last(undefined, function(err, items) {
+        ctx.history = items;
         res.render('admin', ctx);
     });
-
 });
 
 router.get('/servers', function(req, res) {
@@ -45,8 +45,12 @@ router.get('/presets', function(req, res) {
 });
 
 router.get('/presets/:preset', function (req, res) {
-    var preset = require('../libs/preset')(req.params.preset);
-    res.render('preset', { session: req.session, preset: preset });
+    var ctx = {};
+    ctx.session = req.session;
+    ctx.preset = require('../libs/preset')(req.params.preset);
+    ctx.tracks = env.getTrackNames();
+    ctx.cars = env.getCarNames();
+    res.render('preset', ctx);
 });
 
 router.get('/tracks', function(req, res) {
