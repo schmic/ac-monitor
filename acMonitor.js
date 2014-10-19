@@ -28,8 +28,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(function(req, res, next) {
-    req.session.isAdmin = req.session.passport.user && req.session.passport.user.id in cfg.ACM.admins;
-    req.session.isAuthenticated = req.session.passport.user ? true : false;
+    req.session.isAuthenticated = req.user ? true : false;
+    req.session.isAdmin = req.user && req.user.isAdmin;
 
     if(Object.keys(ac.servers).length > 0) {
         req.session.servers = {};

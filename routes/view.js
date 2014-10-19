@@ -7,8 +7,9 @@ router.get('/', function (req, res) {
 });
 
 router.get('/profile', function (req, res) {
-    req.session.isAuthenticated ? true : res.redirect('/');
-    res.render('profile', { session: req.session });
+    req.session.isAuthenticated ?
+        res.render('profile', { session: req.session, user: req.user }) :
+        res.redirect('/');
 });
 
 router.get('/server/:preset', function (req, res) {
