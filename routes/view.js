@@ -24,10 +24,10 @@ router.get('/server/:preset/json', function (req, res) {
     res.render('api/json', { layout: false, server: server });
 });
 
-router.get('/live/:preset', function (req, res) {
+router.get('/timing/:preset', function (req, res) {
     var presetName = req.params.preset;
     var server = ac.servers[presetName];
-    res.render('live', { session: req.session, server: server });
+    res.render('timing', { session: req.session, server: server });
 });
 
 module.exports = router;
