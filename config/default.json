@@ -6,7 +6,8 @@
         },
         "watchdog": {
             "interval": 10000,
-            "smtp": ""
+            "smtp": {},
+            "sender": "watchdog@foobar.xyz"
         },
         "autostart": {
         }
