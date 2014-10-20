@@ -46,7 +46,7 @@ exports.getTracksPath = function() {
 
 exports.createContent = function(contentPath, content) {
     try {
-        fs.extra.mkdirsSync(contentPath, function(x) { console.log('x', x); });
+        fs.extra.mkdirsSync(contentPath);
         Object.keys(content).forEach(function(fileName) {
             fs.writeFileSync(path.join(contentPath, fileName), content[fileName]);
         });
@@ -175,6 +175,10 @@ exports.getPresetsPath = function() {
 exports.getPresetPath = function(presetPrefix) {
     return path.join(this.getPresetsPath(), this.getPresetName(presetPrefix));
 };
+
+fs.extra.ensureDirSync(exports.getServersPath());
+fs.extra.ensureDirSync(exports.getCarsPath());
+fs.extra.ensureDirSync(exports.getTracksPath());
 
 if(!fs.existsSync(exports.getServerExecutable())) {
     console.error('AC server binary "' + exports.getServerExecutable() + '" not found, aborting ...');
