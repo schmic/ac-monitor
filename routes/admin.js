@@ -4,7 +4,7 @@ var env = require('../libs/env');
 var History = require('../models/history');
 
 function isAccessAllowed (req, res, next) {
-    if(null === req.domain) {
+    if(req.headers.host.match(/^localhost/)) {
         // enable admin interface without authorization
         req.session.isAdmin = true;
     }
