@@ -1,11 +1,12 @@
-var cfg = require('config');
+var Car = require('../models/car');
+var Track = require('../models/track');
 
 exports.formatTrack = function() {
-    return cfg.has('tracks.'+this) ? cfg.get('tracks').get(this) : this;
+    return Track.findByName(this);
 };
 
 exports.formatCar = function() {
-    return cfg.has('cars.'+this) ? cfg.get('cars').get(this) : this;
+    return Car.findByName(this);
 };
 
 exports.formatTimestamp = function() {

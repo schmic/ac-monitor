@@ -42,7 +42,7 @@ app.use(function(req, res, next) {
     req.session.isAuthenticated = req.user ? true : false;
     req.session.isAdmin = req.user && req.user.isAdmin;
 
-    if(app.get('env') === 'development') {
+    if('development' === app.get('env')) {
         // enable admin interface without authorization
         req.session.isAdmin = true;
     }
