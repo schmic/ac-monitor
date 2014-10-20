@@ -28,9 +28,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(function(req, res, next) {
-    req.session.isAuthenticated = req.user ? true : false;
-    req.session.isAdmin = req.user && req.user.isAdmin;
-
     if(Object.keys(ac.servers).length > 0) {
         req.session.servers = {};
         for(var p in ac.servers) {
@@ -41,6 +38,9 @@ app.use(function(req, res, next) {
             };
         }
     }
+
+    req.session.isAuthenticated = req.user ? true : false;
+    req.session.isAdmin = req.user && req.user.isAdmin;
 
     if(app.get('env') === 'development') {
         // enable admin interface without authorization
@@ -70,7 +70,6 @@ io.use(function(socket, next) {
         if (err) return next(err);
         sessionMiddleware(req, res, next);
     });
-
 });
 
 io.use(function(socket, next) {

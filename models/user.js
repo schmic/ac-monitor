@@ -1,7 +1,7 @@
 var db = require('../libs/db');
+var collection = db.collection('users');
 
 var save = function(user, callback) {
-    var collection = db.collection('users');
     collection.findOne({steamid: user.steamid}, function(err, item) {
         if(err) return console.error(err);
         if(item) {
@@ -17,7 +17,6 @@ var save = function(user, callback) {
 
 var findBySteamId = function(id, callback) {
     var search = { steamid: id };
-    var collection = db.collection('users');
     return callback ? collection.findOne(search, callback) : collection.findOne(search);
 };
 
