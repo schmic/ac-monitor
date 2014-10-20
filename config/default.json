@@ -1,6 +1,9 @@
 {
     "ACM": {
-        "admins": {},
+        "admins": {
+            "STEAM_ID_1": { "name": "AdminName1", "email": "notify@foobar.xyz" },
+            "STEAM_ID_2": { "name": "AdminName2" }
+        },
         "watchdog": {
             "interval": 10000,
             "smtp": ""
