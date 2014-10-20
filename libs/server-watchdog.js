@@ -5,8 +5,10 @@ var History = require('../models/history');
 var checkServers = function () {
     for (var presetName in ac.servers) {
         if(ac.status(ac.servers[presetName]) < 1) {
-            console.error('Dead server', presetName, 'found');
-            History.add('Watchdog', 'Preset ' + presetName + ' found dead');
+            History.add('Watchdog', 'Preset ' + presetName + ' found dead', function(err, res) {
+                if(err) return console.error(err);
+                console.error('Dead server', presetName, 'found');
+            });
             delete ac.servers[presetName];
             autoRestart(presetName);
         }
@@ -17,8 +19,10 @@ var checkServers = function () {
 var autoRestart = function (presetName) {
     var restart = cfg.ACM.autostart[presetName];
     if (restart) {
-        History.add('Watchdog', 'Restart ' + presetName + '');
-        console.log('Restarting', presetName);
+        History.add('Watchdog', 'Restart ' + presetName + '', function(err, res) {
+            if(err) return console.error(err);
+            console.log('Restarting', presetName);
+        });
         ac.start(presetName);
     }
 };
@@ -27,8 +31,10 @@ var autoStart = function () {
     var autostarts = cfg.ACM.autostart;
     for (var presetName in autostarts) {
         if(autostarts[presetName]) {
-            History.add('Watchdog', 'Autostart ' + presetName + '');
-            console.log('Autostarting', presetName);
+            History.add('Watchdog', 'Autostart ' + presetName + '', function(err, res) {
+                if(err) return console.error(err);
+                console.log('Autostarting', presetName);
+            });
             ac.start(presetName);
         }
     }

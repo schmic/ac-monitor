@@ -72,11 +72,6 @@ io.use(function(socket, next) {
     });
 });
 
-io.use(function(socket, next) {
-    //TODO: implement isAdmin() here and deny request if not
-    next();
-});
-
 io.on('connection', function (socket) {
     console.log('new connection', socket.id);
 
