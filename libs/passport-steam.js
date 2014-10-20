@@ -4,19 +4,15 @@ var cfg = require('config');
 var User = require('../models/user');
 
 var isAdmin = function(identifier) {
-    return identifier in cfg.ACM.admin
+    return identifier in cfg.ACM.admins;
 };
 
-passport.serializeUser(function (user, done) {
-    // FIXME: de-/serialize enough user data for session
-    console.log('serializeUser', user);
-    done(null, user.id);
+passport.serializeUser(function (profile, done) {
+    done(null, { steamid: profile.steamid });
 });
 
 passport.deserializeUser(function (user, done) {
-    // FIXME: de-/serialize enough user data for session, as well as "isAdmin"
-    console.log('deserializeUser', user);
-    User.findBySteamId(id, function(err, user) {
+    User.findBySteamId(user.steamid, function(err, user) {
         // FIXME: error handling
         done(null, user);
     });
@@ -30,7 +26,7 @@ passport.use(
         },
         function (identifier, profile, done) {
             profile = profile._json;
-            profile.isAdmin = isAdmin(identifier);
+            profile.isAdmin = isAdmin(profile.steamid);
             User.save(profile, function(err, result) {
                 // FIXME: error handling
                 return done(null, profile);
