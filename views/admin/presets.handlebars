@@ -8,7 +8,7 @@
             {{#if presets}}
                 <table class="table">
                     <tr>
-                        <th>Name</th>
+                        <th style="width: 100%">Name</th>
                         <th>Edit</th>
                         <th>Export</th>
                         <th>Delete</th>
@@ -16,21 +16,21 @@
                     {{#each presets}}
                         <tr>
                             <td>{{this}}</td>
-                            <td>
-                                <a href="/admin/presets/{{this}}">
+                            <td style="text-align: center">
+                                <a href="/admin/presets/edit/{{this}}">
                                     <button title="Edit preset" type="button" class="btn btn-success btn-xs">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                     </button>
                                 </a>
                             </td>
-                            <td>
-                                <a href="/admin/presets/{{this}}/export">
+                            <td style="text-align: center">
+                                <a href="/admin/presets/export/{{this}}">
                                     <button title="Export preset" type="button" class="btn btn-info btn-xs">
                                         <span class="glyphicon glyphicon-download-alt"></span>
                                     </button>
                                 </a>
                             </td>
-                            <td>
+                            <td style="text-align: center">
                                 <button title="Delete preset" type="button" class="btn btn-danger btn-xs"
                                         onclick="handleDelete('{{this}}')">
                                     <span class="glyphicon glyphicon-fire"></span>

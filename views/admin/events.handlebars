@@ -1,0 +1,64 @@
+{{> admin/header }}
+<div class="row">
+    <div id="adminEvents" class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Available Events</h3>
+            </div>
+            {{#if events}}
+                <table class="table">
+                    <tr><th>Name</th><th>Delete</th></tr>
+                    {{#each events}}
+                        <tr>
+                            <td>{{this}}</td>
+                            <td>
+                                <button title="Delete event" type="button" class="btn btn-danger btn-xs"
+                                        onclick="handleDelete('{{this}}')">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </table>
+            {{else}}
+                <div class="panel-body">
+                    No events found.
+                </div>
+            {{/if}}
+        </div>
+    </div>
+    <div id="adminEventsUpload" class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Event creation</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label" for="eventname">Enter event name:</label>
+                    <input class="form-control" type="text" id="eventname" name="eventname"/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="eventpreset">Preset for event:</label>
+                    <select class="form-control" id="eventpreset">
+                        {{#each presets}}<option>{{this}}</option>{{/each}}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="eventdate">Start time for first session:</label>
+                    <input class="form-control" type="datetime-local" id="eventdate" name="eventdate"/>
+                    <span class="help-block">Format: YYYY-MM-DD HH:MM:SS</span>
+                </div>
+                <div class="radio">
+                    <label class="checkbox">
+                        <input type="checkbox" id="eventautostart" value="eventautostart">
+                        Autostart server
+                    </label>
+                </div>
+            </div>
+            <div class="panel-footer" style="text-align: right">
+                <button id="uploadbutton" class="btn btn-success" disabled onclick="handleCreateEvent()">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{> admin/footer }}
