@@ -1,8 +1,8 @@
 <ul class="nav nav-pills nav-stacked">
-    <li {{#if_eq f "index"}}class="active"{{/if_eq}}><a href="/admin/index">Overview</a></li>
-    <li {{#if_eq f "servers"}}class="active"{{/if_eq}}><a href="/admin/servers">Servers</a></li>
-    <li {{#if_eq f "presets"}}class="active"{{/if_eq}}><a href="/admin/presets">Presets</a></li>
-    <li {{#if_eq f "events"}}class="active"{{/if_eq}}><a href="/admin/events">Events</a></li>
-    <li {{#if_eq f "tracks"}}class="active"{{/if_eq}}><a href="/admin/tracks">Tracks</a></li>
-    <li {{#if_eq f "cars"}}class="active"{{/if_eq}}><a href="/admin/cars">Cars</a></li>
+    <li {{#if active_menu_index}}class="active"{{/if}}><a href="/admin/index">Overview</a></li>
+    <li {{#if active_menu_servers}}class="active"{{/if}}><a href="/admin/servers">Servers</a></li>
+    <li {{#if active_menu_presets}}class="active"{{/if}}><a href="/admin/presets">Presets</a></li>
+    <li {{#if active_menu_events}}class="active"{{/if}}><a href="/admin/events">Events</a></li>
+    <li {{#if active_menu_tracks}}class="active"{{/if}}><a href="/admin/tracks">Tracks</a></li>
+    <li {{#if active_menu_cars}}class="active"{{/if}}><a href="/admin/cars">Cars</a></li>
 </ul>
