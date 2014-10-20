@@ -2,6 +2,7 @@ var db = require('../libs/db');
 var collection = db.collection('users');
 
 var save = function(user, callback) {
+    // FIXME: use save() on collection instead of findOne() and if()
     collection.findOne({steamid: user.steamid}, function(err, item) {
         if(err) return console.error(err);
         if(item) {

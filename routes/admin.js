@@ -3,11 +3,15 @@ var ac = require('../libs/server-handler');
 var env = require('../libs/env');
 var History = require('../models/history');
 
-function isAdmin(req, res, next) {
+function isAccessAllowed (req, res, next) {
+    if('development' === app.get('env')) {
+        // enable admin interface without authorization
+        req.session.isAdmin = true;
+    }
     req.session.isAdmin ? next() : res.redirect('/');
 }
 
-router.all('*', isAdmin);
+router.all('*', isAccessAllowed);
 
 router.get('/', function(req, res) {
     res.redirect('/admin/index');

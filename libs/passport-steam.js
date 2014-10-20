@@ -3,14 +3,19 @@ var SteamStrategy = require('passport-steam').Strategy;
 var cfg = require('config');
 var User = require('../models/user');
 
-// http://steamcommunity.com/dev
+var isAdmin = function(identifier) {
+    return identifier in cfg.ACM.admin
+};
 
-// Passport session setup.
 passport.serializeUser(function (user, done) {
+    // FIXME: de-/serialize enough user data for session
+    console.log('serializeUser', user);
     done(null, user.id);
 });
 
-passport.deserializeUser(function (id, done) {
+passport.deserializeUser(function (user, done) {
+    // FIXME: de-/serialize enough user data for session, as well as "isAdmin"
+    console.log('deserializeUser', user);
     User.findBySteamId(id, function(err, user) {
         // FIXME: error handling
         done(null, user);
@@ -24,8 +29,9 @@ passport.use(
             apiKey: cfg.get('steam.api.key')
         },
         function (identifier, profile, done) {
-            profile._json.isAdmin = profile.id in cfg.ACM.admins;
-            User.save(profile._json, function(err, result) {
+            profile = profile._json;
+            profile.isAdmin = isAdmin(identifier);
+            User.save(profile, function(err, result) {
                 // FIXME: error handling
                 return done(null, profile);
             });
