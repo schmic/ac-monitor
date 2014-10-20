@@ -18,6 +18,7 @@ var last = function (options, callback) {
 };
 
 module.exports = {
+    collection: collection,
     add: add,
     last: last
 };
