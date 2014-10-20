@@ -3,3 +3,4 @@
 /config/local*
 /config/db/*
 /node_modules
+/fiddle.js
