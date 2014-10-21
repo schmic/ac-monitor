@@ -43,7 +43,6 @@ var stop = function(presetName) {
 };
 
 var status = function(server) {
-    console.log('checking server with preset', server.preset.presetName);
     if (fs.existsSync(server.pidFile) === false) {
         return 0;
     }
@@ -52,11 +51,9 @@ var status = function(server) {
     }
     try {
         process.kill(server.proc.pid, 0);
-        console.log('PID', server.proc.pid, 'alive');
         return 1;
     }
     catch (e) {
-        console.log('PID', server.proc.pid, 'dead');
         fs.unlink(server.pidFile, function(err) {
             if(err) return console.error(err);
         });
