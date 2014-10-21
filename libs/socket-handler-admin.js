@@ -62,7 +62,7 @@ function startServer(socket, data, fn) {
     data.msg = printf('Preset %s %s', data.name, data.valid ? 'started' : 'could not be started');
     console.log('admin.server.start', data);
     var user = socket.handshake.session.passport.user || 'Nobody';
-    History.add(user, 'Preset ' + data.name + ' started', function(err, res) {
+    History.add(user,  data.msg, function(err, res) {
         if(err) return console.error(err);
         fn(data);
     });
@@ -72,11 +72,27 @@ function stopServer(socket, data, fn) {
     data.msg = printf('Preset %s %s', data.name, data.valid ? 'stopped' : 'could not be stopped');
     console.log('admin.server.stop', data);
     var user = socket.handshake.session.passport.user || 'Nobody';
-    History.add(user, 'Preset ' + data.name + ' stopped', function(err, res) {
+    History.add(user, data.msg, function(err, res) {
         if(err) return console.error(err);
         fn(data);
     });
 }
+
+function saveEvent(socket, data, fn) {
+    var Event = require('../models/event');
+    Event.save(data, function(err, result) {
+        if(err) return console.error(err);
+        data.valid = result === 1;
+        data.msg = printf('Event %s %s', data.name, data.valid ? 'saved' : 'could not be saved');
+        console.log('admin.event.save', data);
+        var user = socket.handshake.session.passport.user || 'Nobody';
+        History.add(user, 'Event ' + data.name + ' stopped', function(err, res) {
+            if(err) return console.error(err);
+            fn(data);
+        });
+    });
+}
+
 module.exports = function(socket) {
     socket.on('admin.tracks.delete', deleteTrack);
     socket.on('admin.tracks.validate', validateTrack);
@@ -89,4 +105,5 @@ module.exports = function(socket) {
     socket.on('admin.presets.upload', savePreset);
     socket.on('admin.server.start', startServer.bind(null, socket));
     socket.on('admin.server.stop', stopServer.bind(null, socket));
+    socket.on('admin.event.save', saveEvent.bind(null, socket));
 };

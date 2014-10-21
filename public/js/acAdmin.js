@@ -136,3 +136,21 @@ function handleStopServer(presetName) {
     data.reload = true;
     socket.emit(wsfunc, data, socket.cb);
 }
+
+function handleCreateEvent() {
+    var fields = {
+        'eventname': 'name',
+        'eventdate': 'date',
+        'eventpreset': 'preset'
+    };
+
+    var wsfunc = 'admin.event.save';
+    var event = {};
+    for(var key in fields) {
+        event[fields[key]] = $('#'+key).val();
+    }
+    event.autostart = $('#eventautostart').is(':checked');
+    event.reload = true;
+
+    socket.emit(wsfunc, event, socket.cb);
+}
