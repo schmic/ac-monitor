@@ -28,6 +28,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(function(req, res, next) {
+    // catch timeouts
+    req.socket.on('error', function(err) {
+        console.error(req.url + ' ' + err.stack);
+        res.status(504).send('Connection timeout');
+        req.end();
+    });
+
     if(Object.keys(ac.servers).length > 0) {
         req.session.servers = {};
         for(var p in ac.servers) {
