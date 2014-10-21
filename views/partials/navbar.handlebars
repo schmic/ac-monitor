@@ -27,7 +27,7 @@
                     <ul class="dropdown-menu" role="menu" id="liveList">
                         {{#if session.servers}}
                             {{#each session.servers}}
-                                <li><a href="/view/live/{{this.preset}}">{{this.name}}</a></li>
+                                <li><a href="/view/timing/{{this.preset}}">{{this.name}}</a></li>
                             {{/each}}
                         {{else}}
                             <li><a href="#">No active servers.</a></li>
