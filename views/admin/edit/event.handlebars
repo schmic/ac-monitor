@@ -1,5 +1,11 @@
 <div id="header" class="page-header">
-    <h2>Event <small>_{{{ event.name }}}_</small></h2>
+    <h3>Edit Event <small>&raquo; {{{ event.name }}}</small></h3>
 </div>
 <div class="row">
+    <div class="col-md-8">
+        <textarea id="eventjson" class="form-control" rows="12" autofocus>{{ eventJSON }}</textarea>
+    </div>
+    <div class="col-md-2">
+        <button id="uploadbutton" class="btn btn-success" onclick="handleSaveEvent()">Save</button>
+    </div>
 </div>

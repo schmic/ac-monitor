@@ -1,19 +1,22 @@
 {{> admin/header active_menu_events=true}}
 <div class="row">
-    <div id="adminEvents" class="col-md-6">
+    <div id="adminEvents" class="col-md-8">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Available Events</h3>
             </div>
             {{#if events}}
                 <table class="table">
-                    <tr><th>Name</th><th>Delete</th></tr>
+                    <tr><th>Name</th><th>Date</th><th>Autostart</th><th>Preset</th><th>Delete</th></tr>
                     {{#each events}}
                         <tr>
-                            <td>{{this}}</td>
+                            <td><a href="/admin/events/edit/{{this.slug}}">{{this.name}}</a></td>
+                            <td>{{this.date}}</td>
+                            <td>{{#if this.autostart}}yes{{else}}no{{/if}}</td>
+                            <td>{{this.preset}}</td>
                             <td>
                                 <button title="Delete event" type="button" class="btn btn-danger btn-xs"
-                                        onclick="handleDelete('{{this}}')">
+                                        onclick="handleRemoveEvent('{{this._id}}')">
                                     <span class="glyphicon glyphicon-remove"></span>
                                 </button>
                             </td>
@@ -27,7 +30,7 @@
             {{/if}}
         </div>
     </div>
-    <div id="adminEventsUpload" class="col-md-6">
+    <div id="adminEventsUpload" class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Event creation</h3>

@@ -70,9 +70,22 @@ router.get('/presets/export/:preset', function (req, res) {
 router.get('/events', function(req, res) {
     req.session.title = 'Events';
     var ctx = { session: req.session };
-    ctx.events = [];
     ctx.presets = env.getPresetNames();
-    res.render('admin/events', ctx);
+    require('../models/event').list({}, function(err, events) {
+        ctx.events = events;
+        res.render('admin/events', ctx);
+    });
+});
+
+router.get('/events/edit/:event', function(req, res) {
+    req.session.title = 'Edit Event';
+    var ctx = {};
+    ctx.session = req.session;
+    require('../models/event').findBy('slug', req.params.event, function(err, event) {
+        ctx.event = event;
+        ctx.eventJSON = JSON.stringify(event);
+        res.render('admin/edit/event', ctx);
+    });
 });
 
 router.get('/tracks', function(req, res) {

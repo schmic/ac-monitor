@@ -154,3 +154,16 @@ function handleCreateEvent() {
 
     socket.emit(wsfunc, event, socket.cb);
 }
+
+function handleSaveEvent() {
+    var wsfunc = 'admin.event.save';
+    var event = JSON.parse($('#eventjson').val());
+    event.reload = true;
+    socket.emit(wsfunc, event, socket.cb);
+}
+
+function handleRemoveEvent(id) {
+    var wsfunc = 'admin.event.remove';
+    data = { id: id, reload: true };
+    socket.emit(wsfunc, data, socket.cb);
+}

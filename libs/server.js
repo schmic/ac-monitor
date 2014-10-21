@@ -21,7 +21,7 @@ var handleLogging = function(server, data, callback) {
         console.log('new.logfile', server.logFile);
     }
     fs.appendFileSync(server.logFile, data+'\n');
-    console.log('[LOG]', data);
+    // console.log('[LOG]', data);
 };
 
 var handleError = function(server, data, callback) {

@@ -1,7 +1,12 @@
 var db = require('../libs/db');
 var collection = db.collection('events');
 
+var convertToSlug = function(str) {
+    return str.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
+}
+
 var save = function(event, callback) {
+    event.slug = convertToSlug(event.name);
     collection.save(event, { w:1 }, callback);
 };
 
