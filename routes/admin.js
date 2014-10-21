@@ -14,18 +14,20 @@ function isAccessAllowed (req, res, next) {
 router.all('*', isAccessAllowed);
 
 router.get('/', function(req, res) {
-    res.redirect('/admin/index');
+    res.redirect('/admin/overview');
 });
 
-router.get('/index', function (req, res) {
+router.get('/overview', function (req, res) {
+    req.session.title = 'Overview';
     var ctx = { session: req.session };
     History.last(undefined, function(err, items) {
         ctx.history = items;
-        res.render('admin/index', ctx);
+        res.render('admin/overview', ctx);
     });
 });
 
 router.get('/servers', function(req, res) {
+    req.session.title = 'Servers';
     var ctx = { session: req.session };
     ctx.presets = env.getPresetNames();
     ctx.servers = [];
@@ -43,12 +45,14 @@ router.get('/servers', function(req, res) {
 });
 
 router.get('/presets', function(req, res) {
+    req.session.title = 'Presets';
     var ctx = { session: req.session };
     ctx.presets = env.getPresetNames();
     res.render('admin/presets', ctx);
 });
 
 router.get('/presets/edit/:preset', function (req, res) {
+    req.session.title = 'Edit Preset';
     var ctx = {};
     ctx.session = req.session;
     ctx.preset = require('../libs/preset')(req.params.preset);
@@ -64,6 +68,7 @@ router.get('/presets/export/:preset', function (req, res) {
 });
 
 router.get('/events', function(req, res) {
+    req.session.title = 'Events';
     var ctx = { session: req.session };
     ctx.events = [];
     ctx.presets = env.getPresetNames();
@@ -71,12 +76,14 @@ router.get('/events', function(req, res) {
 });
 
 router.get('/tracks', function(req, res) {
+    req.session.title = 'Tracks';
     var ctx = { session: req.session };
     ctx.tracks = env.getTrackNames();
     res.render('admin/tracks', ctx);
 });
 
 router.get('/cars', function(req, res) {
+    req.session.title = 'Cars';
     var ctx = { session: req.session };
     ctx.cars = env.getCarNames();
     res.render('admin/cars', ctx);
