@@ -56,9 +56,7 @@ The following steps should be done by editing the `default.json` file in the con
     > .../bin/start.sh
 
 ## Screenshots
-![acMonitorScreenshot](https://thumb6.wuala.com/previewImage/schmic/VR/AC/acMonitor/acMonitor_Admin_Servers.png/)
-![acMonitorScreenshot](https://thumb6.wuala.com/previewImage/schmic/VR/AC/acMonitor/acMonitor_Admin_Presets.png/)
-![acMonitorScreenshot](https://thumb6.wuala.com/previewImage/schmic/VR/AC/acMonitor/acMonitor_Admin_Tracks.png/)
+![acMonitorScreenshot](https://thumb6.wuala.com/previewImage/schmic/VR/AC/acMonitor/acMonitor-20141021.png/)
 
 ## acCtrl
 **TODO**
