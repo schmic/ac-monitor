@@ -4,7 +4,6 @@ var passport = require('./libs/passport-steam');
 var ac       = require('./libs/server-handler');
 
 var app      = require('express')();
-app.use(require('serve-static')(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'handlebars');
 app.engine('handlebars',
@@ -13,6 +12,18 @@ app.engine('handlebars',
         helpers: require('./libs/hbs-helpers')
     })
 );
+
+// catch timeouts
+app.use(function(req, res, next) {
+    req.on('error', function (err) {
+        console.error(req.url + ' ' + err.stack);
+        res.status(504).send('Connection timeout');
+        req.end();
+    });
+    next();
+});
+
+app.use(require('serve-static')(path.join(__dirname, 'public')));
 
 var cookieMiddleware = require('cookie-parser')();
 app.use(cookieMiddleware);
@@ -28,13 +39,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(function(req, res, next) {
-    // catch timeouts
-    req.socket.on('error', function(err) {
-        console.error(req.url + ' ' + err.stack);
-        res.status(504).send('Connection timeout');
-        req.end();
-    });
-
     if(Object.keys(ac.servers).length > 0) {
         req.session.servers = {};
         for(var p in ac.servers) {

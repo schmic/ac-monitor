@@ -1,15 +1,23 @@
 var router = require('express').Router();
 var ac = require('../libs/server-handler');
-var env = require('../libs/env');
 
 router.get('/', function (req, res) {
     res.redirect('/');
 });
 
 router.get('/profile', function (req, res) {
-    req.session.isAuthenticated ?
-        res.render('profile', { session: req.session, user: req.user }) :
+    if(req.session.isAuthenticated) {
+        require('../models/event').findByUserId(req.user._id, function(err, events) {
+            res.render('profile', {
+                events: events,
+                session: req.session,
+                user: req.user
+            });
+        });
+    }
+    else {
         res.redirect('/');
+    }
 });
 
 router.get('/server/:preset', function (req, res) {
