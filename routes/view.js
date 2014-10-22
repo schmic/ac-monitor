@@ -7,7 +7,7 @@ router.get('/', function (req, res) {
 
 router.get('/profile', function (req, res) {
     if(req.session.isAuthenticated) {
-        require('../models/event').findByUserId(req.user._id, function(err, events) {
+        require('../models/event').list({}, function(err, events) {
             res.render('profile', {
                 events: events,
                 session: req.session,

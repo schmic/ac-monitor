@@ -10,11 +10,11 @@
             <div class="panel-body">
                 <div class="row">
                     <div id="avatarView" class="col-md-3">
-                        <img src="{{ user.avatarmedium }}" alt="steam.avatar"/>
+                        <img src="{{ user/avatarmedium }}" alt="steam.avatar"/>
                     </div>
                     <div id="profileView" class="col-md-8">
-                        <p>Name: {{ user.personaname}}</p>
-                        <p>Steam GUID: <span class="label label-success">{{ user.steamid }}</span></p>
+                        <p>Name: {{ user/personaname}}</p>
+                        <p>Steam GUID: <span class="label label-success">{{ user/steamid }}</span></p>
                     </div>
                 </div>
             </div>
@@ -27,17 +27,14 @@
             </div>
             {{#if events}}
                 <table class="table">
-                    <tr><th>Name</th><th>Date</th><th>Autostart</th><th>Preset</th><th>Delete</th></tr>
+                    <tr><th>Name</th><th>Date</th><th>Status</th></tr>
                     {{#each events}}
                         <tr>
-                            <td><a href="/admin/events/edit/{{this.slug}}">{{this.name}}</a></td>
-                            <td>{{this.date}}</td>
-                            <td>{{#if this.autostart}}yes{{else}}no{{/if}}</td>
-                            <td>{{this.preset}}</td>
+                            <td><a href="/view/event/{{this/slug}}">{{this/name}}</a></td>
+                            <td>{{this/date}}</td>
                             <td>
-                                <button title="Delete event" type="button" class="btn btn-danger btn-xs"
-                                        onclick="handleRemoveEvent('{{this._id}}')">
-                                    <span class="glyphicon glyphicon-remove"></span>
+                                <button title="" type="button" class="btn btn-warning btn-xs" onclick="handleBookEvent('{{ this/_id}}, { user_id: {{ ../user/_id }},  }')">
+                                    Not booked
                                 </button>
                             </td>
                         </tr>

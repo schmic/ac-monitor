@@ -7,26 +7,27 @@ var convertToSlug = function(str) {
 
 var save = function(event, callback) {
     event.slug = convertToSlug(event.name);
+    event.bookings = event.bookings ? event.bookings : {};
     collection.save(event, { w:1 }, callback);
 };
 
-var addBooking = function(event_id, user_id, callback) {
-    findBy('_id', event_id, function(err, event) {
+var saveBooking = function(event_id, booking, callback) {
+    collection.findOne({_id: event_id}, function(err, event) {
         if(err) callback(err, null);
-        if(event.bookings.indexOf(user_id) >= 0) {
+        if(booking.user_id in event.bookings) {
             callback('already booked', null);
         }
         else {
-            event.bookings.push(user_id);
+            event.bookings[booking.user_id] = booking;
             save(event, callback);
         }
     });
 };
 
 var removeBooking = function(event_id, user_id, callback) {
-    findBy('_id', event_id, function(err, event) {
-        if(event.bookings.indexOf(user_id) >= 0) {
-            event.bookings.splice(event.bookings.indexOf(user_id), 1);
+    collection.findOne({_id: event_id}, function(err, event) {
+        if(user_id in event.bookings) {
+            delete event.bookings[user_id];
             save(event, callback);
         }
         else {
@@ -35,20 +36,8 @@ var removeBooking = function(event_id, user_id, callback) {
     });
 };
 
-var remove = function(id, callback) {
-    collection.remove({ _id: id }, {w:1}, callback);
-};
-
-var findBy = function(key, value, callback) {
-    var search = {};
-    search[key] = value;
-    collection.find(search, callback);
-};
-
-var findByUserId = function(userId, callback) {
-    collection.find({}, function(err, events) {
-        callback(err, events);
-    });
+var remove = function(event_id, callback) {
+    collection.remove({ _id: event_id }, {w:1}, callback);
 };
 
 var list = function(options, callback) {
@@ -62,9 +51,7 @@ module.exports = {
     collection: collection,
     save: save,
     remove: remove,
-    findBy: findBy,
-    findByUserId: findByUserId,
     list: list,
-    addBooking: addBooking,
+    saveBooking: saveBooking,
     removeBooking: removeBooking
 };

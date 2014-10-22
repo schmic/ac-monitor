@@ -82,6 +82,7 @@ io.use(function(socket, next) {
 io.on('connection', function (socket) {
     console.log('new connection', socket.id);
 
+    require('./libs/socket-handler-user')(socket);
     require('./libs/socket-handler-admin')(socket);
 
     socket.on('disconnect', function() {

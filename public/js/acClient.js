@@ -19,6 +19,18 @@ socket.cb = function(data) {
     if(data.reload) location.reload();
 };
 
+function handleBookEvent(event_id, booking) {
+    var wsfunc = 'user.event.saveBooking';
+    var msg = {
+        reload: true,
+        data: {
+            event_id: event_id,
+            booking: booking
+        }
+    };
+    socket.emit(wsfunc, msg, socket.cb);
+}
+
 function closeMessageBox() {
     setTimeout(function() {
         $('#messagebox').hide();
