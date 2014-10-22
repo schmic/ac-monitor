@@ -17,60 +17,58 @@ describe('Event', function(){
                 name: 'testEvent01',
                 preset: 'testPreset01',
                 date: '1970-01-01 01:00:00',
-                autostart: false,
-                bookings: []
+                autostart: false
             };
             Event.save(event, function (err, event) {
                 if (err) console.error(err);
                 assert.notEqual(null, event);
-                console.log('created event', event, '\n');
                 done();
             });
         });
         it('gets found and booked', function(done) {
             var Event = require('../models/event');
-            Event.findBy('name', 'testEvent01', function(err, event) {
-                if (err) console.error(err);
+            var booking = {
+                user_id: 4711,
+                car: 'bmw_m3_foo'
+            };
+            Event.collection.findOne({name: 'testEvent01'}, function(err, event) {
+                if(err) console.error(err);
                 assert.notEqual(null, event);
-                Event.addBooking(event._id, '4711', function(err, result) {
-                    if (err) console.error(err);
+                Event.addBooking(event._id, booking, function(err, event) {
+                    if(err) console.error(err);
                     assert.notEqual(null, event);
-                    assert.equal(1, result);
                     done();
                 });
             });
         });
         it('gets found by userId', function(done) {
-            var Event = require('../models/event');
-            Event.findByUserId('4711', function(err, event) {
-                if (err) console.error(err);
-                assert.notEqual(null, event);
-                console.log(event);
-            });
+            done();
         });
         it('gets found and unbooked', function(done) {
             var Event = require('../models/event');
-            Event.findBy('name', 'testEvent01', function(err, event) {
-                if (err) console.error(err);
+            var booking = {
+                user_id: 4711,
+                car: 'bmw_m3_foo'
+            };
+            Event.collection.findOne({name: 'testEvent01'}, function(err, event) {
+                if(err) console.error(err);
                 assert.notEqual(null, event);
-                Event.removeBooking(event._id, '4711', function(err, result) {
-                    if (err) console.error(err);
+                Event.removeBooking(event._id, booking.user_id, function(err, event) {
+                    if(err) console.error(err);
                     assert.notEqual(null, event);
-                    assert.equal(1, result);
                     done();
                 });
             });
         });
         it('gets found and deleted', function (done) {
             var Event = require('../models/event');
-            Event.findBy('name', 'testEvent01', function(err, event) {
+            Event.collection.findOne({name: 'testEvent01'}, function(err, event) {
                 if (err) console.error(err);
                 assert.notEqual(null, event);
                 Event.remove(event._id, function (err, result) {
                     if (err) console.error(err);
                     assert.equal(null, err);
                     assert.notEqual(null, result);
-                    console.log('deleted event', result ? 'true' : 'false');
                     done();
                 });
             });
