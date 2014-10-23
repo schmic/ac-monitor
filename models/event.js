@@ -14,11 +14,11 @@ var save = function(event, callback) {
 var saveBooking = function(event_id, booking, callback) {
     collection.findOne({_id: event_id}, function(err, event) {
         if(err) callback(err, null);
-        if(booking.user_id in event.bookings) {
+        if(booking.GUID in event.bookings) {
             callback('already booked', null);
         }
         else {
-            event.bookings[booking.user_id] = booking;
+            event.bookings[booking.GUID] = booking;
             save(event, callback);
         }
     });

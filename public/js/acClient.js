@@ -19,16 +19,21 @@ socket.cb = function(call) {
     if(call.reload) location.reload();
 };
 
-function handleBookEvent(event_id, booking) {
+function handleSaveBooking(event_id) {
     var wsfunc = 'user.event.saveBooking';
-    var call = {
-        reload: true,
-        data: {
-            event_id: event_id,
-            booking: booking
-        }
+    var data = {
+        event_id: event_id,
+        car: $('#bookcar').val()
     };
-    socket.emit(wsfunc, call, socket.cb);
+    socket.emit(wsfunc, data, socket.cb);
+}
+
+function handleRemoveBooking(event_id) {
+    var wsfunc = 'user.event.removeBooking';
+    var data = {
+        event_id: event_id,
+    };
+    socket.emit(wsfunc, data, socket.cb);
 }
 
 function handleSaveProfile() {
@@ -37,5 +42,5 @@ function handleSaveProfile() {
         lastname: $('#profileLastname').val()
     };
     var wsfunc = 'user.profile.save';
-    socket.emit(wsfunc, { data: profile }, socket.cb);
+    socket.emit(wsfunc, profile, socket.cb);
 }

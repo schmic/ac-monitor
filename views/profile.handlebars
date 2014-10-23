@@ -51,9 +51,11 @@
                             <td><a href="/view/event/{{this/slug}}">{{this/name}}</a></td>
                             <td>{{this/date}}</td>
                             <td>
-                                <button title="" type="button" class="btn btn-warning btn-xs" onclick="handleBookEvent('{{ this/_id}}, { user_id: {{ ../user/_id }},  }')">
-                                    Not booked
-                                </button>
+                                <a href="/view/event/{{this/slug}}">
+                                    <button title="" type="button" class="btn btn-info btn-xs">
+                                        Not booked
+                                    </button>
+                                </a>
                             </td>
                         </tr>
                     {{/each}}

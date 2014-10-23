@@ -19,9 +19,8 @@
                                 {{#if preset.hasRaceSession}}<li>Race ({{preset.raceSession.LAPS}} Laps)</li>{{/if}}
                             </td>
                         </tr>
-                        <tr><td>Bookings:</td><td>{{ event.bookings.length }} / {{preset.ini.SERVER.MAX_CLIENTS}}</td></tr>
                         <tr>
-                            <td colspan="2">
+                            <td colspan="2" style="text-align: center">
                                 {{#if preset.hasPassword}}<span class="label label-warning">Password</span>{{/if}}
                                 {{#if preset.hasPenalties}}<span class="label label-danger">Penalties</span>{{/if}}
                                 {{#if preset.hasDynamicTrack}}<span class="label label-info">Dynamic Track</span>{{/if}}
@@ -41,9 +40,9 @@
                     <table class="table">
                         <tr>
                             <td>Track</td>
-                            <td>{{#each preset.tracks}}<li>{{#formatTrack}}{{this}}{{/formatTrack}}</li>{{/each}}</td>
+                            <td>{{#each preset.tracks}}<li>{{#formatTrack this}}{{/formatTrack}}</li>{{/each}}</td>
                         </tr>
-                        <tr><td>Cars</td><td>{{#each preset.cars}} <li>{{#formatCar}}{{this}}{{/formatCar}}</li>{{/each}}</td></tr>
+                        <tr><td>Cars</td><td>{{#each preset.cars}} <li>{{#formatCar this}}{{/formatCar}}</li>{{/each}}</td></tr>
                         <tr><td>Pits</td><td>{{preset.ini.SERVER.MAX_CLIENTS}}</td></tr>
                         <tr><td>Time</td><td>{{preset.timeOfDay}}</td></tr>
                         <tr>
@@ -64,9 +63,29 @@
             <div class="panel-heading">
                 <h3 class="panel-title">Bookings:</h3>
             </div>
+            {{#if session.isAuthenticated}}
+            <div class="panel-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="bookcar" class="col-sm-1 control-label">Car</label>
+                        <div class="col-sm-5">
+                            <select id="bookcar" class="form-control">>
+                                {{#each preset.cars}}<option value="{{this}}">{{#formatCar this}}{{/formatCar}}</option>{{/each}}
+                            </select>
+                        </div>
+                        <div class="col-sm-offset-3 col-sm-3">
+                            <button onclick="handleSaveBooking({{ event._id }})" type="submit" class="btn btn-info">Book into Event</button>
+                            <button onclick="handleRemoveBooking({{ event._id }})" type="submit" class="btn btn-warning">Unbook into Event</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {{/if}}
             <table class="table">
                 <tr><th>Name</th><th>Car</th></tr>
-                {{#each event.bookings}}{{this.user_id}}{{/each}}
+                {{#each event.bookings}}
+                    <tr><td>{{this.NAME}}</td><td>{{#formatCar this.CAR}}{{/formatCar}}</td></tr>
+                {{/each}}
             </table>
         </div>
     </div>

@@ -1,12 +1,12 @@
 var Car = require('../models/car');
 var Track = require('../models/track');
 
-exports.formatTrack = function() {
-    return Track.findByName(this);
+exports.formatTrack = function(track) {
+    return Track.findByName(track);
 };
 
-exports.formatCar = function() {
-    return Car.findByName(this);
+exports.formatCar = function(car) {
+    return Car.findByName(car);
 };
 
 exports.formatTimestamp = function() {

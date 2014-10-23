@@ -29,12 +29,12 @@
                         <tr>
                             <td>Cars</td>
                             <td>{{#each server.preset.cars}}
-                                <li>{{#formatCar}}{{this}}{{/formatCar}}</li>{{/each}}</td>
+                                <li>{{#formatCar this}}{{/formatCar}}</li>{{/each}}</td>
                         </tr>
                         <tr>
                             <td>Tracks</td>
                             <td>{{#each server.preset.tracks}}
-                                <li>{{#formatTrack}}{{this}}{{/formatTrack}}</li>{{/each}}</td>
+                                <li>{{#formatTrack this}}{{/formatTrack}}</li>{{/each}}</td>
                         </tr>
                         <tr>
                             <td>Clock</td>
