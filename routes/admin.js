@@ -81,7 +81,12 @@ router.get('/events/edit/:event', function(req, res) {
     req.session.title = 'Edit Event';
     var ctx = {};
     ctx.session = req.session;
-    require('../models/event').findBy('slug', req.params.event, function(err, event) {
+    require('../models/event').collection.findOne({'slug': req.params.event}, function(err, event) {
+        if(err) {
+            res.render('error', { message: err });
+            return console.error(err);
+        }
+        console.log('event', event);
         ctx.event = event;
         ctx.eventJSON = JSON.stringify(event);
         res.render('admin/edit/event', ctx);

@@ -7,13 +7,12 @@
             </div>
             {{#if events}}
                 <table class="table">
-                    <tr><th>Name</th><th>Date</th><th>Autostart</th><th>Preset</th><th>Delete</th></tr>
+                    <tr><th>Name</th><th>Date</th><th>Autostart</th><th>Delete</th></tr>
                     {{#each events}}
                         <tr>
                             <td><a href="/admin/events/edit/{{this.slug}}">{{this.name}}</a></td>
                             <td>{{this.date}}</td>
                             <td>{{#if this.autostart}}yes{{else}}no{{/if}}</td>
-                            <td>Start: {{this.preset}}<br/>Stop: {{this.stoppreset}}</td>
                             <td>
                                 <button title="Delete event" type="button" class="btn btn-danger btn-xs"
                                         onclick="handleRemoveEvent('{{this._id}}')">
