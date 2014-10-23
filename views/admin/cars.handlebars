@@ -10,7 +10,7 @@
                     <tr><th>Name</th><th>Delete</th></tr>
                     {{#each cars}}
                         <tr>
-                            <td>{{#formatCar}}{{this}}{{/formatCar}}</td>
+                            <td>{{#formatCar this}}{{/formatCar}}</td>
                             <td>
                                 <button title="Delete car" type="button" class="btn btn-danger btn-xs"
                                         onclick="handleDelete('{{this}}')">

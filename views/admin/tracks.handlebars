@@ -10,7 +10,7 @@
                     <tr><th>Name</th><th>Delete</th></tr>
                     {{#each tracks}}
                         <tr>
-                            <td>{{#formatTrack}}{{this}}{{/formatTrack}}</td>
+                            <td>{{#formatTrack this}}{{/formatTrack}}</td>
                             <td>
                                 <button title="Delete track" type="button" class="btn btn-danger btn-xs"
                                         onclick="handleDelete('{{this}}')">
