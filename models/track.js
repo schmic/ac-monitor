@@ -18,6 +18,7 @@ tracks['vallelunga'] = "Vallelunga";
 tracks['vallelunga-club'] = "Vallelunga Club";
 tracks['salzburgring'] = "Salzburgring";
 tracks['spa'] = "Spa-Francorchamps";
+tracks['blackwood'] = "Blackwood GP";
 
 var findByName = function(name) {
     return name in tracks ? tracks[name] : name;
