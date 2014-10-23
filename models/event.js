@@ -11,7 +11,7 @@ var save = function(event, callback) {
     collection.save(event, { w:1 }, callback);
 };
 
-var addBooking = function(event_id, booking, callback) {
+var saveBooking = function(event_id, booking, callback) {
     collection.findOne({_id: event_id}, function(err, event) {
         if(err) callback(err, null);
         if(booking.user_id in event.bookings) {
@@ -36,8 +36,8 @@ var removeBooking = function(event_id, user_id, callback) {
     });
 };
 
-var remove = function(id, callback) {
-    collection.remove({ _id: id }, {w:1}, callback);
+var remove = function(event_id, callback) {
+    collection.remove({ _id: event_id }, {w:1}, callback);
 };
 
 var list = function(options, callback) {
@@ -52,6 +52,6 @@ module.exports = {
     save: save,
     remove: remove,
     list: list,
-    addBooking: addBooking,
+    saveBooking: saveBooking,
     removeBooking: removeBooking
 };
