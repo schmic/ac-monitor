@@ -18,9 +18,22 @@
                     </div>
                 </div>
                 <div class="row">
-                    <input type="text" name="firstname" id="profileFirstname" placeholder="Firstname"/>
-                    <input type="text" name="lastname" id="profileLastname" placeholder="Lastname"/>
-                    <button title="Save profile" type="button" class="btn btn-info btn-xs" onclick="saveProfile()"/>
+                    <hr>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form role="form">
+                            <div class="form-group">
+                                <input class="form-control" type="text" name="firstname" id="profileFirstname" placeholder="Firstname" {{#if user/firstname}}value="{{user/firstname}}"{{/if}}/>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" type="text" name="lastname" id="profileLastname" placeholder="Lastname" {{#if user/lastname}}value="{{user/lastname}}"{{/if}}/>
+                            </div>
+                            <div class="form-group">
+                                <button title="Save profile" type="button" class="pull-right btn btn-info" onclick="handleSaveProfile()">Save</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

@@ -23,12 +23,19 @@ function handleBookEvent(event_id, booking) {
     var wsfunc = 'user.event.saveBooking';
     var call = {
         reload: true,
-        msg: undefined,
-        type: undefined,
         data: {
             event_id: event_id,
             booking: booking
         }
     };
     socket.emit(wsfunc, call, socket.cb);
+}
+
+function handleSaveProfile() {
+    var profile = {
+        firstname: $('#profileFirstname').val(),
+        lastname: $('#profileLastname').val()
+    };
+    var wsfunc = 'user.profile.save';
+    socket.emit(wsfunc, { data: profile }, socket.cb);
 }

@@ -28,8 +28,14 @@ passport.use(
         function (identifier, profile, done) {
             profile = profile._json;
             profile.isAdmin = isAdmin(profile.steamid);
-            User.save(profile, function(err, result) {
-                // FIXME: error handling
+            User.findBySteamId(profile.steamid, function(err, user) {
+                if(user) {
+                    profile.firstname = user.firstname;
+                    profile.lastname = user.lastname;
+                }
+                User.save(profile, function(err, result) {
+                    // FIXME: error handling
+                });
                 return done(null, profile);
             });
         }
