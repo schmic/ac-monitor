@@ -83,7 +83,10 @@ io.on('connection', function (socket) {
     console.log('new connection', socket.id);
 
     require('./libs/socket-handler-user')(socket);
-    require('./libs/socket-handler-admin')(socket);
+
+    if(socket.handshake.session.isAdmin) {
+        require('./libs/socket-handler-admin')(socket);
+    }
 
     socket.on('disconnect', function() {
         console.log('client disconnected', socket.id);

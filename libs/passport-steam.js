@@ -22,6 +22,7 @@ passport.use(
     new SteamStrategy({
             returnURL: 'http://' + cfg.get('http.host') + ':' + cfg.get('http.port') + '/auth/return',
             realm: 'http://' + cfg.get('http.host') + ':' + cfg.get('http.port') + '/',
+            profile: true,
             apiKey: cfg.get('steam.api.key')
         },
         function (identifier, profile, done) {

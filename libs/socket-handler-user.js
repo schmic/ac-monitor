@@ -1,14 +1,23 @@
-var printf   = require('util').format;
+var Event  = require('../models/event');
+var printf = require('util').format;
 
-var saveEventBooking = function(socket, msg) {
-    require('../models/event').saveBooking(msg.data.event_id, msg.data.booking, function(err, result) {
-        console.log('book.result', result);
+var saveEventBooking = function(socket, call) {
+    Event.saveBooking(call.data.event_id, call.data.booking, function(err, result) {
+        call.msg = printf('book.result [%s]', result);
+        call.type = 'success';
+        call.reload = true;
+        console.log(call.msg);
+        fn(call);
     });
 };
 
-var removeEventBooking = function(socket, msg) {
-    require('../models/event').removeBooking(msg.data.event_id, msg.data.user_id, function(err, result) {
-        console.log('book.result', result);
+var removeEventBooking = function(socket, call) {
+    Event.removeBooking(call.data.event_id, call.data.user_id, function(err, result) {
+        call.msg = printf('book.result [%s]', result);
+        call.type = 'success';
+        call.reload = true;
+        console.log(call.msg);
+        fn(call);
     });
 };
 

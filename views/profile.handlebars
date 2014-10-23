@@ -17,6 +17,11 @@
                         <p>Steam GUID: <span class="label label-success">{{ user/steamid }}</span></p>
                     </div>
                 </div>
+                <div class="row">
+                    <input type="text" name="firstname" id="profileFirstname" placeholder="Firstname"/>
+                    <input type="text" name="lastname" id="profileLastname" placeholder="Lastname"/>
+                    <button title="Save profile" type="button" class="btn btn-info btn-xs" onclick="saveProfile()"/>
+                </div>
             </div>
         </div>
     </div>

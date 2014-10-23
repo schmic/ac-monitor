@@ -14,25 +14,21 @@ socket.on('message', function(data) {
 	console.log('[msg]:', data);
 });
 
-socket.cb = function(data) {
-    console.log(data);
-    if(data.reload) location.reload();
+socket.cb = function(call) {
+    console.log(call);
+    if(call.reload) location.reload();
 };
 
 function handleBookEvent(event_id, booking) {
     var wsfunc = 'user.event.saveBooking';
-    var msg = {
+    var call = {
         reload: true,
+        msg: undefined,
+        type: undefined,
         data: {
             event_id: event_id,
             booking: booking
         }
     };
-    socket.emit(wsfunc, msg, socket.cb);
-}
-
-function closeMessageBox() {
-    setTimeout(function() {
-        $('#messagebox').hide();
-    }, 1000);
+    socket.emit(wsfunc, call, socket.cb);
 }
