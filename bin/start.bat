@@ -1,5 +1,4 @@
-REM Start Assetto Corsa Monitor (acMonitor)
-REM
+@echo off
 
 set NODE_ENV=production
 cd %~dp0\..
