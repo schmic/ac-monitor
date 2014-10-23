@@ -13,7 +13,7 @@
                             <td><a href="/admin/events/edit/{{this.slug}}">{{this.name}}</a></td>
                             <td>{{this.date}}</td>
                             <td>{{#if this.autostart}}yes{{else}}no{{/if}}</td>
-                            <td>{{this.preset}}</td>
+                            <td>Start: {{this.preset}}<br/>Stop: {{this.stoppreset}}</td>
                             <td>
                                 <button title="Delete event" type="button" class="btn btn-danger btn-xs"
                                         onclick="handleRemoveEvent('{{this._id}}')">
@@ -37,8 +37,19 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    <label class="control-label" for="eventname">Enter event name:</label>
-                    <input class="form-control" type="text" id="eventname" name="eventname"/>
+                    <label class="control-label" for="eventname">Event name:</label>
+                    <input class="form-control" type="text" id="eventname" name="eventname" placeholder="Example Trophy Race 01"/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="eventdate">Start time:</label>
+                    <input class="form-control" type="datetime-local" id="eventdate" name="eventdate" placeholder="1970-01-01 00:00:00"/>
+                    <span class="help-block">Format: YYYY-MM-DD HH:MM:SS</span>
+                </div>
+                <div class="radio">
+                    <label class="checkbox">
+                        <input type="checkbox" id="eventautostart" value="true">
+                        Start/Stop Presets?
+                    </label>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="eventpreset">Preset for event:</label>
@@ -47,15 +58,11 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="eventdate">Start time for first session:</label>
-                    <input class="form-control" type="datetime-local" id="eventdate" name="eventdate"/>
-                    <span class="help-block">Format: YYYY-MM-DD HH:MM:SS</span>
-                </div>
-                <div class="radio">
-                    <label class="checkbox">
-                        <input type="checkbox" id="eventautostart" value="true">
-                        Autostart server
-                    </label>
+                    <label class="control-label" for="eventpreset">Preset to stop:</label>
+                    <select class="form-control" id="eventstoppreset">
+                        <option></option>
+                        {{#each presets}}<option>{{this}}</option>{{/each}}
+                    </select>
                 </div>
             </div>
             <div class="panel-footer" style="text-align: right">

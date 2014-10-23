@@ -141,7 +141,8 @@ function handleCreateEvent() {
     var fields = {
         'eventname': 'name',
         'eventdate': 'date',
-        'eventpreset': 'preset'
+        'eventpreset': 'preset',
+        'eventstoppreset': 'stoppreset'
     };
 
     var wsfunc = 'admin.event.save';
