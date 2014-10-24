@@ -86,7 +86,6 @@ router.get('/events/edit/:event', function(req, res) {
             res.render('error', { message: err });
             return console.error(err);
         }
-        console.log('event', event);
         ctx.event = event;
         ctx.eventJSON = JSON.stringify(event);
         res.render('admin/edit/event', ctx);
