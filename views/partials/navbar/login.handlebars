@@ -1,9 +1,9 @@
-    <li>
-{{#if session.passport.user}}
+<li>
+    {{#if session.passport.user}}
         <a href="/auth/logout">
             <button type="button" class="btn btn-success btn-xs">Logout</button>
         </a>
-{{else}}
+    {{else}}
         <a href="/auth/login"><img src="/img/icons/sits_small.png" alt="Steam Login"/></a>
-{{/if}}
-    </li>
+    {{/if}}
+</li>

@@ -20,51 +20,7 @@
                 <div class="row">
                     <hr>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <form role="form">
-                            <div class="form-group">
-                                <input class="form-control" type="text" name="firstname" id="profileFirstname" placeholder="Firstname" {{#if user/firstname}}value="{{user/firstname}}"{{/if}}/>
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control" type="text" name="lastname" id="profileLastname" placeholder="Lastname" {{#if user/lastname}}value="{{user/lastname}}"{{/if}}/>
-                            </div>
-                            <div class="form-group">
-                                <button title="Save profile" type="button" class="pull-right btn btn-info" onclick="handleSaveProfile()">Save</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
             </div>
-        </div>
-    </div>
-    <div class="col-md-7">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Available Events</h3>
-            </div>
-            {{#if events}}
-                <table class="table">
-                    <tr><th>Name</th><th>Date</th><th>Status</th></tr>
-                    {{#each events}}
-                        <tr>
-                            <td><a href="/view/event/{{this/slug}}">{{this/name}}</a></td>
-                            <td>{{this/date}}</td>
-                            <td>
-                                <a href="/view/event/{{this/slug}}">
-                                    <button title="" type="button" class="btn btn-info btn-xs">
-                                        Not booked
-                                    </button>
-                                </a>
-                            </td>
-                        </tr>
-                    {{/each}}
-                </table>
-            {{else}}
-                <div class="panel-body">
-                    No events found.
-                </div>
-            {{/if}}
         </div>
     </div>
 </div>

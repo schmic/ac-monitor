@@ -1,6 +1,3 @@
-var db = require('../libs/db');
-var collection = db.collection('cars');
-
 var cars = {};
 cars["abarth500"] = "Abarth 500";
 cars["abarth500_s1"] = "Abarth 500 EssEss";

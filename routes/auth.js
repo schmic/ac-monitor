@@ -10,7 +10,7 @@ router.get('/login', passport.authenticate('steam', { failureRedirect: '/error' 
 });
 
 router.get('/return', passport.authenticate('steam', { failureRedirect: '/error' }), function (req, res) {
-    res.redirect('/view/profile');
+    res.redirect('/admin');
 });
 
 router.get('/logout', function (req, res) {

@@ -1,7 +1,4 @@
-var db = require('../libs/db');
-var collection = db.collection('tracks');
-
-var tracks = {}
+var tracks = {};
 tracks['drag400'] = "Dragstrip 400";
 tracks['drag1000'] = "Dragstrip 1000";
 tracks['drift'] = "Drift";

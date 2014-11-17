@@ -82,8 +82,6 @@ io.use(function(socket, next) {
 io.on('connection', function (socket) {
     console.log('new connection', socket.id);
 
-    require('./libs/socket-handler-user')(socket);
-
     if(socket.handshake.session.isAdmin) {
         require('./libs/socket-handler-admin')(socket);
     }

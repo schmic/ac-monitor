@@ -136,35 +136,3 @@ function handleStopServer(presetName) {
     data.reload = true;
     socket.emit(wsfunc, data, socket.cb);
 }
-
-function handleCreateEvent() {
-    var fields = {
-        'eventname': 'name',
-        'eventdate': 'date',
-        'eventpreset': 'preset',
-        'eventstoppreset': 'stoppreset'
-    };
-
-    var wsfunc = 'admin.event.save';
-    var event = {};
-    for(var key in fields) {
-        event[fields[key]] = $('#'+key).val();
-    }
-    event.autostart = $('#eventautostart').is(':checked');
-    event.reload = true;
-
-    socket.emit(wsfunc, event, socket.cb);
-}
-
-function handleSaveEvent() {
-    var wsfunc = 'admin.event.save';
-    var event = JSON.parse($('#eventjson').val());
-    event.reload = true;
-    socket.emit(wsfunc, event, socket.cb);
-}
-
-function handleRemoveEvent(id) {
-    var wsfunc = 'admin.event.remove';
-    data = { id: id, reload: true };
-    socket.emit(wsfunc, data, socket.cb);
-}
