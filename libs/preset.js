@@ -83,46 +83,7 @@ function Preset(presetName) {
         hasRaceSession: ini.RACE !== undefined,
         raceSession: ini.RACE,
         ini: ini,
-        get: function (p) {
-            return ini.SERVER[p];
-        },
         entries : entries,
-        isBooked: function (guid) {
-            for(var car in entries) {
-                if(guid === entries[car].GUID) {
-                    return true;
-                }
-            }
-            return false;
-        },
-        getBooking: function (guid) {
-            for(var car in entries) {
-                if(guid === entries[car].GUID) {
-                    return entries[car];
-                }
-            }
-            return undefined;
-        },
-        setBooking: function (booking) {
-            for(var car in entries) {
-                if(booking.GUID === entries[car].GUID) {
-                    entries[car] = booking;
-                    return saveIni(env.getPresetPath(), 'entry_list.ini', entries);
-                }
-            }
-            var car = 'CAR_' + getNextFreeCar(entries);
-            entries[car] = booking;
-            return saveIni(env.getPresetPath(), 'entry_list.ini', entries);
-        },
-        deleteBooking: function (guid) {
-            for(var car in entries) {
-                if(guid === entries[car].GUID) {
-                    delete entries[car];
-                    return saveIni(env.getPresetPath(), 'entry_list.ini', entries);
-                }
-            }
-            return false;
-        }
     };
 }
 
