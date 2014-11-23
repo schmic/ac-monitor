@@ -1,4 +1,9 @@
 {
-    "name": "{{ server.name }}",
-    "preset": "{{ server.preset.presetName }}"
+    "name": "{{ server.name }}"
+    "preset": "{{ server.preset.presetName }}",
+    "tracks": [{{#each server.preset.tracks}}"{{this}}",{{/each}}],
+    "cars": [{{#each server.preset.cars}}"{{this}}",{{/each}}],
+    "timeofday": "{{ server.preset.timeOfDay }}",
+    "hasPassword": "{{ server.preset.hasPassword }}",
+    "hasPenalties": "{{ server.preset.hasPenalties }}"
 }

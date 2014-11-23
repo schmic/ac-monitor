@@ -7,21 +7,6 @@ var readIni = function (filePath, fileName) {
     return require('ini').parse(content);
 };
 
-var saveIni = function (filePath, fileName, content) {
-    content = require('ini').encode(content);
-    fs.writeFileSync(path.join(filePath, fileName), content);
-    return true;
-};
-
-var getNextFreeCar = function (entries) {
-    for(var i = 0; i < 100; i++) {
-        var car = 'CAR_'+i;
-        if(entries[car])
-            continue;
-        return i;
-    }
-};
-
 var getTimeOfDay = function (sunAngle) {
     // base time for angle=0: 1PM // 13:00
     // min/max: -/+ 80
@@ -83,7 +68,13 @@ function Preset(presetName) {
         hasRaceSession: ini.RACE !== undefined,
         raceSession: ini.RACE,
         ini: ini,
-        entries : entries,
+        entries: entries,
+        getEntryBy: function(attr, value) {
+            Object.keys(entries).forEach(function(k) {
+                if(entries[k][attr] == value)
+                    return entries[k];
+            });
+        }
     };
 }
 

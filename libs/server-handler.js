@@ -15,17 +15,15 @@ var start = function(presetName) {
         '-c', path.join(server.workPath, 'server_cfg.ini'),
         '-e', path.join(server.workPath, 'entry_list.ini')
     ];
-    var proc = require('child_process').spawn(env.getServerExecutable(), args, { cwd: env.getACPath() });
+    server.proc = require('child_process').spawn(env.getServerExecutable(), args, { cwd: env.getACPath() });
 
-    proc.on('exit', server.handleExit.bind(null, server));
-    proc.on('SIGINT', server.handleExit.bind(null, server));
-    proc.on('uncaughtException', server.handleExit.bind(null, server));
-    proc.stdout.pipe(es.split()).pipe(es.map(server.handleLogging.bind(null, server)));
-    proc.stderr.pipe(es.split()).pipe(es.map(server.handleError.bind(null, server)));
+    server.proc.on('exit', server.handleExit.bind(null, server));
+    server.proc.on('SIGINT', server.handleExit.bind(null, server));
+    server.proc.on('uncaughtException', server.handleExit.bind(null, server));
 
-    server.proc = proc;
+    require('./server-parser')(server, es.merge(server.proc.stdout, server.proc.stderr));
 
-    fs.writeFile(server.pidFile, proc.pid, function(err) {
+    fs.writeFile(server.pidFile, server.proc.pid, function(err) {
         if(err) return console.error(err);
     });
 
