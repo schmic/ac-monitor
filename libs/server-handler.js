@@ -2,30 +2,51 @@ var es = require('event-stream');
 var fs = require('fs');
 var path = require('path');
 var env = require('./env');
+var parser = require('./server-parser');
 
 var servers = [];
 
-var start = function(presetName) {
-    var server = require('./server')(presetName);
-    if (isRunning(server)) {
-        throw new Error('Preset ' + preset.presetName + ' is already active');
-    }
 
+var handleExit = function(server) {
+    fs.unlink(server.pidFile, function(err) {
+        if(err) return console.error(err);
+        console.log('Server process exit, removing pid file: ', server.pidFile);
+    });
+};
+
+var writePidFile = function(server) {
+    fs.writeFile(server.pidFile, server.proc.pid, function(err) {
+        if(err) return console.error(err);
+    });
+};
+
+var spawnProcess = function(server) {
     var args = [
         '-c', path.join(server.workPath, 'server_cfg.ini'),
         '-e', path.join(server.workPath, 'entry_list.ini')
     ];
-    server.proc = require('child_process').spawn(env.getServerExecutable(), args, { cwd: env.getACPath() });
 
-    server.proc.on('exit', server.handleExit.bind(null, server));
-    server.proc.on('SIGINT', server.handleExit.bind(null, server));
-    server.proc.on('uncaughtException', server.handleExit.bind(null, server));
+    var proc = require('child_process').spawn(env.getServerExecutable(), args, { cwd: env.getACPath() });
+    proc.on('exit', handleExit.bind(null, server));
+    proc.on('SIGINT', handleExit.bind(null, server));
+    proc.on('uncaughtException', handleExit.bind(null, server));
+    return proc;
+};
 
-    require('./server-parser')(server, es.merge(server.proc.stdout, server.proc.stderr));
+var start = function(presetName) {
+    var server = require('./server')(presetName);
 
-    fs.writeFile(server.pidFile, server.proc.pid, function(err) {
-        if(err) return console.error(err);
+    if (isRunning(server)) {
+        throw new Error('Preset ' + preset.presetName + ' is already active');
+    }
+
+    server.on('stopserver', function(presetName) {
+        stop(presetName);
     });
+
+    server.proc = spawnProcess(server);
+    writePidFile(server);
+    parser.listen(server);
 
     console.log('Started server', server.name, 'PID:', server.proc.pid);
     servers[presetName] = server;
@@ -52,9 +73,7 @@ var status = function(server) {
         return 1;
     }
     catch (e) {
-        fs.unlink(server.pidFile, function(err) {
-            if(err) return console.error(err);
-        });
+        handleExit(server);
         return -1;
     }
 };

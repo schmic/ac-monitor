@@ -3,13 +3,6 @@ var fs = require('fs');
     fs.extra = require('fs-extra');
 var env = require('./env');
 
-var handleExit = function(server) {
-    fs.unlink(server.pidFile, function(err) {
-        if(err) return console.error(err);
-        console.log('Server process exit, removing pid file: ', server.pidFile);
-    });
-};
-
 var copyFile = function(fromPath, toPath, fileName) {
     return require('fs-sync').copy(
         path.join(fromPath, fileName),
@@ -40,17 +33,32 @@ var prepareServerPath = function(preset) {
 };
 
 module.exports = function (presetName) {
+    var events = require('events');
+    var eventEmitter = new events.EventEmitter();
+
     var preset = require('./preset')(presetName);
+    prepareServerPath(preset);
+
     return {
         preset: preset,
         name: preset.serverName,
-        isReady: prepareServerPath(preset),
         pidFile: getPidFile(preset),
         workPath: getServerWorkPath(preset),
-        logFile: undefined,
+        log: undefined,
         proc: undefined,
-        session: undefined,
-        // functions
-        handleExit: handleExit
+        // objects
+        session: {
+            track: undefined,
+            name: undefined,
+            index: undefined,
+            type: undefined,
+            time: undefined,
+            laps: undefined,
+            drivers : {},
+            laptimes : {}
+        },
+        // events
+        on: eventEmitter.on,
+        emit: eventEmitter.emit
     }
 };
