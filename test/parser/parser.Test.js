@@ -3,7 +3,7 @@ var assert = require('assert');
 
 describe('Parser', function() {
     before(function() {
-        this.server = require('../../libs/server')('CCN1_E02-Race-Grid 2');
+        this.server = require('../../libs/server')('testEvent01');
     });
     // after(function() {});
     // beforeEach(function() {});
@@ -17,15 +17,26 @@ describe('Parser', function() {
     describe('inputstream01.log', function() {
         it('should be parsed', function(done) {
             this.timeout(10000);
-            var logFile = path.join('test', 'data', 'inputstream01.log');
-            var stream = require('fs').createReadStream(logFile);
+            var stream = require('fs').createReadStream(path.join('test', 'acData', 'inputstream01.log'));
+            this.server.proc = {
+                "stdout": stream,
+                "stderr": require('stream').Transform()
+            };
 
-            require('../../libs/server-parser')(this.server, stream);
+            this.server.on('endsession', function(session) {
+                if(session.name == undefined)
+                    return;
+                console.log('Session', session.name, 'ends, laptimes:');
+                console.log(session.laptimes);
+            });
 
-            stream.on('end', function(server) {
-                console.log(server);
-                done();
-            }.bind(null, this.server));
+            require('../../libs/server-parser').listen(this.server);
+
+            stream.on('end', function() {
+                setTimeout(function() {
+                    done();
+                }, 5000);
+            }.bind(this.server));
         });
     });
 });
