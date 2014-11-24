@@ -24,8 +24,8 @@ describe('Preset', function(){
             assert.equal('Mocha-UnitTesting', this.p_test01.serverName);
         });
         it('udp-/http-ports should be 9701/19701', function() {
-            assert.equal(9701, this.p_test01.get('PORT'));
-            assert.equal(19701, this.p_test01.get('HTTP_PORT'));
+            assert.equal(9701, this.p_test01.ini.SERVER.PORT);
+            assert.equal(19701, this.p_test01.ini.SERVER.HTTP_PORT);
         });
 
     });
@@ -52,7 +52,7 @@ describe('Preset', function(){
             assert.equal('11:30:00', this.p_test01.timeOfDay);
         });
         it('maxClients should be 20', function() {
-            assert.equal(20, this.p_test01.get('MAX_CLIENTS'));
+            assert.equal(20, this.p_test01.ini.SERVER.MAX_CLIENTS);
         });
     });
     describe('sessionsCheck', function() {
@@ -86,42 +86,6 @@ describe('Preset', function(){
     describe('entryListCheck', function() {
         it('#numOfDrivers should be 2', function() {
             assert.equal(2, Object.keys(this.p_test01.entries).length);
-        });
-        it('should have bookings for GUIDs', function() {
-            var presets = env.getPresetNames();
-            var isBooked = false;
-            for(var i = 0; i < presets.length; i++) {
-                var p = require('../libs/preset')(presets[i]);
-                if(p.isBooked(this.p_test01_guid)) {
-                    isBooked = true;
-                }
-            }
-            assert.equal(true, isBooked);
-        });
-        it('get booking for GUID', function() {
-            var booking = require('../libs/preset')('test-booking').getBooking(this.p_test01_guid);
-            assert.notEqual(null, booking);
-        });
-        it('update booking for GUID', function() {
-            var p = require('../libs/preset')('test-booking');
-            var booking = p.getBooking(this.p_test01_guid);
-            booking.TEAM = 'someWeirdStringForATeam';
-            assert.equal(true, p.setBooking(booking));
-        });
-        it('insert new booking', function() {
-            var booking = {};
-            booking.DRIVERNAME = 'Test-Dummy-Insert';
-            booking.TEAM = 'added from test';
-            booking.GUID = '0987654321';
-            booking.MODEL = 'bmw_m3_e30_dtm';
-            booking.SKIN = 'bmw';
-            booking.SPECTATOR_MODE = '0';
-            assert.equal(true, require('../libs/preset')('test-booking').setBooking(booking));
-        });
-        it('delete previous booking', function() {
-            var guid = '0987654321';
-            assert.equal(true, require('../libs/preset')('test-booking').deleteBooking(guid));
-            assert.equal(null, require('../libs/preset')('test-booking').getBooking(guid));
         });
     });
 });

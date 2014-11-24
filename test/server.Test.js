@@ -14,9 +14,6 @@ describe('Server', function(){
         it('should not be undefined', function() {
             assert.notEqual(undefined, this.server);
         });
-        it('should have an -init logfile', function() {
-            assert.notEqual(null, this.server.logFile.match(/-init-server\.log$/));
-        });
     });
 
 });
