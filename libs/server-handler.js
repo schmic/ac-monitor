@@ -41,6 +41,7 @@ var start = function(presetName) {
     }
 
     server.on('stopserver', function(presetName) {
+        // does stop itself at the end
         stop(presetName);
     });
 
@@ -55,6 +56,7 @@ var start = function(presetName) {
 
 var stop = function(presetName) {
     var server = servers[presetName];
+    // FIXME -- upload laptimes before exiting
     server.proc.kill();
     console.log('Stopped server', server.name, 'PID:', server.proc.pid);
     delete servers[presetName];

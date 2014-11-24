@@ -23,6 +23,10 @@ describe('Parser', function() {
                 "stderr": require('stream').Transform()
             };
 
+            this.server.on('bestlap', function(driverObject) {
+                console.log('best lap for', driverObject.driver, 'with', driverObject.laptime);
+            });
+
             this.server.on('endsession', function(session) {
                 if(session.name == undefined)
                     return;

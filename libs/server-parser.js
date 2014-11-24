@@ -140,8 +140,7 @@ exports.listen = function (server) {
         .pipe(es.map(function (line, cb) {
             var toSeconds = function (timeStr) {
                 var timeParts = timeStr.split(':');
-                var seconds = parseInt(timeParts[0]) * 60 + parseInt(timeParts[1]) + parseInt(timeParts[2]) / 1000;
-                return seconds;
+                return parseInt(timeParts[0]) * 60 + parseInt(timeParts[1]) + parseInt(timeParts[2]) / 1000;
             };
 
             var driverByName = function(session, name) {
@@ -167,7 +166,9 @@ exports.listen = function (server) {
                         "car": driver.MODEL,
                         "track": server.session.track,
                         "guid": driver.GUID,
-                        "time": lapTime
+                        "laptime": lapTime,
+                        "time": new Date().toISOString(),
+                        "session": server.session.type
                     };
                     server.emit('bestlap', server.session.laptimes[driver.GUID])
                 }
