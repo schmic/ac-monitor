@@ -1,44 +1,39 @@
 {
-    "name": "acMonitor",
-    "description": "Assetto Corsa Server Control & Monitor",
-    "version": "0.1.0",
-    "main": "acMonitor.js",
-    "private": true,
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/schmic/acMonitor.git"
-    },
-    "licenses": [
-        {
-            "type": "MIT",
-            "url": "https://raw.githubusercontent.com/schmic/acMonitor/master/LICENSE"
-        }
-    ],
-    "bugs": {
-        "url": "https://github.com/schmic/acMonitor/issues"
-    },
-    "dependencies": {
-        "express": "4.*",
-        "express-session": "*",
-        "cookie-parser": "*",
-        "serve-static": "*",
-        "express-handlebars": "*",
-        "socket.io": "*",
-        "passport": "*",
-        "passport-steam": "*",
-        "config": "*",
-        "minimist": "*",
-        "ini": "*",
-        "fs-sync": "*",
-        "event-stream": "*",
-        "fs-extra": "*",
-        "tingodb": "*"
-    },
-    "devDependencies": {
-        "mocha": "*"
-    },
-    "scripts": {
-        "start": "node acMonitor.js",
-        "test": "node node_modules\\mocha\\bin\\mocha --reporter list"
+  "name": "ac-monitor",
+  "description": "Assetto Corsa Server Control & Monitor",
+  "version": "0.1.0",
+  "main": "acMonitor.js",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/schmic/acMonitor.git"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://raw.githubusercontent.com/schmic/acMonitor/master/LICENSE"
     }
+  ],
+  "bugs": {
+    "url": "https://github.com/schmic/acMonitor/issues"
+  },
+  "dependencies": {
+    "express": "4.*",
+    "express-session": "*",
+    "cookie-parser": "*",
+    "serve-static": "*",
+    "express-handlebars": "*",
+    "socket.io": "*",
+    "passport": "*",
+    "passport-steam": "*",
+    "tingodb": "*",
+    "ac-server-ctrl": "schmic/acServerCtrl"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  },
+  "scripts": {
+    "start": "node acMonitor.js",
+    "test": "node node_modules\\mocha\\bin\\mocha --reporter list"
+  }
 }
