@@ -34,13 +34,14 @@ describe('Parser', function() {
                 console.log(session.laptimes);
             });
 
-            require('../../libs/server-parser').listen(this.server);
-
-            stream.on('end', function() {
+            this.server.on('stopserver', function() {
+                stream.destroy();
                 setTimeout(function() {
                     done();
-                }, 5000);
-            }.bind(this.server));
+                }, 2000);
+            });
+
+            require('../../libs/server-parser').listen(this.server);
         });
     });
 });
