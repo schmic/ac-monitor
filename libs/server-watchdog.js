@@ -1,5 +1,5 @@
 var cfg = require('config');
-var ac = require('./server-handler');
+var ac = require('ac-server-ctrl');
 var History = require('../models/history');
 
 var checkServers = function () {
