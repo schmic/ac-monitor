@@ -27,7 +27,11 @@
     "passport": "*",
     "passport-steam": "*",
     "tingodb": "*",
-    "ac-server-ctrl": "schmic/acServerCtrl"
+    "config": "*",
+    "ini": "*",
+    "fs-sync": "*",
+    "fs-extra": "*",
+    "ac-server-ctrl": "schmic/ac-server-ctrl"
   },
   "devDependencies": {
     "mocha": "*"
