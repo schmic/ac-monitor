@@ -1,5 +1,5 @@
 var router = require('express').Router();
-var ac = require('../libs/server-handler');
+var ac = require('ac-server-ctrl');
 
 router.get('/', function (req, res) {
     res.redirect('/');

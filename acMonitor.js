@@ -1,7 +1,7 @@
 var path     = require('path');
 var cfg      = require('config');
 var passport = require('./libs/passport-steam');
-var ac       = require('./libs/server-handler');
+var ac       = require('ac-server-ctrl');
 
 var app      = require('express')();
 app.set('views', path.join(__dirname, 'views'));
