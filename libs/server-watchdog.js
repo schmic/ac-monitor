@@ -4,7 +4,7 @@ var History = require('../models/history');
 
 var checkServers = function () {
     for (var presetName in ac.servers) {
-        if(ac.status(ac.servers[presetName]) < 1) {
+        if(ac.status(presetName) < 1) {
             History.add('Watchdog', 'Preset ' + presetName + ' found dead', function(err, res) {
                 if(err) return console.error(err);
                 console.error('Dead server', presetName, 'found');
@@ -13,7 +13,6 @@ var checkServers = function () {
             autoRestart(presetName);
         }
     }
-    setTimeout(checkServers, cfg.ACM.watchdog.interval);
 };
 
 var autoRestart = function (presetName) {
@@ -41,6 +40,6 @@ var autoStart = function () {
 };
 
 exports.start = function() {
-    setTimeout(checkServers, cfg.ACM.watchdog.interval);
+    setInterval(checkServers, cfg.ACM.watchdog.interval);
     autoStart();
 };

@@ -42,7 +42,6 @@ app.use(function(req, res, next) {
     if(Object.keys(ac.servers).length > 0) {
         req.session.servers = {};
         for(var p in ac.servers) {
-            console.log('server', p);
             req.session.servers[p] = {
                 name: ac.servers[p].name,
                 preset: p
@@ -80,8 +79,6 @@ io.use(function(socket, next) {
 });
 
 io.on('connection', function (socket) {
-    console.log('new connection', socket.id);
-
     if(socket.handshake.session.isAdmin) {
         require('./libs/socket-handler-admin')(socket);
     }
@@ -91,7 +88,17 @@ io.on('connection', function (socket) {
     });
 });
 
-// Server Watchdog
+// Start Server Watchdog
+//
 require('./libs/server-watchdog').start();
+
+ac.on('serverstart', function(server) {
+    server.on('nextsession', function(session) {
+        io.to(server.preset.presetName, 'session', session);
+    });
+    server.on('bestlap', function(lap) {
+        io.to(server.preset.presetName, 'lap', lap);
+    });
+});
 
 module.exports = app;

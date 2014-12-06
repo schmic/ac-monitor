@@ -1,6 +1,6 @@
+var ac = require('ac-server-ctrl');
 var History = require('../models/history');
 var contentHandler = require('./content-handler');
-
 var printf = require('util').format;
 
 function deletePreset(data, cb) {
@@ -25,24 +25,26 @@ function savePreset(data, cb) {
 }
 
 function startServer(socket, data, cb) {
-    data.valid = require('ac-server-ctrl').start(data.name);
+    data.valid = ac.start(data.name);
     data.msg = printf('Preset %s %s', data.name, data.valid ? 'started' : 'could not be started');
     console.log('admin.server.start', data);
+    cb(data);
+
     var user = socket.handshake.session.passport.user || 'Nobody';
     History.add(user,  data.msg, function(err, res) {
         if(err) return console.error(err);
-        cb(data);
     });
 }
 
 function stopServer(socket, data, cb) {
-    data.valid = require('ac-server-ctrl').stop(data.name);
+    data.valid = ac.stop(data.name);
     data.msg = printf('Preset %s %s', data.name, data.valid ? 'stopped' : 'could not be stopped');
     console.log('admin.server.stop', data);
+    cb(data);
+
     var user = socket.handshake.session.passport.user || 'Nobody';
     History.add(user, data.msg, function(err, res) {
         if(err) return console.error(err);
-        cb(data);
     });
 }
 

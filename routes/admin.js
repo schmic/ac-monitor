@@ -32,7 +32,7 @@ router.get('/servers', function(req, res) {
     ctx.servers = [];
     for(var presetName in ac.servers) {
         var server = ac.servers[presetName];
-        if(ac.isRunning(server)) {
+        if(ac.status(server.preset.presetName)) {
             ctx.servers.push({
                 preset: server.preset.presetName,
                 name: server.name
@@ -54,14 +54,14 @@ router.get('/presets/edit/:preset', function (req, res) {
     req.session.title = 'Edit Preset';
     var ctx = {};
     ctx.session = req.session;
-    ctx.preset = require('../libs/preset')(req.params.preset);
+    ctx.preset = ac.env.getPreset(req.params.preset);
     res.render('admin/edit/preset', ctx);
 });
 
 router.get('/presets/export/:preset', function (req, res) {
     var ctx = {};
     ctx.session = req.session;
-    ctx.preset = require('../libs/preset')(req.params.preset);
+    ctx.preset = ac.env.getPreset(req.params.preset);
     ctx.layout = false;
     res.render('api/json', ctx);
 });
