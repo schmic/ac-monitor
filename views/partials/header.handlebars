@@ -8,12 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link type="text/plain" rel="author" href="/humans.txt"/>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <style>
-        body {
-            padding-top: 50px;
-            padding-bottom: 20px;
-        }
-    </style>
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/acMonitor.css">
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/vendor/jquery-2.1.1.min.js"></script>
+    <script src="/js/vendor/bootstrap.min.js"></script>
+    <script src="/js/vendor/handlebars.runtime-v2.0.0.js"></script>
+    {{#if session.isAdmin}}
+        <script src="/js/acAdmin.js"></script>
+    {{/if}}
+    <script src="/js/acClient.js"></script>
 </head>

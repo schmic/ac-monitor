@@ -83,17 +83,25 @@ io.on('connection', function (socket) {
         require('./libs/socket-handler-admin')(socket);
     }
 
-    socket.on('disconnect', function() {
-        console.log('client disconnected', socket.id);
+    socket.on('session connect', function(presetName) {
+        console.log('socket.session.connect', presetName);
+        socket.join(presetName);
+        socket.emit('session', ac.servers[presetName].session);
     });
+
+    socket.on('disconnect', function() {
+        console.log('client disconnected:', socket.id);
+    });
+
+    console.log('client connected: ', socket.id);
 });
 
 ac.on('serverstart', function(server) {
     server.on('nextsession', function(session) {
-        io.to(server.preset.presetName, 'session', session);
+        io.to(server.preset.presetName).emit('session', session);
     });
     server.on('lap', function(lap) {
-        io.to(server.preset.presetName, 'lap', lap);
+        io.to(server.preset.presetName).emit('lap', lap);
     });
 });
 

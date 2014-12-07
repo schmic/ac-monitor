@@ -89,3 +89,17 @@
         </div>
     </div>
 </div>
+<script type="application/javascript">
+    socket.on('session', function(session) {
+        console.log('session', session);
+    });
+
+    socket.on('lap', function(lap) {
+        console.log('lap', lap);
+    });
+
+    $(function() {
+        socket.emit('session connect', '{{ server.preset.presetName}}');
+    });
+
+</script>
