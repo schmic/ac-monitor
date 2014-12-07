@@ -88,17 +88,23 @@ io.on('connection', function (socket) {
     });
 });
 
-// Start Server Watchdog
-//
-require('./libs/server-watchdog').start();
-
 ac.on('serverstart', function(server) {
     server.on('nextsession', function(session) {
         io.to(server.preset.presetName, 'session', session);
     });
-    server.on('bestlap', function(lap) {
+    server.on('lap', function(lap) {
         io.to(server.preset.presetName, 'lap', lap);
     });
+});
+
+// Start Server Watchdog
+//
+require('./libs/server-watchdog').start();
+
+// Thats bad and ugly but it works for now
+//
+process.on('uncaughtException', function(err) {
+    console.log('Caught exception: ' + err);
 });
 
 module.exports = app;
