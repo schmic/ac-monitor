@@ -15,6 +15,6 @@ socket.on('message', function(data) {
 });
 
 socket.cb = function(call) {
-    console.log(call);
-    if(call.reload) location.reload();
+    console.log('[cb]', call);
+    call.reload && location.reload();
 };
