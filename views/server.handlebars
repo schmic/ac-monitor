@@ -6,9 +6,9 @@
     {{#if server.preset.hasPickupMode}}<span class="label label-success">Pickup Mode</span>{{/if}}
 </div>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-xs-4 col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">Session</h3>
@@ -18,9 +18,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
+            <div class="col-xs-4 col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">Settings</h3>
@@ -55,27 +53,25 @@
                     </table>
                 </div>
             </div>
-        </div>
-        {{#if server.preset.hasDynamicTrack}}
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Dynamic Track</h3>
-                        </div>
-                        <table class="table">
-                            <tr><td>Grip</td><td>##UNKNOWN##</td></tr>
-                            <tr><td>Start</td><td>{{server.preset.ini.DYNAMIC_TRACK.SESSION_START}}%</td></tr>
-                            <tr><td>Random</td><td>{{server.preset.ini.DYNAMIC_TRACK.RANDOMNESS}}%</td></tr>
-                            <tr><td>Gain</td><td>{{server.preset.ini.DYNAMIC_TRACK.LAP_GAIN}} Lap/s</td></tr>
-                            <tr><td>Transfer</td><td>{{server.preset.ini.DYNAMIC_TRACK.SESSION_TRANSFER}}%</td></tr>
-                        </table>
+            {{#if server.preset.hasDynamicTrack}}
+            <div class="col-xs-4 col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Dynamic Track</h3>
                     </div>
+                    <table class="table">
+                        <tr><td>Grip</td><td>##UNKNOWN##</td></tr>
+                        <tr><td>Start</td><td>{{server.preset.ini.DYNAMIC_TRACK.SESSION_START}}%</td></tr>
+                        <tr><td>Random</td><td>{{server.preset.ini.DYNAMIC_TRACK.RANDOMNESS}}%</td></tr>
+                        <tr><td>Gain</td><td>{{server.preset.ini.DYNAMIC_TRACK.LAP_GAIN}} Lap/s</td></tr>
+                        <tr><td>Transfer</td><td>{{server.preset.ini.DYNAMIC_TRACK.SESSION_TRANSFER}}%</td></tr>
+                    </table>
                 </div>
             </div>
-        {{/if}}
+            {{/if}}
+        </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-9">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Drivers</h3>
