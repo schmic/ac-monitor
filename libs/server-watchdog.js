@@ -4,14 +4,16 @@ var History = require('../models/history');
 
 var checkServers = function () {
     for (var presetName in ac.servers) {
-        if(ac.status(presetName) < 1) {
+        ac.status(presetName, function(presetName, status) {
+            if(status >= 0) {
+                return
+            }
             History.add('Watchdog', 'Preset ' + presetName + ' found dead', function(err, res) {
-                if(err) return console.error(err);
+                if(err) { return console.error(err) };
                 console.error('Dead server', presetName, 'found');
             });
-            delete ac.servers[presetName];
-            autoRestart(presetName);
-        }
+            ac.stop(presetName, autoRestart);
+        });
     }
 };
 
