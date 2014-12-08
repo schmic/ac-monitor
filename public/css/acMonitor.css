@@ -29,7 +29,8 @@ body > footer {
 }
 
 .navbar-brand img {
-	margin-right: 0.5em;
+	display: inline;
+	margin-right: 0.25em;
 }
 
 #adminServers td,
