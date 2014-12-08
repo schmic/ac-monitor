@@ -4,7 +4,7 @@ var cfg = require('config');
 var User = require('../models/user');
 
 var isAdmin = function(identifier) {
-    return identifier in cfg.ACM.admins;
+    return identifier in cfg.admins;
 };
 
 passport.serializeUser(function (profile, done) {

@@ -31,14 +31,16 @@ router.get('/servers', function(req, res) {
     ctx.presets = ac.env.getPresetNames();
     ctx.servers = [];
     for(var presetName in ac.servers) {
-        var server = ac.servers[presetName];
-        if(ac.status(server.preset.presetName)) {
-            ctx.servers.push({
-                preset: server.preset.presetName,
-                name: server.name
-            });
-            ctx.presets.splice(ctx.presets.indexOf(presetName), 1);
-        }
+        ac.status(presetName, function(presetName, status) {
+            if(status) {
+                var server = ac.servers[presetName];
+                ctx.servers.push({
+                    preset: server.preset.presetName,
+                    name: server.name
+                });
+                ctx.presets.splice(ctx.presets.indexOf(presetName), 1);
+            }
+        });
     }
     res.render('admin/servers', ctx);
 });

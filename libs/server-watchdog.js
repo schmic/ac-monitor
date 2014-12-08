@@ -8,7 +8,7 @@ var checkServers = function () {
             if(status >= 0) {
                 return
             }
-            History.add('Watchdog', 'Preset ' + presetName + ' found dead', function(err, res) {
+            History.add('Watchdog', 'Preset ' + presetName + ' found dead', function(err) {
                 if(err) { return console.error(err) };
                 console.error('Dead server', presetName, 'found');
             });
@@ -17,31 +17,33 @@ var checkServers = function () {
     }
 };
 
-var autoRestart = function (presetName) {
-    var restart = cfg.ACM.autostart[presetName];
-    if (restart) {
-        History.add('Watchdog', 'Restart ' + presetName + '', function(err, res) {
-            if(err) return console.error(err);
+var autoRestart = function (restartPresetName) {
+    for (var idx in cfg.get('autostart')) {
+        var presetName = cfg.get('autostart')[idx];
+        if (restartPresetName === presetName) {
             console.log('Restarting', presetName);
-        });
-        ac.start(presetName);
-    }
-};
-
-var autoStart = function () {
-    var autostarts = cfg.ACM.autostart;
-    for (var presetName in autostarts) {
-        if(autostarts[presetName]) {
-            History.add('Watchdog', 'Autostart ' + presetName + '', function(err, res) {
-                if(err) return console.error(err);
-                console.log('Autostarting', presetName);
+            ac.start(presetName, function(presetName) {
+                History.add('Watchdog', 'Restart ' + presetName + '', function(err) {
+                    if(err) return console.error(err);
+                });
             });
-            ac.start(presetName);
         }
     }
 };
 
+var autoStart = function () {
+    for (var idx in cfg.get('autostart')) {
+        var presetName = cfg.get('autostart')[idx];
+        console.log('Autostarting', presetName);
+        ac.start(presetName, function(presetName) {
+            History.add('Watchdog', 'Autostart ' + presetName + '', function(err) {
+                if(err) return console.error(err);
+            });
+        });
+    }
+};
+
 exports.start = function() {
-    setInterval(checkServers, cfg.ACM.watchdog.interval);
+    setInterval(checkServers, (cfg.get('watchdog.interval')*1000));
     autoStart();
 };
