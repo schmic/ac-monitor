@@ -26,7 +26,7 @@ router.get('/server/:preset', function (req, res) {
 router.get('/server/:preset/json', function (req, res) {
     var presetName = req.params.preset;
     var server = ac.servers[presetName];
-    res.render('api/json', { layout: false, server: server });
+    res.render('api/server', { layout: false, server: server });
 });
 
 router.get('/timing/:preset', function (req, res) {
