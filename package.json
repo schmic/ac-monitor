@@ -1,27 +1,27 @@
 {
   "name": "ac-monitor",
   "description": "Assetto Corsa Server Control & Monitor",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "acMonitor.js",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/schmic/acMonitor.git"
+    "url": "https://github.com/schmic/ac-monitor.git"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://raw.githubusercontent.com/schmic/acMonitor/master/LICENSE"
+      "url": "https://raw.githubusercontent.com/schmic/ac-monitor/master/LICENSE"
     }
   ],
   "bugs": {
-    "url": "https://github.com/schmic/acMonitor/issues"
+    "url": "https://github.com/schmic/ac-monitor/issues"
   },
   "dependencies": {
     "express": "4.*",
-    "express-session": "*",
     "cookie-parser": "*",
     "serve-static": "*",
+    "express-session": "*",
     "express-handlebars": "*",
     "socket.io": "*",
     "passport": "*",
