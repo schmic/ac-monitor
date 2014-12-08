@@ -13,9 +13,26 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Session</h3>
                     </div>
-                    <div class="panel-body">
-                        ##UNKNOWN##
-                    </div>
+                    <table class="table">
+                        <tr>
+                            <td>Track</td>
+                            <td>
+                                {{#formatTrack server.session.track}}{{/formatTrack}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Type</td>
+                            <td>{{server.session.type}} ({{server.session.index}})</td>
+                        </tr>
+                        <tr>
+                            <td>Time / Laps</td>
+                            <td>{{server.session.time}} / {{server.session.laps}}</td>
+                        </tr>
+                        <tr>
+                            <td>Clients</td>
+                            <td>{{server.session.driverCount}}/{{server.preset.ini.SERVER.MAX_CLIENTS}}</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
             <div class="col-xs-4 col-md-12">
@@ -31,16 +48,15 @@
                         </tr>
                         <tr>
                             <td>Tracks</td>
-                            <td>{{#each server.preset.tracks}}
-                                <li>{{#formatTrack this}}{{/formatTrack}}</li>{{/each}}</td>
+                            <td>
+                                {{#each server.preset.tracks}}
+                                    <li>{{#formatTrack this}}{{/formatTrack}}</li>
+                                {{/each}}
+                            </td>
                         </tr>
                         <tr>
                             <td>Clock</td>
                             <td>{{ server.preset.timeOfDay }}</td>
-                        </tr>
-                        <tr>
-                            <td>Clients</td>
-                            <td>max. {{server.preset.ini.SERVER.MAX_CLIENTS}}</td>
                         </tr>
                         <tr>
                             <td>Tyre/Fuel</td>
@@ -60,7 +76,7 @@
                         <h3 class="panel-title">Dynamic Track</h3>
                     </div>
                     <table class="table">
-                        <tr><td>Grip</td><td>##UNKNOWN##</td></tr>
+                        <tr><td>Grip</td><td>{{server.session.dynamictrack.grip}}%</td></tr>
                         <tr><td>Start</td><td>{{server.preset.ini.DYNAMIC_TRACK.SESSION_START}}%</td></tr>
                         <tr><td>Random</td><td>{{server.preset.ini.DYNAMIC_TRACK.RANDOMNESS}}%</td></tr>
                         <tr><td>Gain</td><td>{{server.preset.ini.DYNAMIC_TRACK.LAP_GAIN}} Lap/s</td></tr>
