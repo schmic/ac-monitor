@@ -1,6 +1,10 @@
 var Car = require('../models/car');
 var Track = require('../models/track');
 
+exports.json = function(obj) {
+    return JSON.stringify(obj);
+};
+
 exports.formatTrack = function(track) {
     return Track.findByName(track);
 };
@@ -22,12 +26,14 @@ exports.if_eq = function(a, b, opts) {
         return opts.inverse(this);
 };
 
-exports.json = function(obj) {
-    return JSON.stringify(obj);
-};
-
 exports.formatTime = function(timestr) {
     var t = new Date(timestr);
     return t.toTimeString().split(' (').shift();
 };
 
+exports.remainingTime = function(timestr, duration) {
+    var now = new Date();
+    var end = new Date(timestr);
+    end.setMinutes(end.getMinutes()+duration);
+    return ((end-now)/1000/60).toFixed(0);
+};

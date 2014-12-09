@@ -79,31 +79,43 @@ io.use(function(socket, next) {
 });
 
 io.on('connection', function (socket) {
+    console.log('client connected: ', socket.id);
+
     if(socket.handshake.session.isAdmin) {
         require('./libs/socket-handler-admin')(socket);
     }
-
-    socket.on('session connect', function(presetName) {
-        console.log('socket.session.connect', presetName);
-        socket.join(presetName);
-        socket.emit('session', ac.servers[presetName].session);
-    });
 
     socket.on('disconnect', function() {
         console.log('client disconnected:', socket.id);
     });
 
-    console.log('client connected: ', socket.id);
+    socket.on('view.server', function(presetName) {
+        console.log('on.view.server', presetName);
+        socket.emit('render', {
+            "server" : {
+                "preset": ac.servers[presetName].preset,
+                "session": ac.servers[presetName].session
+            }
+        });
+        socket.join(presetName);
+    });
 });
 
 ac.on('serverstart', function(server) {
     server.on('nextsession', function(session) {
-        io.to(server.preset.presetName).emit('session', session);
-    });
-    server.on('lap', function(lap) {
-        io.to(server.preset.presetName).emit('lap', lap);
+        io.to(server.preset.presetName).emit('render', {
+            "server" : {
+                "preset": server.preset,
+                "session": session
+            }
+        });
     });
 });
+
+ac.on('serverstop', function(server) {
+    io.to(server.preset.presetName).emit('stop', { "server": server });
+});
+
 
 // Start Server Watchdog
 //
@@ -111,8 +123,10 @@ require('./libs/server-watchdog').start();
 
 // Thats bad and ugly but it works for now
 //
-process.on('uncaughtException', function(err) {
-    console.log('Caught exception: ' + err);
-});
+if(process.env.NODE_ENV !== 'development') {
+    process.on('uncaughtException', function(err) {
+        console.log('Caught exception: ' + err);
+    });
+}
 
 module.exports = app;
