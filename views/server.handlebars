@@ -124,12 +124,8 @@
     socket.on('render', function (data) {
         console.log('on.render', data);
         if (data.hasOwnProperty('server')) {
-            var t;
-            t = Handlebars.getTemplate('session-table');
-            $('table#session').replaceWith(t(data.server));
-
-            t = Handlebars.getTemplate('grip-bar');
-            $('div#grip').replaceWith(t(data.server.session.dynamictrack));
+            $('table#session').replaceWith(Handlebars.getTemplate('session-table')(data.server));
+            $('div#grip').replaceWith(Handlebars.getTemplate('grip-bar')(data.server.session.dynamictrack));
         }
     });
 
