@@ -1,117 +1,175 @@
 <div id="header" class="page-header">
-    <h3>Server <small>&raquo; {{ server.name }}</small></h3>
+    <h3>
+        Server
+        <small>&raquo; {{ server.preset.serverName }}</small>
+    </h3>
     {{#if server.preset.hasPassword}}<span class="label label-warning">Password</span>{{/if}}
-    {{#if server.preset.hasPenalties}}<span class="label label-danger">Penalties</span>{{/if}}
-    {{#if server.preset.hasDynamicTrack}}<span class="label label-info">Dynamic Track</span>{{/if}}
     {{#if server.preset.hasPickupMode}}<span class="label label-success">Pickup Mode</span>{{/if}}
+    {{#if server.preset.hasDynamicTrack}}<span class="label label-info">Dynamic Track</span>{{/if}}
+    {{#if server.preset.hasPenalties}}<span class="label label-danger">Penalties</span>{{/if}}
 </div>
 <div class="row">
     <div class="col-md-3">
         <div class="row">
             <div class="col-xs-4 col-md-12">
-                <div class="panel panel-default">
+                <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">Session</h3>
                     </div>
                     <table class="table">
                         <tr>
-                            <td>Track</td>
-                            <td>
-                                {{#formatTrack server.session.track}}{{/formatTrack}}
+                            <td colspan="2" class="text-center">
+                                {{#if server.preset.hasBookingSession}}
+                                    {{#if typeBooking}}
+                                        <span class="label label-primary">{{ server.preset.bookingSession.NAME }}</span>
+                                    {{else}}
+                                        <span class="label label-default">{{ server.preset.bookingSession.NAME }}</span>
+                                    {{/if}}
+                                {{/if}}
+                                {{#if server.preset.hasPracticeSession}}
+                                    {{#if 1}}
+                                        <span class="label label-success">{{ server.preset.practiceSession.NAME }}</span>
+                                    {{else}}
+                                        <span class="label label-default">{{ server.preset.practiceSession.NAME }}</span>
+                                    {{/if}}
+                                {{/if}}
+                                {{#if server.preset.hasQualifySession}}
+                                    {{#if typeQualify}}
+                                        <span class="label label-warning">{{ server.preset.qualifySession.NAME }}</span>
+                                    {{else}}
+                                        <span class="label label-default">{{ server.preset.qualifySession.NAME }}</span>
+                                    {{/if}}
+                                {{/if}}
+                                {{#if server.preset.hasRaceSession}}
+                                    {{#if typeRace}}
+                                        <span class="label label-danger">{{ server.preset.raceSession.NAME }}</span>
+                                    {{else}}
+                                        <span class="label label-default">{{ server.preset.raceSession.NAME }}</span>
+                                    {{/if}}
+                                {{/if}}
                             </td>
                         </tr>
                         <tr>
-                            <td>Type</td>
-                            <td>{{server.session.type}} ({{server.session.index}})</td>
+                            <td>Start:</td>
+                            <td>{{formatTime server.session.starttime }}</td>
                         </tr>
                         <tr>
-                            <td>Time / Laps</td>
-                            <td>{{server.session.time}} / {{server.session.laps}}</td>
+                            <td>Remaining:</td>
+                            <td>{{ server.session.time }}</td>
                         </tr>
                         <tr>
-                            <td>Clients</td>
-                            <td>{{server.session.driverCount}}/{{server.preset.ini.SERVER.MAX_CLIENTS}}</td>
+                            <td>Laps:</td>
+                            <td>{{ server.session.laps }}</td>
                         </tr>
                     </table>
                 </div>
             </div>
             <div class="col-xs-4 col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Settings</h3>
+                <div class="panel panel-primary">
+                    <div class="panel-heading ">
+                        <h3 class="panel-title">Info</h3>
                     </div>
-                    <table class="table">
-                        <tr>
-                            <td>Cars</td>
-                            <td>{{#each server.preset.cars}}
-                                <li>{{#formatCar this}}{{/formatCar}}</li>{{/each}}</td>
-                        </tr>
+                    <table class="table table-bordered">
                         <tr>
                             <td>Tracks</td>
-                            <td>
+                            <td colspan="2">
                                 {{#each server.preset.tracks}}
                                     <li>{{#formatTrack this}}{{/formatTrack}}</li>
                                 {{/each}}
                             </td>
                         </tr>
                         <tr>
+                            <td>Cars</td>
+                            <td colspan="2">{{#each server.preset.cars}}
+                                <li>{{#formatCar this}}{{/formatCar}}</li>{{/each}}</td>
+                        </tr>
+                        <tr>
                             <td>Clock</td>
-                            <td>{{ server.preset.timeOfDay }}</td>
+                            <td colspan="2">{{ server.preset.timeOfDay }}</td>
                         </tr>
                         <tr>
-                            <td>Tyre/Fuel</td>
-                            <td>{{server.preset.ini.SERVER.TYRE_WEAR_RATE}}% / {{server.preset.ini.SERVER.FUEL_RATE}}%</td>
+                            <td style="width: 33%">Tyre</td>
+                            <td style="width: 33%">Fuel</td>
+                            <td style="width: 33%">Damage</td>
                         </tr>
                         <tr>
-                            <td>Damge</td>
+                            <td>{{server.preset.ini.SERVER.TYRE_WEAR_RATE}}%</td>
+                            <td>{{server.preset.ini.SERVER.FUEL_RATE}}%
                             <td>{{server.preset.ini.SERVER.DAMAGE_MULTIPLIER}}%</td>
                         </tr>
                     </table>
                 </div>
             </div>
             {{#if server.preset.hasDynamicTrack}}
-            <div class="col-xs-4 col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Dynamic Track</h3>
+                <div class="col-xs-4 col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Dynamic Track</h3>
+                        </div>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td>Grip</td>
+                                <td colspan="3">{{server.session.dynamictrack.grip}}%</td>
+                            </tr>
+                            <tr>
+                                <td>Start (+/-)</td>
+                                <td>Laps / %</td>
+                                <td>Transfer</td>
+                            </tr>
+                            <tr>
+                                <td>{{server.preset.ini.DYNAMIC_TRACK.SESSION_START}}% ({{server.preset.ini.DYNAMIC_TRACK.RANDOMNESS}})</td>
+                                <td>{{server.preset.ini.DYNAMIC_TRACK.LAP_GAIN}} </td>
+                                <td>{{server.preset.ini.DYNAMIC_TRACK.SESSION_TRANSFER}}%</td>
+                            </tr>
+                        </table>
                     </div>
-                    <table class="table">
-                        <tr><td>Grip</td><td>{{server.session.dynamictrack.grip}}%</td></tr>
-                        <tr><td>Start</td><td>{{server.preset.ini.DYNAMIC_TRACK.SESSION_START}}%</td></tr>
-                        <tr><td>Random</td><td>{{server.preset.ini.DYNAMIC_TRACK.RANDOMNESS}}%</td></tr>
-                        <tr><td>Gain</td><td>{{server.preset.ini.DYNAMIC_TRACK.LAP_GAIN}} Lap/s</td></tr>
-                        <tr><td>Transfer</td><td>{{server.preset.ini.DYNAMIC_TRACK.SESSION_TRANSFER}}%</td></tr>
-                    </table>
                 </div>
-            </div>
             {{/if}}
         </div>
     </div>
     <div class="col-md-9">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Drivers</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Timing</h3>
+                    </div>
+                    <table class="table table-hover table-striped">
+                        <tr>
+                            <th>Pos.</th>
+                            <th>Name</th>
+                            <th>Car</th>
+                            <th>Last</th>
+                            <th>Best</th>
+                            <th>Lap/s</th>
+                        </tr>
+                        <tr>
+                            <td>1.</td>
+                            <td>Michael Scherer</td>
+                            <td>BMW M3 E30 DTM</td>
+                            <td><span class="label label-danger">+0.494</span> &raquo; 1:42:384</td>
+                            <td>1:41:890</td>
+                            <td>10</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
-            <table class="table">
-                <tr><th>Name</th><th>Car</th><th>Skin</th><th>Lap/s</th></tr>
-                <tr><td>Not</td></tr>
-                <tr><td>Not</td><td>Yet</td></tr>
-                <tr><td>Not</td><td>Yet</td><td>Done</td></tr>
-            </table>
         </div>
     </div>
 </div>
 <script type="application/javascript">
-    socket.on('session', function(session) {
-        console.log('session', session);
+    socket.on('render', function (data) {
+        console.log('on.render', data);
+        if(data.hasOwnProperty('session')) {
+
+        }
     });
 
-    socket.on('lap', function(lap) {
-        console.log('lap', lap);
+    socket.on('stop', function(server) {
+        console.log('server stopped', server);
     });
 
-    $(function() {
-        socket.emit('session connect', '{{ server.preset.presetName}}');
+    $(function () {
+        socket.emit('view.server', '{{ server.preset.presetName}}');
     });
-
 </script>
