@@ -25,3 +25,9 @@ exports.if_eq = function(a, b, opts) {
 exports.json = function(obj) {
     return JSON.stringify(obj);
 };
+
+exports.formatTime = function(timestr) {
+    var t = new Date(timestr);
+    return t.toTimeString().split(' (').shift();
+};
+
