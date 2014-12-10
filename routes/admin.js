@@ -36,7 +36,7 @@ router.get('/servers', function(req, res) {
                 var server = ac.servers[presetName];
                 ctx.servers.push({
                     preset: server.preset.presetName,
-                    name: server.name
+                    name: server.preset.serverName
                 });
                 ctx.presets.splice(ctx.presets.indexOf(presetName), 1);
             }
