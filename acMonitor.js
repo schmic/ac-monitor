@@ -41,10 +41,10 @@ app.use(passport.session());
 app.use(function(req, res, next) {
     if(Object.keys(ac.servers).length > 0) {
         req.session.servers = {};
-        for(var p in ac.servers) {
-            req.session.servers[p] = {
-                name: ac.servers[p].name,
-                preset: p
+        for(var presetName in ac.servers) {
+            req.session.servers[presetName] = {
+                name: ac.servers[presetName].preset.serverName,
+                preset: presetName
             };
         }
     }
