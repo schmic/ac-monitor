@@ -16,6 +16,7 @@ cars["bmw_z4"] = "BMW Z4";
 cars["bmw_z4_drift"] = "BMW Z4 Drift";
 cars["bmw_z4_gt3"] = "BMW Z4 GT3";
 cars["bmw_z4_s1"] = "BMW Z4 S1";
+cars["shelby_cobra_427sc"] = "Shelby Cobra 427 SC";
 cars["ferrari_312t"] = "Ferrari 312t";
 cars["ferrari_458"] = "Ferrari 458";
 cars["ferrari_458_s3"] = "Ferrari 458 S3";
