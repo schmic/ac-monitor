@@ -25,26 +25,30 @@ function savePreset(data, cb) {
 }
 
 function startServer(socket, data, cb) {
-    data.valid = ac.start(data.name);
-    data.msg = printf('Preset %s %s', data.name, data.valid ? 'started' : 'could not be started');
-    console.log('admin.server.start', data);
-    cb(data);
+    ac.start(data.name, function(presetName) {
+        data.valid = true;
+        data.msg = printf('Preset %s %s', presetName, data.valid ? 'started' : 'could not be started');
+        console.log('admin.server.start', data);
+        cb(data);
 
-    var user = socket.handshake.session.passport.user || 'Nobody';
-    History.add(user,  data.msg, function(err, res) {
-        if(err) return console.error(err);
+        var user = socket.handshake.session.passport.user || 'Nobody';
+        History.add(user,  data.msg, function(err, res) {
+            if(err) return console.error(err);
+        });
     });
 }
 
 function stopServer(socket, data, cb) {
-    data.valid = ac.stop(data.name);
-    data.msg = printf('Preset %s %s', data.name, data.valid ? 'stopped' : 'could not be stopped');
-    console.log('admin.server.stop', data);
-    cb(data);
+    ac.stop(data.name, function(presetName) {
+        data.valid = true;
+        data.msg = printf('Preset %s %s', presetName, data.valid ? 'stopped' : 'could not be stopped');
+        console.log('admin.server.stop', data);
+        cb(data);
 
-    var user = socket.handshake.session.passport.user || 'Nobody';
-    History.add(user, data.msg, function(err, res) {
-        if(err) return console.error(err);
+        var user = socket.handshake.session.passport.user || 'Nobody';
+        History.add(user, data.msg, function(err, res) {
+            if(err) return console.error(err);
+        });
     });
 }
 
