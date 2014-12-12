@@ -118,7 +118,12 @@ ac.on('serverstart', function(server) {
 });
 
 ac.on('serverstop', function(server) {
-    io.to(server.preset.presetName).emit('stop', { "server": server });
+    io.to(server.preset.presetName).emit('stop', {
+        "server" : {
+            "preset": server.preset,
+            "session": session
+        }
+    });
 });
 
 
