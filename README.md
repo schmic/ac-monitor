@@ -2,7 +2,7 @@
 AC-Monitor is a really time web-application to configure, run and monitor multiple 
 instances of [Assetto Corsa](http://store.steampowered.com/app/244210) [Servers](https://steamdb.info/app/302550/).
 
-In the case you found any bugs or problems please open an [issue](https://github.com/schmic/acMonitor/issues).
+In the case you found any bugs or problems please open an [issue](https://github.com/schmic/ac-monitor/issues).
 I would be happy to merge your [pull-requests](https://help.github.com/articles/creating-a-pull-request) as well.
 
 ## Requirements
@@ -11,30 +11,30 @@ I would be happy to merge your [pull-requests](https://help.github.com/articles/
  * [npm](https://www.npmjs.org/) integrated into your NodeJS
  * Add NodeJS installation path to your PATH variable
  * `Assetto Corsa` or `Assetto Corsa Dedicated Server` installed via Steam or [SteamCMD](https://developer.valvesoftware.com/wiki/SteamCMD)
-    * See the [acMonitor-Wiki](https://github.com/schmic/acMonitor/wiki) for help with SteamCMD
 
 ## Installation
-* Download the [latest release](https://github.com/schmic/acMonitor/releases) of acMonitor
-    * Or get the latest [development version](https://github.com/schmic/acMonitor/archive/master.zip) (*hint* might be broken)
+* Download the [latest release](https://github.com/schmic/ac-monitor/releases) of ac-monitor
+    * Or get the latest [development version](https://github.com/schmic/ac-monitor/archive/master.zip)
 * Extract in anywhere on your system
-* Open a shell/dos-box and change into your `acMonitor` folder
-* install NodeJS modules by executing:
+* Open a shell
+* Change into your `ac-monitor` folder
+* Install NodeJS modules by executing:
     > npm install --production
 
 ## Configuration
 
-Currently you need to restart acMonitor (and all AC servers) to activate a new configuration.
+Currently you need to restart ac-monitor, which will restart all AC servers as well, to load any configuration changes.
 
 The following steps should be done by editing the `default.json` file in the config directory.
 
 #### AC-Server Directory
-* Set the directory for `AC.installpath` to refer to your Assetto Corsa Server directory
+* Set the directory for `ac.path` to refer to your Assetto Corsa Server directory
     * On Windows you **must** use double backslashes when setting your path!
     * might be relative or absolute path
     
 #### Host & Port
 * Change `http.host` and `http.port`
-    * `http.host` must be the same as your Steam-API-Key `domainname`
+    * `http.host` should be the same as your Steam-API-Key `domainname`
     * must be a valid `hostname` on your system (`localhost` is valid as well)
      
 #### Steam-API-Key
@@ -50,13 +50,7 @@ The following steps should be done by editing the `default.json` file in the con
 ## Running
 
 #### Windows
-    > .../bin/start.bat
+    > .../ac-monitor/bin/start.bat
     
 #### Linux
-    > .../bin/start.sh
-
-## Screenshots
-![acMonitorScreenshot](https://thumb6.wuala.com/previewImage/schmic/VR/AC/acMonitor/acMonitor-20141021.png/)
-
-## acCtrl
-**TODO**
+    > .../ac-monitor/bin/start.sh

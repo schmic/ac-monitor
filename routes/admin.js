@@ -3,10 +3,6 @@ var ac = require('ac-server-ctrl');
 var History = require('../models/history');
 
 function isAccessAllowed (req, res, next) {
-    if(req.headers.host.match(/^localhost/)) {
-        // enable admin interface without authorization
-        req.session.isAdmin = true;
-    }
     req.session.isAdmin ? next() : res.redirect('/');
 }
 

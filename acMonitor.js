@@ -52,6 +52,11 @@ app.use(function(req, res, next) {
     req.session.isAuthenticated = req.user ? true : false;
     req.session.isAdmin = req.user && req.user.isAdmin;
 
+    if(req.headers.host.match(/^localhost/)) {
+        // enable admin interface without authorization
+        req.session.isAdmin = true;
+    }
+
     next();
 });
 
@@ -123,10 +128,10 @@ require('./libs/server-watchdog').start();
 
 // Thats bad and ugly but it works for now
 //
-//if(process.env.NODE_ENV !== 'development') {
-//    process.on('uncaughtException', function(err) {
-//        console.log('Caught exception: ' + err);
-//    });
-//}
+if(process.env.NODE_ENV !== 'development') {
+    process.on('uncaughtException', function(err) {
+        console.log('Caught exception: ' + err);
+    });
+}
 
 module.exports = app;

@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="col-xs-4 col-md-12">
-                <div class="panel panel-primary">
+                <div class="panel panel-default">
                     <div class="panel-heading ">
                         <h3 class="panel-title">Info</h3>
                     </div>
@@ -61,7 +61,7 @@
             </div>
             {{#if server.preset.hasDynamicTrack}}
                 <div class="col-xs-4 col-md-12">
-                    <div class="panel panel-primary">
+                    <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">Dynamic Track</h3>
                         </div>
@@ -121,11 +121,36 @@
     </div>
 </div>
 <script type="application/javascript">
+    function paddy(n, p, c) {
+        var pad_char = typeof c !== 'undefined' ? c : '0';
+        var pad = new Array(1 + p).join(pad_char);
+        return (pad + n).slice(-pad.length);
+    }
+
+    function getEndDateTime(start, duration) {
+        var end = new Date(start);
+        end.setMinutes(end.getMinutes()+duration);
+        return end;
+    }
+
     socket.on('render', function (data) {
         console.log('on.render', data);
         if (data.hasOwnProperty('server')) {
             $('table#session').replaceWith(Handlebars.getTemplate('session-table')(data.server));
             $('div#grip').replaceWith(Handlebars.getTemplate('grip-bar')(data.server.session.dynamictrack));
+
+            $('#countdown').countdown({
+                date: getEndDateTime(data.server.session.starttime, data.server.session.time).toString(),
+                render: function(timeLeft) {
+                    var tStr = '~';
+                    tStr += paddy(timeLeft.hours, 2);
+                    tStr += ':';
+                    tStr += paddy(timeLeft.min, 2);
+                    tStr += ':';
+                    tStr += paddy(timeLeft.sec, 2);
+                    $(this.el).html(tStr);
+                }
+            });
         }
     });
 
@@ -192,7 +217,7 @@
         \{{else}}
             <tr>
                 <td>Remaining:</td>
-                <td>\{{remainingTime session.starttime session.time }} min.</td>
+                <td id="countdown">NaN</td>
             </tr>
         \{{/if_eq}}
     </table>
