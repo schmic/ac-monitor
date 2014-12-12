@@ -43,7 +43,7 @@ app.use(function(req, res, next) {
         req.session.servers = {};
         for(var p in ac.servers) {
             req.session.servers[p] = {
-                name: ac.servers[p].name,
+                name: ac.servers[p].preset.serverName,
                 preset: p
             };
         }
@@ -123,10 +123,10 @@ require('./libs/server-watchdog').start();
 
 // Thats bad and ugly but it works for now
 //
-if(process.env.NODE_ENV !== 'development') {
-    process.on('uncaughtException', function(err) {
-        console.log('Caught exception: ' + err);
-    });
-}
+//if(process.env.NODE_ENV !== 'development') {
+//    process.on('uncaughtException', function(err) {
+//        console.log('Caught exception: ' + err);
+//    });
+//}
 
 module.exports = app;
