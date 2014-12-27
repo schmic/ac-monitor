@@ -115,6 +115,18 @@ ac.on('serverstart', function(server) {
             }
         });
     });
+
+    server.on('connectcar', function(car) {
+        console.log('connectcar', car);
+    });
+
+    server.on('disconnectcar', function(car) {
+        console.log('disconnectcar', car);
+    });
+
+    server.on('lap', function(lap) {
+        console.log('lap', lap);
+    });
 });
 
 ac.on('serverstop', function(server) {

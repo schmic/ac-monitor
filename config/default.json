@@ -6,8 +6,7 @@
     "watchdog": {
         "interval": 10
     },
-    "autostart": [
-    ],
+    "autostart": [],
     "ac": {
         "path": "C:\\Program Files (x86)\\Steam\\SteamApps\\common\\Assetto Corsa Dedicated Server"
     },
