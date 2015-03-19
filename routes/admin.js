@@ -78,4 +78,20 @@ router.get('/cars', function(req, res) {
     res.render('admin/cars', ctx);
 });
 
+router.get('/ajax/servers', function(req, res) {
+    var servers = [];
+    for(var presetName in ac.servers) {
+        ac.status(presetName, function(presetName, status) {
+            if(status) {
+                var server = ac.servers[presetName];
+                servers.push({
+                    preset: server.preset.presetName,
+                    name: server.preset.serverName
+                });
+            }
+        });
+    }
+    res.json(servers);
+});
+
 module.exports = router;

@@ -84,7 +84,11 @@ io.use(function(socket, next) {
 });
 
 io.on('connection', function (socket) {
-    console.log('client connected: ', socket.id);
+    console.log('client connected: ', socket.id, ' - ', socket.handshake.address);
+
+    if (socket.handshake.address == "127.0.0.1" || socket.handshake.address == "::ffff:127.0.0.1" || socket.handshake.address == "::1") {
+        socket.handshake.session.isAdmin = true;
+    }
 
     if(socket.handshake.session.isAdmin) {
         require('./libs/socket-handler-admin')(socket);
