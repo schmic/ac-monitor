@@ -48,22 +48,6 @@ router.get('/presets', function(req, res) {
     res.render('admin/presets', ctx);
 });
 
-router.get('/presets/edit/:preset', function (req, res) {
-    req.session.title = 'Edit Preset';
-    var ctx = {};
-    ctx.session = req.session;
-    ctx.preset = ac.env.getPreset(req.params.preset);
-    res.render('admin/edit/preset', ctx);
-});
-
-router.get('/presets/export/:preset', function (req, res) {
-    var ctx = {};
-    ctx.session = req.session;
-    ctx.preset = ac.env.getPreset(req.params.preset);
-    ctx.layout = false;
-    res.render('api/json', ctx);
-});
-
 router.get('/tracks', function(req, res) {
     req.session.title = 'Tracks';
     var ctx = { session: req.session };
@@ -76,22 +60,6 @@ router.get('/cars', function(req, res) {
     var ctx = { session: req.session };
     ctx.cars = ac.env.getCarNames();
     res.render('admin/cars', ctx);
-});
-
-router.get('/ajax/servers', function(req, res) {
-    var servers = [];
-    for(var presetName in ac.servers) {
-        ac.status(presetName, function(presetName, status) {
-            if(status) {
-                var server = ac.servers[presetName];
-                servers.push({
-                    preset: server.preset.presetName,
-                    name: server.preset.serverName
-                });
-            }
-        });
-    }
-    res.json(servers);
 });
 
 module.exports = router;

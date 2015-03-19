@@ -64,6 +64,7 @@ app.use('/', require('./routes/index'));
 app.use('/view', require('./routes/view'));
 app.use('/auth', require('./routes/auth'));
 app.use('/admin', require('./routes/admin'));
+app.use('/ajax', require('./routes/ajax'));
 
 // Start HTTP-Server with App
 //

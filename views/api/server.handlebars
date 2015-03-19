@@ -1,9 +1,10 @@
 {
-    "name": "{{ server.name }}"
+    "name": "{{ server.preset.serverName }}"
     "preset": "{{ server.preset.presetName }}",
-    "tracks": [{{#each server.preset.tracks}}"{{this}}",{{/each}}],
+    "tracks": {{server.preset.track}}",
     "cars": [{{#each server.preset.cars}}"{{this}}",{{/each}}],
     "timeofday": "{{ server.preset.timeOfDay }}",
-    "hasPassword": "{{ server.preset.hasPassword }}",
-    "hasPenalties": "{{ server.preset.hasPenalties }}"
+    "hasPassword": {{ server.preset.hasPassword }},
+    "hasPenalties": {{ server.preset.hasPenalties }},
+    "session": {{ server.session.drivers }}
 }
