@@ -32,15 +32,27 @@ var autoRestart = function (restartPresetName) {
 };
 
 var autoStart = function () {
-    for (var idx in cfg.get('autostart')) {
-        var presetName = cfg.get('autostart')[idx];
-        console.log('Autostarting', presetName);
-        ac.start(presetName, function(presetName) {
-            History.add('Watchdog', 'Autostart ' + presetName + '', function(err) {
-                if(err) return console.error(err);
-            });
+    var startServers = cfg.get('autostart');
+    require('fs').readFile('config/running.json', { encoding: 'UTF-8' }, function(err, data) {
+        if(err) throw err;
+
+        startServers = startServers.concat(JSON.parse(data).servers).filter(function(elem, pos) {
+            return startServers.indexOf(elem) == pos;
         });
-    }
+
+        console.log('Autostart for presets:', startServers);
+
+        for (var idx in startServers) {
+            var presetName = startServers[idx];
+            console.log('Autostarting', presetName);
+            ac.start(presetName, function(presetName) {
+                History.add('Watchdog', 'Autostart ' + presetName + '', function(err) {
+                    if(err) return console.error(err);
+                });
+            });
+        }
+    });
+
 };
 
 exports.start = function() {

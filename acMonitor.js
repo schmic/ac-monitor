@@ -107,26 +107,34 @@ io.on('connection', function (socket) {
 });
 
 ac.on('serverstart', function(server) {
-    server.on('nextsession', function(session) {
+    server.on('nextsession', function (session) {
         io.to(server.preset.presetName).emit('render', {
-            "server" : {
+            "server": {
                 "preset": server.preset,
                 "session": session
             }
         });
     });
 
-    server.on('connectcar', function(car) {
+    server.on('connectcar', function (car) {
         console.log('connectcar', car);
     });
 
-    server.on('disconnectcar', function(car) {
+    server.on('disconnectcar', function (car) {
         console.log('disconnectcar', car);
     });
 
-    server.on('lap', function(lap) {
+    server.on('lap', function (lap) {
         console.log('lap', lap);
     });
+
+    var running = JSON.stringify({ servers: Object.keys(ac.servers)})
+    require('fs').writeFile("config/running.json", running, function(err) {
+            if(err) {
+                console.error(err);
+            }
+        }
+    );
 });
 
 ac.on('serverstop', function(server) {
@@ -135,6 +143,13 @@ ac.on('serverstop', function(server) {
             "preset": server.preset
         }
     });
+    var running = JSON.stringify({ servers: Object.keys(ac.servers)})
+    require('fs').writeFile("config/running.json", running, function(err) {
+            if(err) {
+                console.error(err);
+            }
+        }
+    );
 });
 
 
