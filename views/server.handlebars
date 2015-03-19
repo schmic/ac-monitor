@@ -30,11 +30,14 @@
                     </div>
                     <table class="table table-bordered">
                         <tr>
-                            <td>Tracks</td>
+                            <td>Track</td>
                             <td colspan="2">
-                                {{#each server.preset.tracks}}
-                                    <li>{{#formatTrack this}}{{/formatTrack}}</li>
-                                {{/each}}
+                                <li>
+                                    {{#formatTrack server.preset.track}}{{/formatTrack}}
+                                    {{#if server.preset.trackConfig}}
+                                        ({{server.preset.trackConfig}})
+                                    {{/if}}
+                                </li>
                             </td>
                         </tr>
                         <tr>
