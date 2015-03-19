@@ -44,7 +44,7 @@ var autoStart = function () {
         });
     }
 
-    console.log('Autostart for presets:', startServers, data);
+    console.log('Autostart for presets:', startServers);
 
     for (var idx in startServers) {
         var presetName = startServers[idx];
