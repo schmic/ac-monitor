@@ -131,14 +131,6 @@ ac.on('serverstart', function(server) {
     server.on('lap', function (lap) {
         console.log('lap', lap);
     });
-
-    var running = JSON.stringify({ servers: Object.keys(ac.servers)})
-    require('fs').writeFile("config/running.json", running, function(err) {
-            if(err) {
-                console.error(err);
-            }
-        }
-    );
 });
 
 ac.on('serverstop', function(server) {
@@ -147,15 +139,7 @@ ac.on('serverstop', function(server) {
             "preset": server.preset
         }
     });
-    var running = JSON.stringify({ servers: Object.keys(ac.servers)})
-    require('fs').writeFile("config/running.json", running, function(err) {
-            if(err) {
-                console.error(err);
-            }
-        }
-    );
 });
-
 
 // Start Server Watchdog
 //
