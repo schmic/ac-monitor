@@ -1,27 +1,28 @@
-var tracks = {};
-tracks['drag400'] = "Dragstrip 400";
-tracks['drag1000'] = "Dragstrip 1000";
-tracks['drift'] = "Drift";
-tracks['imola'] = "Imola";
-tracks['magione'] = "Magione";
-tracks['monza'] = "Monza";
-tracks['monza66'] = "Monza '66";
-tracks['mugello'] = "Mugello";
-tracks['nurburgring'] = "Nürgburgring GP";
-tracks['nurburgring-sprint'] = "Nürburgring Sprint";
-tracks['silverstone'] = "Silverstone";
-tracks['silverstone-international'] = "Silverstone International";
-tracks['vallelunga'] = "Vallelunga";
-tracks['vallelunga-club'] = "Vallelunga Club";
-tracks['salzburgring'] = "Salzburgring";
-tracks['spa'] = "Spa-Francorchamps";
-tracks['blackwood'] = "Blackwood GP";
+var ac = require('ac-server-ctrl');
+var fs = require('fs');
+var path = require('path');
 
-var findByName = function(name) {
-    return name in tracks ? tracks[name] : name;
+var tracks = {};
+require('glob')('**/ui_track.json', { cwd: ac.env.getTracksPath() }, function(err, files) {
+  files.forEach(function(file) {
+    fs.readFile(path.join(ac.env.getTracksPath(), file), { encoding: 'UTF-8'}, function(err, data) {
+      data = data.replace(/(\r\n|\n|\r|\t)/gm,"");
+      var splits = file.split("/");
+      var trackName = splits.length === 3 ? splits[0] : splits[0] + '-' + splits[2];
+      tracks[trackName] = JSON.parse(data);
+    });
+  })
+});
+
+var getName = function(name) {
+    return name in tracks ? tracks[name].name : name;
+};
+
+var getDescription = function(name) {
+    return name in tracks ? tracks[name].description : undefined;
 };
 
 module.exports = {
-    findByName: findByName
+    getName: getName,
+    getDescription: getDescription
 };
-

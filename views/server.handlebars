@@ -33,10 +33,7 @@
                             <td>Track</td>
                             <td colspan="2">
                                 <li>
-                                    {{#formatTrack server.preset.track}}{{/formatTrack}}
-                                    {{#if server.preset.trackConfig}}
-                                        ({{server.preset.trackConfig}})
-                                    {{/if}}
+                                    {{#formatTrack server.preset.track server.preset.trackConfig}}{{/formatTrack}}
                                 </li>
                             </td>
                         </tr>

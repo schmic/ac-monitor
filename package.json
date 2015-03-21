@@ -31,6 +31,7 @@
     "ini": "*",
     "fs-sync": "*",
     "fs-extra": "*",
+    "glob": "*",
     "ac-server-ctrl": "schmic/ac-server-ctrl"
   },
   "devDependencies": {

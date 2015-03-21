@@ -5,12 +5,12 @@ exports.json = function(obj) {
     return JSON.stringify(obj);
 };
 
-exports.formatTrack = function(track) {
-    return Track.findByName(track);
+exports.formatTrack = function(track, trackConfig) {
+    return trackConfig ? Track.getName(track + '-' + trackConfig) : Track.getName(track);
 };
 
 exports.formatCar = function(car) {
-    return Car.findByName(car);
+    return Car.getName(car);
 };
 
 exports.formatTimestamp = function() {

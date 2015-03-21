@@ -58,6 +58,26 @@ var autoStart = function () {
 
 };
 
+ac.on('serverstart', function(server) {
+    var running = JSON.stringify({ servers: Object.keys(ac.servers)})
+    require('fs').writeFile("config/running.json", running, function(err) {
+            if(err) {
+                console.error(err);
+            }
+        }
+    );
+});
+
+ac.on('serverstop', function(server) {
+    var running = JSON.stringify({ servers: Object.keys(ac.servers)})
+    require('fs').writeFile("config/running.json", running, function(err) {
+            if(err) {
+                console.error(err);
+            }
+        }
+    );
+});
+
 exports.start = function() {
     setInterval(checkServers, (cfg.get('watchdog.interval')*1000));
     autoStart();
