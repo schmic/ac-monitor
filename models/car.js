@@ -6,9 +6,11 @@ var cars = {};
 require('glob')('**/ui_car.json', { cwd: ac.env.getCarsPath() }, function(err, files) {
   files.forEach(function(file) {
     fs.readFile(path.join(ac.env.getCarsPath(), file), { encoding: 'UTF-8'}, function(err, data) {
-      data = data.replace(/(\r\n|\n|\r|\t)/gm,"");
+      data = JSON.parse(data.replace(/(\r\n|\n|\r|\t)/gm,""));
       var carName = file.split("/").shift();
-      cars[carName] = JSON.parse(data);
+      cars[carName] = {
+        name : data.name
+      }
     });
   })
 });
@@ -21,7 +23,12 @@ var getDescription = function(name) {
     return name in cars ? cars[name].description : undefined;
 };
 
+var getAll = function() {
+  return cars;
+}
+
 module.exports = {
+    getAll: getAll,
     getName: getName,
     getDescription: getDescription
 };
