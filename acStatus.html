@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>VRev Server-Status</title>
+</head>
+<body>
+
+	<!-- HTML template -->
+	<script type="text/javascript" src="https://pure.github.io/pure/libs/pure.js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+	<div>
+		<ul class="serverList" style="list-style-type: none">
+			<li class="serverWrapper">
+				<div class="server" style="padding-bottom: 1em">
+					<p class="name"></p>
+					<p>Strecke/n: <span class="track"></span> <span class="trackConfig"></span></p>
+					<p>Fahrzeug/e: <span class="cars"></span></p>
+					<p>Fahrer <span class="clients">?</span> / <span class="maxclients"></span></p>
+					<p>Uhrzeit: <span class="timeofday"></span></p>
+					<p>Session: <span class="session"></span></p>
+				</div>
+			</li>
+		</ul>
+	</div>
+
+
+	<script>
+		var sessionTypes = ['Booking', 'Training', 'Qualify', 'Race'];
+		directive = {
+			'.name': 'preset.serverName'
+			,'.clients': function() {
+				return Object.keys(this.session.drivers).length;
+			}
+			,'.maxclients': 'preset.ini.SERVER.MAX_CLIENTS'
+			,'.track': 'preset.track'
+			,'.trackConfig': 'preset.trackConfig'
+			,'.cars': 'preset.cars'
+			,'.session': 'session.name'
+			,'.timeofday': 'preset.timeOfDay'
+		};
+
+
+		var template = $p('li.serverWrapper').compile(directive);
+		$('li.serverWrapper:first').css('display', 'none');
+
+		$.get('http://localhost:8081/ajax/servers', function(servers) {
+			$.each(servers, function(idx, server) {
+				$.get('http://localhost:8081/ajax/servers/'+server.preset, function(serverInfo) {
+					$('ul.serverList').append(template(serverInfo));
+				});
+			})
+		})
+	</script>
+</body>
+</html>
