@@ -1,6 +1,12 @@
 var router = require('express').Router();
 var ac = require('ac-server-ctrl');
 
+router.get('*', function(req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.type('application/json');
+  next();
+});
+
 router.get('/servers', function(req, res) {
     var servers = [];
     for(var presetName in ac.servers) {
@@ -15,6 +21,7 @@ router.get('/servers', function(req, res) {
         });
     }
     //res.render('api/servers', { layout: false, server: server });
+    res.type('application/json');
     res.json(servers);
 });
 

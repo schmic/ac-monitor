@@ -12,6 +12,7 @@ app.engine('handlebars',
         helpers: require('./libs/hbs-helpers')
     })
 );
+app.use(require('serve-static')(path.join(__dirname, 'public')));
 
 // catch timeouts
 app.use(function(req, res, next) {
@@ -22,8 +23,6 @@ app.use(function(req, res, next) {
     });
     next();
 });
-
-app.use(require('serve-static')(path.join(__dirname, 'public')));
 
 var cookieMiddleware = require('cookie-parser')();
 app.use(cookieMiddleware);
