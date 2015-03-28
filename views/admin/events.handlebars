@@ -1,0 +1,73 @@
+{{> admin/header active_menu_events=true}}
+<div class="row">
+    <div id="adminEvents" class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Available Events</h3>
+            </div>
+            {{#if events}}
+                <table class="table">
+                    <tr><th>Name</th><th>Date</th><th>Autostart</th><th>Delete</th></tr>
+                    {{#each events}}
+                        <tr>
+                            <td>{{this.name}}</td>
+                            <td>{{this.date}}</td>
+                            <td>{{#if this.autostart}}yes{{else}}no{{/if}}</td>
+                            <td>
+                                <button title="Delete event" type="button" class="btn btn-danger btn-xs"
+                                        onclick="handleRemoveEvent('{{this._id}}')">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </table>
+            {{else}}
+                <div class="panel-body">
+                    No events found.
+                </div>
+            {{/if}}
+        </div>
+    </div>
+    <div id="adminEventsUpload" class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Event creation</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label" for="eventname">Event name:</label>
+                    <input class="form-control" type="text" id="eventname" name="eventname" placeholder="Example Trophy Race 01"/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="eventdate">Start time:</label>
+                    <input class="form-control" type="datetime-local" id="eventdate" name="eventdate" placeholder="1970-01-01 00:00:00"/>
+                    <span class="help-block">Format: YYYY-MM-DD HH:MM:SS</span>
+                </div>
+                <div class="radio">
+                    <label class="checkbox">
+                        <input type="checkbox" id="eventautostart" value="true">
+                        Start/Stop Presets?
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="eventpreset">Preset for event:</label>
+                    <select class="form-control" id="eventpreset">
+                        {{#each presets}}<option>{{this}}</option>{{/each}}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="eventpreset">Preset to stop:</label>
+                    <select class="form-control" id="eventstoppreset">
+                        <option></option>
+                        {{#each presets}}<option>{{this}}</option>{{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="panel-footer" style="text-align: right">
+                <button id="uploadbutton" class="btn btn-success" onclick="handleCreateEvent()">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{> admin/footer }}

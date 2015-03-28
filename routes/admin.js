@@ -62,4 +62,30 @@ router.get('/cars', function(req, res) {
     res.render('admin/cars', ctx);
 });
 
+router.get('/events', function(req, res) {
+    req.session.title = 'Events';
+    var ctx = { session: req.session };
+    ctx.presets = ac.env.getPresetNames();
+    require('../models/event').list({}, function(err, events) {
+        ctx.events = events;
+        res.render('admin/events', ctx);
+    });
+});
+
+router.get('/events/edit/:event', function(req, res) {
+    req.session.title = 'Edit Event';
+    var ctx = {};
+    ctx.session = req.session;
+    require('../models/event').collection.findOne({'slug': req.params.event}, function(err, event) {
+        if(err) {
+            res.render('error', { message: err });
+            return console.error(err);
+        }
+        console.log('event', event);
+        ctx.event = event;
+        ctx.eventJSON = JSON.stringify(event);
+        res.render('admin/edit/event', ctx);
+    });
+});
+
 module.exports = router;

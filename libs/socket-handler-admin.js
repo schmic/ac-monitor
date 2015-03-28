@@ -52,13 +52,39 @@ function stopServer(socket, data, cb) {
     });
 }
 
+function saveEvent(socket, data, fn) {
+    var Event = require('../models/event');
+    Event.save(data, function(err, result) {
+        if(err) console.error(err);
+        data.valid = err ? false : true;
+        data.msg = printf('Event %s %s', data.name, data.valid ? 'saved' : 'could not be saved');
+        var user = socket.handshake.session.passport.user || 'Nobody';
+        History.add(user, data.msg, function(err, res) {
+            if(err) return console.error(err);
+            fn(data);
+        });
+        console.log('admin.event.save', data);
+    });
+}
+
+function removeEvent(socket, data, fn) {
+    var Event = require('../models/event');
+    Event.remove(data.id, function(err, result) {
+        if(err) console.error(err);
+        data.valid = err ? false : true;
+        data.msg = printf('Event %s %s', data.name, data.valid ? 'removed' : 'could not be removed');
+        var user = socket.handshake.session.passport.user || 'Nobody';
+        History.add(user, data.msg, function(err, res) {
+            if(err) return console.error(err);
+            fn(data);
+        });
+        console.log('admin.event.remove', data);
+    });
+}
+
 module.exports = function(socket) {
-    //socket.on('admin.tracks.delete', deleteTrack);
-    //socket.on('admin.tracks.validate', validateTrack);
-    //socket.on('admin.tracks.upload', saveTrack);
-    //socket.on('admin.cars.delete', deleteCar);
-    //socket.on('admin.cars.validate', validateCar);
-    //socket.on('admin.cars.upload', saveCar);
+    socket.on('admin.event.save', saveEvent.bind(null, socket));
+    socket.on('admin.event.remove', removeEvent.bind(null, socket));
     socket.on('admin.presets.delete', deletePreset);
     socket.on('admin.presets.validate', validatePreset);
     socket.on('admin.presets.upload', savePreset);

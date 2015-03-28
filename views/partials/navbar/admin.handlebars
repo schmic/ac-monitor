@@ -3,6 +3,7 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
         <ul class="dropdown-menu" role="menu" id="adminList">
             <li {{#if active_menu_overview}}class="active"{{/if}}><a href="/admin/overview">Overview</a></li>
+            <li {{#if active_menu_events}}class="active"{{/if}}><a href="/admin/events">Events</a></li>
             <li {{#if active_menu_servers}}class="active"{{/if}}><a href="/admin/servers">Servers</a></li>
             <li {{#if active_menu_presets}}class="active"{{/if}}><a href="/admin/presets">Presets</a></li>
         </ul>
