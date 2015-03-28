@@ -26,7 +26,7 @@ var getDescription = function(name) {
 
 var getAll = function() {
   return tracks;
-}
+};
 
 module.exports = {
     getAll: getAll,

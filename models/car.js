@@ -25,7 +25,7 @@ var getDescription = function(name) {
 
 var getAll = function() {
   return cars;
-}
+};
 
 module.exports = {
     getAll: getAll,
