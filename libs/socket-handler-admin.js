@@ -57,7 +57,7 @@ function stopServer(data, cb) {
 
 function startEvent(data, fn) {
     console.error('[TODO] admin.event.start');
-    Event.get(data.id, function(err, event) {
+    Event.getOne(data.id, function(err, event) {
         console.log('admin.event.start', event);
         if(err)
             console.error(err);
