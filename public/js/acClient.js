@@ -16,7 +16,9 @@ socket.on('message', function(data) {
 
 socket.cb = function(call) {
     console.log('[cb]', call);
-    call.reload && location.reload();
+    if(call.valid) {
+        location.reload();
+    }
 };
 
 Handlebars.getTemplate = function(name, callback) {

@@ -82,7 +82,7 @@ function handleDelete(name) {
     var wsfunc = 'admin.'+type+'.delete';
 
     var data = {};
-    data.reload = true;
+
     data.name = name;
 
     socket.emit(wsfunc, data, socket.cb);
@@ -94,7 +94,7 @@ function handleUpload() {
 
     var data = { name: undefined, content : {}};
     data.name = $('#contentname').val();
-    data.reload = true;
+
 
     var filelist = getUploadFiles();
 
@@ -126,14 +126,14 @@ function getUploadFiles() {
 function handleStartServer(presetName) {
     var wsfunc = 'admin.server.start';
     var data = { name: presetName };
-    data.reload = true;
+
     socket.emit(wsfunc, data, socket.cb);
 }
 
 function handleStopServer(presetName) {
     var wsfunc = 'admin.server.stop';
     var data = { name: presetName };
-    data.reload = true;
+
     socket.emit(wsfunc, data, socket.cb);
 }
 
@@ -146,7 +146,7 @@ function handleCreateEvent() {
             if(field.id.match(/^event/))
                 data[field.id.replace(/^event/, '')] = $(field).val().trim();
         });
-    data.reload = true;
+
     socket.emit(wsfunc, data, socket.cb);
 }
 
@@ -161,19 +161,13 @@ function handleCopyEvent(event_id) {
 
 function handleStartEvent(event_id) {
     var wsfunc = 'admin.event.start';
-    var data = {
-        id: event_id,
-        reload: true
-    };
+    var data = { id: event_id };
     socket.emit(wsfunc, data, socket.cb);
 }
 
 function handleRemoveEvent(event_id) {
     var wsfunc = 'admin.event.remove';
-    var data = {
-        id: event_id,
-        reload: true
-    };
+    var data = { id: event_id };
     socket.emit(wsfunc, data, socket.cb);
 }
 
