@@ -79,37 +79,20 @@ io.use(function(socket, next) {
         if (err) return next(err);
         sessionMiddleware(req, res, next);
     });
-});
-
-io.on('connection', function registerOnSocket(socket) {
-    console.log('client connected: ', socket.id, ' - ', socket.handshake.address);
 
     if (socket.handshake.address == "127.0.0.1" || socket.handshake.address == "::ffff:127.0.0.1" || socket.handshake.address == "::1") {
         socket.handshake.session.isAdmin = true;
     }
+});
 
+io.on('connection', function registerOnSocket(socket) {
     if(socket.handshake.session.isAdmin) {
         require('./libs/socket-handler-admin')(socket);
     }
-
-    socket.on('disconnect', function() {
-        console.log('client disconnected:', socket.id);
-    });
-
-    socket.on('view.server', function(presetName) {
-        console.log('on.view.server', presetName);
-        socket.emit('render', {
-            "server" : {
-                "preset": ac.servers[presetName].preset,
-                "session": ac.servers[presetName].session
-            }
-        });
-        socket.join(presetName);
-    });
 });
 
-ac.on('serverstart', function(server) {
-    server.on('nextsession', function (session) {
+ac.on(ac.events.server.start, function(server) {
+    server.on(ac.events.session.next, function (session) {
         io.to(server.preset.presetName).emit('render', {
             "server": {
                 "preset": server.preset,
@@ -118,21 +101,17 @@ ac.on('serverstart', function(server) {
         });
     });
 
-    server.on('connectcar', function (car) {
-        console.log('connectcar', car);
+    server.on(ac.events.car.connect, function (car) {
+        console.log(ac.events.car.connect, car);
     });
 
-    server.on('disconnectcar', function (car) {
-        console.log('disconnectcar', car);
-    });
-
-    server.on('lap', function (lap) {
-        console.log('lap', lap);
+    server.on(ac.events.car.disconnect, function (car) {
+        console.log(ac.events.car.disconnect, car);
     });
 });
 
-ac.on('serverstop', function(server) {
-    io.to(server.preset.presetName).emit('stop', {
+ac.on(ac.events.server.stop, function(server) {
+    io.to(server.preset.presetName).emit(ac.events.server.stop, {
         "server" : {
             "preset": server.preset
         }

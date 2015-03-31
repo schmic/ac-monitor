@@ -15,7 +15,10 @@ var add = function (userId, entry, callback) {
 };
 
 var last = function (limit, callback) {
-    collection.find().sort({ tstamp: -1 }).limit(limit).exec(callback);
+    collection.find({})
+        .sort({ tstamp: -1 })
+        .limit(limit)
+        .exec(callback);
 };
 
 module.exports = {
