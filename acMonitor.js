@@ -85,9 +85,12 @@ io.use(function setupSocketAdmin(socket, next) {
     if(cfg.get('http.adminIPs').indexOf(socket.handshake.address) >= 0) {
         socket.handshake.session.isAdmin = true;
     }
+    next();
 });
 
 io.on('connection', function registerOnSocket(socket) {
+    require('./libs/socket-handler')(socket);
+
     if(socket.handshake.session.isAdmin) {
         require('./libs/socket-handler-admin')(socket);
     }
