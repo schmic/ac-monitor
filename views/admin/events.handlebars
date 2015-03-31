@@ -58,13 +58,6 @@
                     <span class="help-block">Format: YYYY-MM-DD HH:MM</span>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="eventpreset">Start Preset:</label>
-                    <select class="form-control" id="eventpreset">
-                        <option selected></option>
-                        {{#each presets}}<option>{{this}}</option>{{/each}}
-                    </select>
-                </div>
-                <div class="form-group">
                     <label class="control-label" for="eventpreset">Stop preset:</label>
                     <select class="form-control" id="eventpresetstop">
                         <option selected></option>
@@ -79,6 +72,13 @@
                     <div class="input-group" style="margin-top: 0.5em">
                         <input class="form-control" type="text" id="eventpreactionparms" name="eventpreactionparms" placeholder="{ id: 1234, foo: true }"/>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="eventpreset">Start Preset:</label>
+                    <select class="form-control" id="eventpreset">
+                        <option selected></option>
+                        {{#each presets}}<option>{{this}}</option>{{/each}}
+                    </select>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="eventpreset">Post-Action / -Params</label>

@@ -66,7 +66,7 @@ router.get('/events', function(req, res) {
     req.session.title = 'Events';
     var ctx = { session: req.session };
     ctx.presets = ac.env.getPresetNames();
-    require('../models/event').list(function(err, events) {
+    require('../models/event').getAll(function(err, events) {
         if(err) return console.error(err);
         ctx.events = events;
         res.render('admin/events', ctx);

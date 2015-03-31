@@ -6,6 +6,8 @@ var convertToSlug = function(str) {
 };
 
 var save = function(event, callback) {
+    delete event.reload;
+
     if(event._id) {
         collection.update({ _id: event._id }, event, {upsert: true}, callback);
     }
@@ -20,13 +22,21 @@ var remove = function(event_id, callback) {
     collection.remove({ _id: event_id }, callback);
 };
 
-var list = function(callback) {
-    collection.find({})
+var getAll = function(callback) {
+    collection
+        .find({})
         .sort({ tstamp: 1 })
         .exec(callback);
 };
 
-var get = function(id, callback) {
+var getDue = function(fromTstamp, toTstamp, callback) {
+    collection
+        .find({ $and: [{ tstamp: { $gt: fromTstamp}}, { tstamp: { $lte: toTstamp}} ]})
+        .sort({ tstamp: 1 })
+        .exec(callback);
+};
+
+var getOne = function(id, callback) {
     collection.findOne({ '_id': id}, callback);
 };
 
@@ -34,6 +44,7 @@ module.exports = {
     collection: collection,
     save: save,
     remove: remove,
-    list: list,
-    get: get
+    getAll: getAll,
+    getDue: getDue,
+    getOne: getOne
 };
