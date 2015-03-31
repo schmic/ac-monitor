@@ -2,7 +2,7 @@ var fs = require('fs');
 var fsExtra = require('fs-extra');
 var env = require('ac-server-ctrl').env;
 
-exports.cars = require('./content-car');
+exports.cars = require('./content-cars');
 exports.tracks = require('./content-tracks');
 
 exports.createContent = function(contentPath, content) {
