@@ -2,9 +2,7 @@ var path = require('path');
 var cfg = require('config');
 var ac = require('ac-server-ctrl');
 
-var app = require('express')({
-    'x-powered-by': false
-});
+var app = require('express')();
 var handlebars = require('express-handlebars')({
     defaultLayout: 'main',
     helpers: require('./libs/hbs-helpers')
@@ -17,6 +15,8 @@ var sessionMiddleware = require('express-session')({
     secret: 'f58e3e18f01ba80ae1472abbd2884b28'
 });
 var serveStatic = require('serve-static')(path.join(__dirname, 'public'));
+
+app.disable('x-powered-by');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'handlebars');
@@ -40,10 +40,12 @@ app.use(passport.session());
 app.use(function setupRequestSession(req, res, next) {
     req.session.servers = {};
     for(var p in ac.servers) {
-        req.session.servers[p] = {
-            name: ac.servers[p].preset.serverName,
-            preset: p
-        };
+        if(ac.servers.hasOwnProperty(p)) {
+            req.session.servers[p] = {
+                name: ac.servers[p].preset.serverName,
+                preset: p
+            };
+        }
     }
 
     req.session.isAuthenticated = req.user ? true : false;
@@ -76,7 +78,9 @@ io.use(function setupSocketSession(socket, next) {
     var req = socket.handshake;
     var res = {};
     cookieMiddleware(req, res, function(err) {
-        if (err) return next(err);
+        if (err) {
+            return next(err);
+        }
         sessionMiddleware(req, res, next);
     });
 });
@@ -105,14 +109,6 @@ ac.on(ac.events.server.start, function(server) {
             }
         });
     });
-
-    server.on(ac.events.car.connect, function (car) {
-        console.log(ac.events.car.connect, car);
-    });
-
-    server.on(ac.events.car.disconnect, function (car) {
-        console.log(ac.events.car.disconnect, car);
-    });
 });
 
 ac.on(ac.events.server.stop, function(server) {
@@ -126,6 +122,13 @@ ac.on(ac.events.server.stop, function(server) {
 // Start Server Watchdog
 //
 require('./libs/server-watchdog').start();
+
+// Load Plugins
+//
+require('./libs/plugins/vr-console-logger');
+require('./libs/plugins/vr-racedb-laptimes');
+//
+cfg.actions.pre['vr-get-entrylist'] = require('./libs/actions/vr-get-entrylist');
 
 module.exports = app;
 

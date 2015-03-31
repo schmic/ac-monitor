@@ -9,8 +9,8 @@ router.get('*', function(req, res, next) {
 
 router.get('/content', function(req, res) {
   res.json({
-    cars: require('../libs/car').getAll(),
-    tracks: require('../libs/track').getAll()
+    cars: require('../libs/content-cars').getAll(),
+    tracks: require('../libs/content-tracks').getAll()
   });
 });
 

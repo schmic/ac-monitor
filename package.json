@@ -33,6 +33,7 @@
     "fs-extra": "*",
     "glob": "*",
     "moment": "*",
+    "request": "*",
     "ac-server-ctrl": "schmic/ac-server-ctrl"
   },
   "devDependencies": {

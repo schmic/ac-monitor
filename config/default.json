@@ -1,27 +1,31 @@
 {
-  "admins": {
-    "STEAM_ID_1": {
-      "name": "AdminName1",
-      "email": "notify@foobar.xyz"
+    "admins": {
+        "STEAM_ID_1": {
+            "name": "AdminName1",
+            "email": "notify@foobar.xyz"
+        },
+        "STEAM_ID_2": {"name": "AdminName2"}
     },
-    "STEAM_ID_2": {"name": "AdminName2"}
-  },
-  "watchdog": {
-    "interval": 10
-  },
-  "autostart": [],
-  "autorestart": false,
-  "ac": {
-    "path": "C:\\Program Files (x86)\\Steam\\SteamApps\\common\\Assetto Corsa Dedicated Server"
-  },
-  "steam": {
-    "api": {
-      "key": ""
+    "watchdog": {
+        "interval": 10
+    },
+    "autostart": [],
+    "autorestart": false,
+    "ac": {
+        "path": "C:\\Program Files (x86)\\Steam\\SteamApps\\common\\Assetto Corsa Dedicated Server"
+    },
+    "steam": {
+        "api": {
+            "key": ""
+        }
+    },
+    "http": {
+        "host": "localhost",
+        "port": 8081,
+        "adminIPs": []
+    },
+    "actions": {
+        "pre": {},
+        "post": {}
     }
-  },
-  "http": {
-    "host": "localhost",
-    "port": 8081,
-    "adminIPs": []
-  }
 }

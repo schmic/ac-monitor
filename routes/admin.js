@@ -1,5 +1,6 @@
 var router = require('express').Router();
 var ac = require('ac-server-ctrl');
+var cfg = require('config');
 var History = require('../models/history');
 
 function isAccessAllowed (req, res, next) {
@@ -66,8 +67,14 @@ router.get('/events', function(req, res) {
     req.session.title = 'Events';
     var ctx = { session: req.session };
     ctx.presets = ac.env.getPresetNames();
+    ctx.actions = {
+        pre: Object.keys(cfg.actions.pre),
+        post: Object.keys(cfg.actions.post)
+    };
     require('../models/event').getAll(function(err, events) {
-        if(err) return console.error(err);
+        if(err) {
+            return console.error(err);
+        }
         ctx.events = events;
         res.render('admin/events', ctx);
     });
