@@ -88,6 +88,8 @@ io.use(function setupSocketAdmin(socket, next) {
 });
 
 io.on('connection', function registerOnSocket(socket) {
+    require('./libs/socket-handler')(socket);
+
     if(socket.handshake.session.isAdmin) {
         require('./libs/socket-handler-admin')(socket);
     }
