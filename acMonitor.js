@@ -49,7 +49,7 @@ app.use(function fillRequestSession(req, res, next) {
     req.session.isAuthenticated = req.user ? true : false;
     req.session.isAdmin = req.user && req.user.isAdmin;
 
-    if(req.headers.host.match(/^localhost/)) {
+    if(cfg.get('http.adminIPs').indexOf(req.client._peername.address) >= 0) {
         req.session.isAdmin = true;
     }
 
@@ -72,15 +72,17 @@ var server = app.listen(httpPort, httpHost);
 // Start Socket.IO-Listener
 //
 var io = require('socket.io').listen(server);
-io.use(function(socket, next) {
+io.use(function setupSocketSession(socket, next) {
     var req = socket.handshake;
     var res = {};
     cookieMiddleware(req, res, function(err) {
         if (err) return next(err);
         sessionMiddleware(req, res, next);
     });
+});
 
-    if (socket.handshake.address == "127.0.0.1" || socket.handshake.address == "::ffff:127.0.0.1" || socket.handshake.address == "::1") {
+io.use(function setupSocketAdmin(socket, next) {
+    if(cfg.get('http.adminIPs').indexOf(socket.handshake.address) >= 0) {
         socket.handshake.session.isAdmin = true;
     }
 });
