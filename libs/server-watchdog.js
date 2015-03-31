@@ -15,21 +15,6 @@ var checkEvents = function() {
 
         events.forEach(function(event) {
             console.info('[TODO] startEvents().event', event);
-
-            if(event.presetstop) {
-                ac.stop(event.presetstop);
-            }
-
-            if(event.preaction) {
-                event.preaction(event.preactionparms);
-            }
-
-            ac.start(event.preset, function startPostAction() {
-                if(event.postaction) {
-                    event.postaction(event.postactionparms);
-                }
-            })
-
         });
     })
 };

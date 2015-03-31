@@ -1,8 +1,8 @@
 var format = require('util').format;
 
 var ac = require('ac-server-ctrl');
+var cfg = require('config');
 var content = require('./content');
-
 var History = require('../models/history');
 var Event = require('../models/event');
 
@@ -59,8 +59,25 @@ function startEvent(data, fn) {
     console.error('[TODO] admin.event.start');
     Event.getOne(data.id, function(err, event) {
         console.log('admin.event.start', event);
-        if(err)
+        if(err) {
             console.error(err);
+        }
+
+        if(event.presetstop) {
+            ac.stop(event.presetstop);
+        }
+
+        if(event.preaction) {
+            var f = cfg.actions.pre[event.preaction];
+            f(event.preactionparms, event.preset, function startAC() {
+                ac.start(event.preset, function startPostAction() {
+                    if(event.postaction) {
+                        cfg.actions.post[event.postaction](event.postactionparms, preset);
+                    }
+                });
+            });
+        }
+
         data.valid = err ? false : true;
         data.msg = format('Event %s %s', data.id, data.valid ? 'started' : 'could not be started');
         fn(data);
