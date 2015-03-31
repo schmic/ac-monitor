@@ -2,7 +2,9 @@ var path = require('path');
 var cfg = require('config');
 var ac = require('ac-server-ctrl');
 
-var app = require('express')();
+var app = require('express')({
+    'x-powered-by': false
+});
 var handlebars = require('express-handlebars')({
     defaultLayout: 'main',
     helpers: require('./libs/hbs-helpers')
@@ -34,6 +36,7 @@ app.use(cookieMiddleware);
 app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
+
 app.use(function fillRequestSession(req, res, next) {
     req.session.servers = {};
     for(var p in ac.servers) {
@@ -61,9 +64,10 @@ app.use('/ajax', require('./routes/ajax'));
 
 // Start HTTP-Server with App
 //
-var server = app.listen(cfg.get('http.port'), function logAppStart() {
-    console.log('acMonitor running at', 'http://' + cfg.http.host + (cfg.http.port !== 80 ? ':'+cfg.http.port : ''));
-});
+var httpHost = cfg.get('http.host');
+var httpPort = cfg.get('http.port');
+console.log('acMonitor running at', 'http://' + httpHost + ':' + httpPort);
+var server = app.listen(httpPort, httpHost);
 
 // Start Socket.IO-Listener
 //
@@ -140,3 +144,5 @@ ac.on('serverstop', function(server) {
 require('./libs/server-watchdog').start();
 
 module.exports = app;
+
+//EOF
