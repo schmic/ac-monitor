@@ -37,7 +37,7 @@ app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(function fillRequestSession(req, res, next) {
+app.use(function setupRequestSession(req, res, next) {
     req.session.servers = {};
     for(var p in ac.servers) {
         req.session.servers[p] = {
