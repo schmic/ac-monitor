@@ -1,5 +1,4 @@
 ## Bugs
-- Server-Ctrl: Check status of preset before start()/stop()
 - Preset upload broken in validatePreset() [ISSUE#7]
 
 ## Features

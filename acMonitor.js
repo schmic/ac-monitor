@@ -1,21 +1,27 @@
-var path     = require('path');
-var cfg      = require('config');
-var passport = require('./libs/passport-steam');
-var ac       = require('ac-server-ctrl');
+var path = require('path');
+var cfg = require('config');
+var ac = require('ac-server-ctrl');
 
-var app      = require('express')();
+var app = require('express')();
+var handlebars = require('express-handlebars')({
+    defaultLayout: 'main',
+    helpers: require('./libs/hbs-helpers')
+});
+var passport = require('./libs/passport-steam');
+var cookieMiddleware = require('cookie-parser')();
+var sessionMiddleware = require('express-session')({
+    saveUninitialized: false,
+    resave: false,
+    secret: 'f58e3e18f01ba80ae1472abbd2884b28'
+});
+var serveStatic = require('serve-static')(path.join(__dirname, 'public'));
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'handlebars');
-app.engine('handlebars',
-    require('express-handlebars')({
-        defaultLayout: 'main',
-        helpers: require('./libs/hbs-helpers')
-    })
-);
-app.use(require('serve-static')(path.join(__dirname, 'public')));
 
-// catch timeouts
-app.use(function(req, res, next) {
+app.engine('handlebars', handlebars);
+
+app.use(function catchTimeout(req, res, next) {
     req.on('error', function (err) {
         console.error(req.url + ' ' + err.stack);
         res.status(504).send('Connection timeout');
@@ -23,36 +29,24 @@ app.use(function(req, res, next) {
     });
     next();
 });
-
-var cookieMiddleware = require('cookie-parser')();
+app.use(serveStatic);
 app.use(cookieMiddleware);
-
-var sessionMiddleware = require('express-session')({
-    saveUninitialized: false,
-    resave: false,
-    secret: 'f58e3e18f01ba80ae1472abbd2884b28'
-});
 app.use(sessionMiddleware);
-
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.use(function(req, res, next) {
-    if(Object.keys(ac.servers).length > 0) {
-        req.session.servers = {};
-        for(var p in ac.servers) {
-            req.session.servers[p] = {
-                name: ac.servers[p].preset.serverName,
-                preset: p
-            };
-        }
+app.use(function fillRequestSession(req, res, next) {
+    req.session.servers = {};
+    for(var p in ac.servers) {
+        req.session.servers[p] = {
+            name: ac.servers[p].preset.serverName,
+            preset: p
+        };
     }
 
     req.session.isAuthenticated = req.user ? true : false;
     req.session.isAdmin = req.user && req.user.isAdmin;
 
     if(req.headers.host.match(/^localhost/)) {
-        // enable admin interface without authorization
         req.session.isAdmin = true;
     }
 
@@ -67,7 +61,7 @@ app.use('/ajax', require('./routes/ajax'));
 
 // Start HTTP-Server with App
 //
-var server = app.listen(cfg.get('http.port'), function() {
+var server = app.listen(cfg.get('http.port'), function logAppStart() {
     console.log('acMonitor running at', 'http://' + cfg.http.host + (cfg.http.port !== 80 ? ':'+cfg.http.port : ''));
 });
 
@@ -83,7 +77,7 @@ io.use(function(socket, next) {
     });
 });
 
-io.on('connection', function (socket) {
+io.on('connection', function registerOnSocket(socket) {
     console.log('client connected: ', socket.id, ' - ', socket.handshake.address);
 
     if (socket.handshake.address == "127.0.0.1" || socket.handshake.address == "::ffff:127.0.0.1" || socket.handshake.address == "::1") {
@@ -144,13 +138,5 @@ ac.on('serverstop', function(server) {
 // Start Server Watchdog
 //
 require('./libs/server-watchdog').start();
-
-// Thats bad and ugly but it works for now
-//
-if(process.env.NODE_ENV !== 'development') {
-    process.on('uncaughtException', function(err) {
-        console.log('Caught exception: ' + err);
-    });
-}
 
 module.exports = app;

@@ -1,18 +1,34 @@
 var cfg = require('config');
+var moment = require('moment');
 var ac = require('ac-server-ctrl');
 var History = require('../models/history');
+var Events = require('../models/event');
+
+var checkEvents = function() {
+    var now = moment().unix();
+    var last = now-cfg.get('watchdog.interval');
+
+    Events.list(function(err, events) {
+        if(err)
+            return console.error(err);
+        events.forEach(function(event) {
+            if(event.tstamp <= now && event.tstamp >= last) {
+                console.warn('[TODO] checkEvents() - handle event', event);
+            }
+        });
+    })
+};
 
 var checkServers = function () {
     for (var presetName in ac.servers) {
         ac.status(presetName, function(presetName, status) {
-            if(status >= 0) {
-                return
+            if(status < 0) {
+                History.add('Watchdog', 'Preset ' + presetName + ' found dead', function(err) {
+                    if(err) { return console.error(err) };
+                    console.error('Dead server', presetName, 'found');
+                });
+                ac.stop(presetName, autoRestart);
             }
-            History.add('Watchdog', 'Preset ' + presetName + ' found dead', function(err) {
-                if(err) { return console.error(err) };
-                console.error('Dead server', presetName, 'found');
-            });
-            ac.stop(presetName, autoRestart);
         });
     }
 };
@@ -37,7 +53,6 @@ var autoStart = function () {
 
     if(fs.existsSync('config/running.json')) {
         var data = fs.readFileSync('config/running.json', { encoding: 'UTF-8' });
-
         startServers = startServers.concat(JSON.parse(data).servers);
         startServers = startServers.filter(function(elem, pos) {
             return startServers.indexOf(elem) == pos;
@@ -58,27 +73,8 @@ var autoStart = function () {
 
 };
 
-ac.on('serverstart', function(server) {
-    var running = JSON.stringify({ servers: Object.keys(ac.servers)})
-    require('fs').writeFile("config/running.json", running, function(err) {
-            if(err) {
-                console.error(err);
-            }
-        }
-    );
-});
-
-ac.on('serverstop', function(server) {
-    var running = JSON.stringify({ servers: Object.keys(ac.servers)})
-    require('fs').writeFile("config/running.json", running, function(err) {
-            if(err) {
-                console.error(err);
-            }
-        }
-    );
-});
-
 exports.start = function() {
     setInterval(checkServers, (cfg.get('watchdog.interval')*1000));
+    setInterval(checkEvents, (cfg.get('watchdog.interval')*1000));
     autoStart();
 };

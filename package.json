@@ -26,12 +26,13 @@
     "socket.io": "*",
     "passport": "*",
     "passport-steam": "*",
-    "tingodb": "*",
+    "nedb": "*",
     "config": "*",
     "ini": "*",
     "fs-sync": "*",
     "fs-extra": "*",
     "glob": "*",
+    "moment": "*",
     "ac-server-ctrl": "schmic/ac-server-ctrl"
   },
   "devDependencies": {

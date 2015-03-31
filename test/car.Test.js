@@ -2,7 +2,7 @@ var assert = require('assert');
 
 describe('Car', function(){
     before(function() {
-        this.Car = require('../models/car');
+        this.Car = require('../libs/car');
     });
     // after(function() {});
     // beforeEach(function() {});

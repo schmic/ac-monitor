@@ -1,16 +1,15 @@
-var Car = require('../models/car');
-var Track = require('../models/track');
+var content = require('./content');
 
 exports.json = function(obj) {
     return JSON.stringify(obj);
 };
 
 exports.formatTrack = function(track, trackConfig) {
-    return trackConfig ? Track.getName(track + '-' + trackConfig) : Track.getName(track);
+    return trackConfig ? content.tracks.getName(track + '-' + trackConfig) : content.tracks.getName(track);
 };
 
 exports.formatCar = function(car) {
-    return Car.getName(car);
+    return content.cars.getName(car);
 };
 
 exports.formatTimestamp = function() {

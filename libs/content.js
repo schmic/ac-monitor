@@ -2,6 +2,9 @@ var fs = require('fs');
 var fsExtra = require('fs-extra');
 var env = require('ac-server-ctrl').env;
 
+exports.cars = require('./car');
+exports.tracks = require('./track');
+
 exports.createContent = function(contentPath, content) {
     try {
         fsExtra.mkdirsSync(contentPath);

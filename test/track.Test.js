@@ -2,7 +2,7 @@ var assert = require('assert');
 
 describe('Track', function(){
     before(function() {
-        this.Track = require('../models/track');
+        this.Track = require('../libs/track');
     });
     // after(function() {});
     // beforeEach(function() {});

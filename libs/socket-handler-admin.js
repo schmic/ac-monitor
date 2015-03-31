@@ -1,8 +1,10 @@
+var format = require('util').format;
+
 var ac = require('ac-server-ctrl');
+var content = require('./content');
+
 var History = require('../models/history');
 var Event = require('../models/event');
-var content = require('./content-handler');
-var format = require('util').format;
 
 function deletePreset(data, cb) {
     data.valid = content.deletePreset(data.name);
@@ -25,7 +27,7 @@ function savePreset(data, cb) {
     cb(data);
 }
 
-function startServer(socket, data, cb) {
+function startServer(data, cb) {
     ac.start(data.name, function(presetName) {
         data.valid = true;
         data.msg = format('Preset %s %s', presetName, data.valid ? 'started' : 'could not be started');
@@ -39,7 +41,7 @@ function startServer(socket, data, cb) {
     });
 }
 
-function stopServer(socket, data, cb) {
+function stopServer(data, cb) {
     ac.stop(data.name, function(presetName) {
         data.valid = true;
         data.msg = format('Preset %s %s', presetName, data.valid ? 'stopped' : 'could not be stopped');
@@ -53,14 +55,15 @@ function stopServer(socket, data, cb) {
     });
 }
 
-function saveEvent(socket, data, fn) {
-    Event.save(data, function(err, event) {
+function startEvent(data, fn) {
+    console.error('[TODO] admin.event.start');
+    Event.get(data.id, function(err, event) {
+        console.log('admin.event.start', event);
         if(err)
             console.error(err);
         data.valid = err ? false : true;
-        data.msg = format('Event %s %s', data.name, data.valid ? 'saved' : 'could not be saved');
+        data.msg = format('Event %s %s', data.id, data.valid ? 'started' : 'could not be started');
         fn(data);
-        console.log('admin.event.save', data);
 
         var user = socket.handshake.session.passport.user || 'Nobody';
         History.add(user, data.msg, function(err, res) {
@@ -70,7 +73,23 @@ function saveEvent(socket, data, fn) {
     });
 }
 
-function removeEvent(socket, data, fn) {
+function saveEvent(data, fn) {
+    Event.save(data, function(err, event) {
+        if(err)
+            console.error(err);
+        data.valid = err ? false : true;
+        data.msg = format('Event %s %s', data.name, data.valid ? 'saved' : 'could not be saved');
+        fn(data);
+
+        var user = socket.handshake.session.passport.user || 'Nobody';
+        History.add(user, data.msg, function(err, res) {
+            if(err)
+                console.error(err);
+        });
+    });
+}
+
+function removeEvent(data, fn) {
     Event.remove(data.id, function(err) {
         if(err)
             console.error(err);
@@ -87,12 +106,15 @@ function removeEvent(socket, data, fn) {
     });
 }
 
-module.exports = function(socket) {
-    socket.on('admin.event.save', saveEvent.bind(null, socket));
-    socket.on('admin.event.remove', removeEvent.bind(null, socket));
+var socket;
+module.exports = function(theSocket) {
+    socket = theSocket;
+    socket.on('admin.event.start', startEvent);
+    socket.on('admin.event.save', saveEvent);
+    socket.on('admin.event.remove', removeEvent);
     socket.on('admin.presets.delete', deletePreset);
     socket.on('admin.presets.validate', validatePreset);
     socket.on('admin.presets.upload', savePreset);
-    socket.on('admin.server.start', startServer.bind(null, socket));
-    socket.on('admin.server.stop', stopServer.bind(null, socket));
+    socket.on('admin.server.start', startServer);
+    socket.on('admin.server.stop', stopServer);
 };

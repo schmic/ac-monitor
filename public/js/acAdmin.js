@@ -138,34 +138,42 @@ function handleStopServer(presetName) {
 }
 
 function handleCreateEvent() {
-    var fields = {
-        'eventname': 'name',
-        'eventdate': 'date',
-        'eventpreset': 'preset',
-        'eventstoppreset': 'stoppreset'
+    var wsfunc = 'admin.event.save';
+    var data = {};
+    $('#adminEventsForm')
+        .find(':input')
+        .each(function readFieldValue(idx, field) {
+            if(field.id.match(/^event/))
+                data[field.id.replace(/^event/, '')] = $(field).val();
+        });
+    data.reload = true;
+    socket.emit(wsfunc, data, socket.cb);
+}
+
+function handleCopyEvent(event_id) {
+    $('#adminEventsForm')
+        .find(':input')
+        .each(function readFieldValue(idx, field) {
+            var tdField = field.id.replace(/^event/, '#event_'+event_id+'_');
+            $(field).val($(tdField).html());
+        });
+}
+
+function handleStartEvent(event_id) {
+    var wsfunc = 'admin.event.start';
+    var data = {
+        id: event_id,
+        reload: true
     };
-
-    var wsfunc = 'admin.event.save';
-    var event = {};
-    for(var key in fields) {
-        event[fields[key]] = $('#'+key).val();
-    }
-    event.autostart = $('#eventautostart').is(':checked');
-    event.reload = true;
-
-    socket.emit(wsfunc, event, socket.cb);
+    socket.emit(wsfunc, data, socket.cb);
 }
 
-function handleSaveEvent() {
-    var wsfunc = 'admin.event.save';
-    var event = JSON.parse($('#eventjson').val());
-    event.reload = true;
-    socket.emit(wsfunc, event, socket.cb);
-}
-
-function handleRemoveEvent(id) {
+function handleRemoveEvent(event_id) {
     var wsfunc = 'admin.event.remove';
-    data = { id: id, reload: true };
+    var data = {
+        id: event_id,
+        reload: true
+    };
     socket.emit(wsfunc, data, socket.cb);
 }
 
