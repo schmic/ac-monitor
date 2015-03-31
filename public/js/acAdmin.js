@@ -144,7 +144,7 @@ function handleCreateEvent() {
         .find(':input')
         .each(function readFieldValue(idx, field) {
             if(field.id.match(/^event/))
-                data[field.id.replace(/^event/, '')] = $(field).val();
+                data[field.id.replace(/^event/, '')] = $(field).val().trim();
         });
     data.reload = true;
     socket.emit(wsfunc, data, socket.cb);
