@@ -6,7 +6,15 @@ var convertToSlug = function(str) {
 };
 
 var save = function(event, callback) {
+    event.presetstop = event.presetstop === '' ? undefined : event.presetstop;
+    event.preaction = event.preaction === '' ? undefined : event.preaction;
+    event.preactionparms = event.preactionparms === '' ? undefined : event.preactionparms;
+    event.postaction = event.postaction === '' ? undefined : event.postaction;
+    event.postactionparms = event.postactionparms === '' ? undefined : event.postactionparms;
+
     delete event.reload;
+
+    console.log('event.save', event);
 
     if(event._id) {
         collection.update({ _id: event._id }, event, {upsert: true}, callback);
