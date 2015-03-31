@@ -32,7 +32,7 @@ var checkServers = function () {
 };
 
 var checkRestartPreset = function (presetName) {
-    if(cfg.get('autostart').indexOf(presetName) >= 0) {
+    if(cfg.get('autorestart') && cfg.get('autostart').indexOf(presetName) >= 0) {
         console.log('Restarting', presetName);
         ac.start(presetName, function(presetName) {
             History.add('Watchdog', 'Restart ' + presetName);
