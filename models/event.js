@@ -1,20 +1,20 @@
 var moment = require('moment');
 var collection = require('../libs/db-helper').open('events');
 
+var removeEmptyStrings = function(event) {
+    Object.keys(event).forEach(function(key) {
+        if(event[key] === '')
+            event[key] = undefined;
+    });
+    return event;
+};
+
 var convertToSlug = function(str) {
     return str.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
 };
 
 var save = function(event, callback) {
-    event.presetstop = event.presetstop === '' ? undefined : event.presetstop;
-    event.preaction = event.preaction === '' ? undefined : event.preaction;
-    event.preactionparms = event.preactionparms === '' ? undefined : event.preactionparms;
-    event.postaction = event.postaction === '' ? undefined : event.postaction;
-    event.postactionparms = event.postactionparms === '' ? undefined : event.postactionparms;
-
-    delete event.reload;
-
-    console.log('event.save', event);
+    event = removeEmptyStrings(event);
 
     if(event._id) {
         collection.update({ _id: event._id }, event, {upsert: true}, callback);
