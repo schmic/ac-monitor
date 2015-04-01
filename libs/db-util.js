@@ -1,19 +1,14 @@
-var Datastore = require('nedb');
+var path = require('path');
+var fsExtra = require('fs-extra');
 
-var collections = {};
-
-var getCollectionFilename = function(collection) {
-    return require('path').join(__dirname, '..', 'config', 'db', collection + '.json');
+var getDabasePath = function() {
+    return path.join(__dirname, '..', 'config', 'db');
 };
 
-module.exports = {
-    open: function(collection) {
-        if(collections.hasOwnProperty(collection) === false) {
-            collections[collection] = new Datastore({
-                filename: getCollectionFilename(collection),
-                autoload: true
-            });
-        }
-        return collections[collection];
-    }
-};
+fsExtra.ensureDirSync(getDabasePath());
+console.info('Database Path:', getDabasePath());
+
+var Db = require('tingodb')().Db;
+var db = new Db(getDabasePath(), {});
+
+module.exports = db;

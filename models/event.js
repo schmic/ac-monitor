@@ -1,5 +1,5 @@
 var moment = require('moment');
-var collection = require('../libs/db-util').open('events');
+var collection = require('../libs/db-util').collection('events.json');
 
 var removeEmptyStrings = function(event) {
     Object.keys(event).forEach(function(key) {
@@ -13,39 +13,39 @@ var convertToSlug = function(str) {
     return str.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
 };
 
-var save = function(event, callback) {
+var save = function(event, cb) {
     event = removeEmptyStrings(event);
 
     if(event._id) {
-        collection.update({ _id: event._id }, event, {upsert: true}, callback);
+        collection.update({ _id: event._id }, event, {upsert: true}, cb);
     }
     else {
         event.slug = convertToSlug(event.name);
         event.tstamp = moment(event.date).unix();
-        collection.insert(event, callback);
+        collection.insert(event, cb);
     }
 };
 
-var remove = function(event_id, callback) {
-    collection.remove({ _id: event_id }, callback);
+var remove = function(event_id, cb) {
+    collection.remove({ _id: event_id }, cb);
 };
 
-var getAll = function(callback) {
+var getAll = function(cb) {
     collection
         .find({})
         .sort({ tstamp: 1 })
-        .exec(callback);
+        .toArray(cb);
 };
 
-var getDue = function(fromTstamp, toTstamp, callback) {
+var getDue = function(fromTstamp, toTstamp, cb) {
     collection
         .find({ $and: [{ tstamp: { $gt: fromTstamp}}, { tstamp: { $lte: toTstamp}} ]})
         .sort({ tstamp: 1 })
-        .exec(callback);
+        .toArray(cb);
 };
 
-var getOne = function(id, callback) {
-    collection.findOne({ '_id': id}, callback);
+var getOne = function(id, cb) {
+    collection.findOne({ '_id': id}, cb);
 };
 
 module.exports = {

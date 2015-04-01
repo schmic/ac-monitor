@@ -1,25 +1,25 @@
-var collection = require('../libs/db-util').open('users');
+var collection = require('../libs/db-util').collection('users.json');
 
-var save = function(user, callback) {
-    collection.update({ steamid: user.steamid }, user, { upsert: 1, w:1 }, callback);
+var save = function(user, cb) {
+    collection.update({ steamid: user.steamid }, user, { upsert: 1, w:1 }, cb);
 };
 
-var remove = function(steamid, callback) {
-    collection.remove({ steamid: steamid}, {w:1}, callback);
+var remove = function(steamid, cb) {
+    collection.remove({ steamid: steamid}, {w:1}, cb);
 };
 
-var findBySteamId = function(id, callback) {
-    findBy('steamid', id, callback);
+var findBySteamId = function(id, cb) {
+    findBy('steamid', id, cb);
 };
 
-var findById = function(id, callback) {
-    findBy('_id', id, callback);
+var findById = function(id, cb) {
+    findBy('_id', id, cb);
 };
 
-var findBy = function(key, value, callback) {
+var findBy = function(key, value, cb) {
     var search = {};
     search[key] = value;
-    collection.findOne(search, callback);
+    collection.findOne(search, cb);
 };
 
 module.exports = {

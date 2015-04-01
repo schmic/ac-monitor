@@ -1,8 +1,10 @@
-var cfg = require('config');
 var moment = require('moment');
+var cfg = require('config');
 var ac = require('ac-server-ctrl');
+
 var History = require('../models/history');
 var Events = require('../models/event');
+var Running = require('../models/running');
 
 var checkEvents = function() {
     var now = moment().unix();
@@ -41,13 +43,26 @@ var checkRestartPreset = function (presetName) {
 };
 
 var autoStartPresets = function () {
-    cfg.get('autostart').forEach(function startServer(presetName) {
-        console.log('Autostarting', presetName);
-        ac.start(presetName, function addToHistory(presetName) {
-            History.add('Watchdog', 'Autostart ' + presetName);
+    var autostarts = cfg.get('autostart');
+    Running.get(function fillAutostartServers(err, running) {
+        if(err) {
+            console.error(err);
+        }
+        if(running) {
+            autostarts = autostarts.concat(running);
+        }
+        console.log('Autostart presets:', autostarts);
+        autostarts.forEach(function startPreset(entry) {
+            console.log('Autostarting', entry.presetName);
+            ac.start(entry.presetName, function addToHistory(presetName) {
+                History.add('Watchdog', 'Autostart ' + presetName);
+            });
         });
     });
 };
+
+ac.on(ac.events.server.start, Running.add);
+ac.on(ac.events.server.stop, Running.remove);
 
 exports.start = function() {
     setInterval(checkServers, (cfg.get('watchdog.interval')*1000));

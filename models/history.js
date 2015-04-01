@@ -1,24 +1,26 @@
-var collection = require('../libs/db-util').open('history');
+var User = require('../models/user');
+var collection = require('../libs/db-util').collection('history.json');
 
-var add = function (userId, entry, callback) {
-    //var User = require('../models/user');
-    //User.findBySteamId(userId, function(err, user) {
-    //    collection.insert({ user: user ? user.personaname : userId, entry: entry, tstamp: tstamp }, {w: 1}, callback);
-    //});
-
+var add = function (userId, entry, cb) {
     var tstamp = Math.round(+new Date()/1000);
-    collection.insert({
-        user: userId,
-        entry: entry,
-        tstamp: tstamp
-    }, callback);
+    User.findBySteamId(userId, function(err, user) {
+        if(err) {
+            console.error(err);
+        }
+        collection.insert({
+            user: user ? user.personaname : userId,
+            entry: entry,
+            tstamp: tstamp
+        }, cb);
+    });
+
 };
 
-var last = function (limit, callback) {
+var last = function (limit, cb) {
     collection.find({})
         .sort({ tstamp: -1 })
         .limit(limit)
-        .exec(callback);
+        .toArray(cb);
 };
 
 module.exports = {
