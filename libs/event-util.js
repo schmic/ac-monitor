@@ -15,7 +15,7 @@ var startAC = function (event, callback) {
 var startEvent = function(eventId, callback) {
     require('../models/event').getOne(eventId, function(err, event) {
         if(err) {
-            callback(err);
+            callback ? callback(err) : console.error(err);
             return;
         }
 
