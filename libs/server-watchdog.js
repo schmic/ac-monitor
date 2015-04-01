@@ -15,8 +15,9 @@ var checkEvents = function() {
             return console.error(err);
         }
         events.forEach(function(event) {
-            console.log('checkEvents.getDue()', event);
+            console.log('checkEvents.getDue()', event.name, event.date, event.preset);
             require('./event-util').start(event._id);
+            History.add('Watchdog', 'Event ' + event.name + ' started');
         });
     })
 };
