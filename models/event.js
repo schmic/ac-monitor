@@ -1,5 +1,5 @@
 var moment = require('moment');
-var collection = require('../libs/db-helper').open('events');
+var collection = require('../libs/db-util').open('events');
 
 var removeEmptyStrings = function(event) {
     Object.keys(event).forEach(function(key) {

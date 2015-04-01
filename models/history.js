@@ -1,4 +1,4 @@
-var collection = require('../libs/db-helper').open('history');
+var collection = require('../libs/db-util').open('history');
 
 var add = function (userId, entry, callback) {
     //var User = require('../models/user');

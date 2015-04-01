@@ -1,4 +1,4 @@
-var collection = require('../libs/db-helper').open('users');
+var collection = require('../libs/db-util').open('users');
 
 var save = function(user, callback) {
     collection.update({ steamid: user.steamid }, user, { upsert: 1, w:1 }, callback);
