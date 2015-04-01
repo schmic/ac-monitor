@@ -1,7 +1,6 @@
 var format = require('util').format;
 
 var ac = require('ac-server-ctrl');
-var cfg = require('config');
 var content = require('./content');
 var History = require('../models/history');
 var Event = require('../models/event');
@@ -35,9 +34,7 @@ function startServer(data, cb) {
         console.log('admin.server.start', data);
 
         var user = socket.handshake.session.passport.user || 'Nobody';
-        History.add(user,  data.msg, function(err, res) {
-            if(err) return console.error(err);
-        });
+        History.add(user,  data.msg);
     });
 }
 
@@ -49,45 +46,24 @@ function stopServer(data, cb) {
         console.log('admin.server.stop', data);
 
         var user = socket.handshake.session.passport.user || 'Nobody';
-        History.add(user, data.msg, function(err, res) {
-            if(err) return console.error(err);
-        });
+        History.add(user, data.msg);
     });
 }
 
 function startEvent(data, fn) {
-    console.error('[TODO] admin.event.start');
-    Event.getOne(data.id, function(err, event) {
-        console.log('admin.event.start', event);
+    console.error('admin.event.start:id', data.id);
+
+    require('./event-util').start(data.id , function(err) {
         if(err) {
             console.error(err);
         }
-
-        if(event.presetstop) {
-            ac.stop(event.presetstop);
-        }
-
-        if(event.preaction) {
-            var f = cfg.actions.pre[event.preaction];
-            f(event.preactionparms, event.preset, function startAC() {
-                ac.start(event.preset, function startPostAction() {
-                    if(event.postaction) {
-                        cfg.actions.post[event.postaction](event.postactionparms, preset);
-                    }
-                });
-            });
-        }
-
         data.valid = err ? false : true;
         data.msg = format('Event %s %s', data.id, data.valid ? 'started' : 'could not be started');
         fn(data);
 
         var user = socket.handshake.session.passport.user || 'Nobody';
-        History.add(user, data.msg, function(err, res) {
-            if(err)
-                console.error(err);
-        });
-    });
+        History.add(user, data.msg);
+    })
 }
 
 function saveEvent(data, fn) {
@@ -99,10 +75,7 @@ function saveEvent(data, fn) {
         fn(data);
 
         var user = socket.handshake.session.passport.user || 'Nobody';
-        History.add(user, data.msg, function(err, res) {
-            if(err)
-                console.error(err);
-        });
+        History.add(user, data.msg);
     });
 }
 
@@ -116,10 +89,7 @@ function removeEvent(data, fn) {
         console.log('admin.event.save', data);
 
         var user = socket.handshake.session.passport.user || 'Nobody';
-        History.add(user, data.msg, function(err, res) {
-            if(err)
-                console.error(err);
-        });
+        History.add(user, data.msg);
     });
 }
 
