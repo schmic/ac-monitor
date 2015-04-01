@@ -16,7 +16,10 @@ router.get('/', function(req, res) {
 router.get('/overview', function (req, res) {
     req.session.title = 'Overview';
     var ctx = { session: req.session };
-    History.last(10, function(err, items) {
+    History.last(20, function(err, items) {
+        if(err) {
+            return console.error(err);
+        }
         ctx.history = items;
         res.render('admin/overview', ctx);
     });
