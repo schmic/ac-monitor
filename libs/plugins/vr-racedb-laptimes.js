@@ -13,7 +13,7 @@ ac.on(ac.events.server.start, function (server) {
         return;
     }
 
-    console.info('vr-laptime connected to', server.preset.serverName);
+    console.info('[plugin]', 'vr-laptime connected to:', server.preset.serverName);
 
     server.on(ac.events.lap.time, function(lap) {
         if(lap.trackConfig) {
