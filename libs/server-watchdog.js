@@ -12,9 +12,9 @@ var checkEvents = function() {
         if(err) {
             return console.error(err);
         }
-
         events.forEach(function(event) {
-            console.info('[TODO] startEvents().event', event);
+            console.log('checkEvents.getDue()', event);
+            require('./event-util').start(event._id);
         });
     })
 };
