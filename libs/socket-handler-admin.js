@@ -5,6 +5,10 @@ var content = require('./content');
 var History = require('../models/history');
 var Event = require('../models/event');
 
+function getSocketUser(socket) {
+    return socket.handshake.session.passport.user || 'Nobody';
+}
+
 function deletePreset(data, cb) {
     data.valid = content.deletePreset(data.name);
     data.msg = format('Preset %s %s', data.name, data.valid ? 'deleted' : 'could not be deleted');
@@ -33,7 +37,7 @@ function startServer(data, cb) {
         cb(data);
         console.log('admin.server.start', data);
 
-        var user = socket.handshake.session.passport.user || 'Nobody';
+        var user = getSocketUser(socket);
         History.add(user,  data.msg);
     });
 }
@@ -45,7 +49,7 @@ function stopServer(data, cb) {
         cb(data);
         console.log('admin.server.stop', data);
 
-        var user = socket.handshake.session.passport.user || 'Nobody';
+        var user = getSocketUser(socket);
         History.add(user, data.msg);
     });
 }
@@ -60,8 +64,9 @@ function startEvent(data, fn) {
         data.valid = err ? false : true;
         data.msg = format('Event %s %s', data.id, data.valid ? 'started' : 'could not be started');
         fn(data);
+        console.log('admin.event.start', data);
 
-        var user = socket.handshake.session.passport.user || 'Nobody';
+        var user = getSocketUser(socket);
         History.add(user, data.msg);
     })
 }
@@ -74,7 +79,7 @@ function saveEvent(data, fn) {
         data.msg = format('Event %s %s', data.name, data.valid ? 'saved' : 'could not be saved');
         fn(data);
 
-        var user = socket.handshake.session.passport.user || 'Nobody';
+        var user = getSocketUser(socket);
         History.add(user, data.msg);
     });
 }
@@ -88,7 +93,7 @@ function removeEvent(data, fn) {
         fn(data);
         console.log('admin.event.save', data);
 
-        var user = socket.handshake.session.passport.user || 'Nobody';
+        var user = getSocketUser(socket);
         History.add(user, data.msg);
     });
 }
