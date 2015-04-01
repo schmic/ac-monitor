@@ -1,33 +1,61 @@
 {{> admin/header active_menu_events=true}}
 <div class="row">
-    <div id="adminEvents" class="col-md-8">
+    <div id="adminEvents" class="col-md-9">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Available Events</h3>
             </div>
             {{#if events}}
                 <table class="table">
-                    <tr><th>Name</th><th>Date</th><th>Preset</th><th>Preset-Stop</th><th colspan="2">Pre</th><th colspan="2">Post</th><th>Actions</th></tr>
+                    <tr>
+                        <th>Name</th>
+                        <th>Time</th>
+                        <th>Presets</th>
+                        <th>Actions</th>
+                        <th></th>
+                    </tr>
                     {{#each events}}
                         <tr id="event_{{this._id}}">
                             <td id="event_{{this._id}}_name">{{this.name}}</td>
                             <td id="event_{{this._id}}_date">{{this.date}}</td>
-                            <td id="event_{{this._id}}_preset">{{this.preset}}</td>
-                            <td id="event_{{this._id}}_presetstop">{{this.presetstop}}</td>
-                            <td id="event_{{this._id}}_preaction">{{this.preaction}}</td>
-                            <td id="event_{{this._id}}_preactionparms">{{this.preactionparms}}</td>
-                            <td id="event_{{this._id}}_postaction">{{this.postaction}}</td>
-                            <td id="event_{{this._id}}_postactionparms">{{this.postactionparms}}</td>
                             <td>
-                                <button title="Start event" type="button" class="btn btn-success btn-xs"
+                                <div>
+                                    <span class="label label-success">Start:</span>
+                                    <span id="event_{{this._id}}_preset">{{this.preset}}</span>
+                                </div>
+                                {{#if this.preset}}
+                                <div>
+                                    <span class="label label-warning">Stop:</span>
+                                    <span id="event_{{this._id}}_presetstop">{{this.presetstop}}</span>
+                                </div>
+                                {{/if}}
+                            </td>
+                            <td>
+                                {{#if this.preaction}}
+                                <div>
+                                    <span class="label label-success">Pre:</span>
+                                    <span id="event_{{this._id}}_preaction">{{this.preaction}}</span>
+                                    ("<span id="event_{{this._id}}_preactionparms">{{this.preactionparms}}</span>")
+                                </div>
+                                {{/if}}
+                                {{#if this.postaction}}
+                                <div>
+                                    <span class="label label-warning">Post:</span>
+                                    <span id="event_{{this._id}}_postaction">{{this.postaction}}</span>
+                                    ("<span id="event_{{this._id}}_postactionparms">{{this.postactionparms}}</span>")
+                                </div>
+                                {{/if}}
+                            </td>
+                            <td>
+                                <button title="Start event" type="button" class="btn btn-success btn-sm"
                                         onclick="handleStartEvent('{{this._id}}')">
                                     <span class="glyphicon glyphicon-play"></span>
                                 </button>
-                                <button title="Copy event" type="button" class="btn btn-info btn-xs"
+                                <button title="Copy event" type="button" class="btn btn-info btn-sm"
                                         onclick="handleCopyEvent('{{this._id}}')">
                                     <span class="glyphicon glyphicon-copy"></span>
                                 </button>
-                                <button title="Delete event" type="button" class="btn btn-danger btn-xs"
+                                <button title="Delete event" type="button" class="btn btn-danger btn-sm"
                                         onclick="handleRemoveEvent('{{this._id}}')">
                                     <span class="glyphicon glyphicon-remove"></span>
                                 </button>
@@ -42,55 +70,76 @@
             {{/if}}
         </div>
     </div>
-    <div id="adminEventsForm" class="col-md-4">
+    <div id="adminEventsForm" class="col-md-3">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Event creation</h3>
+                <h3 class="panel-title">Create Event</h3>
             </div>
             <div class="panel-body">
-                <div class="form-group">
-                    <label class="control-label" for="eventname">Event:</label>
-                    <input class="form-control" type="text" id="eventname" name="eventname" placeholder="Example Trophy Race 01"/>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="eventdate">Start time:</label>
-                    <input class="form-control" type="datetime-local" id="eventdate" name="eventdate" placeholder="1970-01-01 00:00"/>
-                    <span class="help-block">Format: YYYY-MM-DD HH:MM</span>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="eventpresetstop">Stop preset:</label>
-                    <select class="form-control" id="eventpresetstop">
-                        <option selected></option>
-                        {{#each presets}}<option>{{this}}</option>{{/each}}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="eventpreaction">Pre-Action / -Params</label>
-                    <select class="form-control" id="eventpreaction">
-                        <option></option>
-                        {{#each actions.pre}}<option>{{this}}</option>{{/each}}
-                    </select>
-                    <div class="input-group" style="margin-top: 0.5em">
-                        <input class="form-control" type="text" id="eventpreactionparms" name="eventpreactionparms" placeholder="{ id: 1234, foo: true }"/>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="eventname">Name:</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" id="eventname" name="eventname" placeholder="Example Trophy Race 01"/>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="eventpreset">Start Preset:</label>
-                    <select class="form-control" id="eventpreset">
-                        <option selected></option>
-                        {{#each presets}}<option>{{this}}</option>{{/each}}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="eventpostaction">Post-Action / -Params</label>
-                    <select class="form-control" id="eventpostaction">
-                        <option></option>
-                        {{#each actions.post}}<option>{{this}}</option>{{/each}}
-                    </select>
-                    <div class="input-group" style="margin-top: 0.5em">
-                        <input class="form-control" type="text" id="eventpostactionparms" name="eventpostactionparms" placeholder="{ x: 'hello world' }"/>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="eventdate">Time:</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="datetime-local" id="eventdate" name="eventdate" placeholder="1970-01-01 00:00"/>
+                        </div>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="eventpreset">Start:</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="eventpreset">
+                                <option selected></option>
+                                {{#each presets}}<option>{{this}}</option>{{/each}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="eventpresetstop">Stop:</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="eventpresetstop">
+                                <option selected></option>
+                                {{#each presets}}<option>{{this}}</option>{{/each}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="eventpreaction">Pre:</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-addon">Action</div>
+                                <select class="form-control" id="eventpreaction">
+                                    <option></option>
+                                    {{#each actions.pre}}<option>{{this}}</option>{{/each}}
+                                </select>
+                            </div>
+                            <div class="input-group" style="margin-top: 0.5em">
+                                <div class="input-group-addon">Parms</div>
+                                <input class="form-control" type="text" id="eventpreactionparms" name="eventpreactionparms" placeholder="{ id: 1234, foo: true }"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="eventpostaction">Post:</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-addon">Action</div>
+                                <select class="form-control" id="eventpostaction">
+                                    <option></option>
+                                    {{#each actions.post}}<option>{{this}}</option>{{/each}}
+                                </select>
+                            </div>
+                            <div class="input-group" style="margin-top: 0.5em">
+                                <div class="input-group-addon">Parms</div>
+                                <input class="form-control" type="text" id="eventpostactionparms" name="eventpostactionparms" placeholder="{ x: 'hello world' }"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="panel-footer" style="text-align: right">
                 <button id="uploadbutton" class="btn btn-success" onclick="handleCreateEvent()">Create</button>
