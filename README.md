@@ -33,11 +33,18 @@ The following steps should be done by editing the `default.json` file in the con
     * might be relative or absolute path
     
 #### Host & Port
-* Change `http.host` and `http.port`
-    * `http.host` should be the same as your Steam-API-Key `domainname`
-    * must be a valid `hostname` on your system (`localhost` is valid as well)
+* Set `http.host` and `http.port`
+    * the `host` can be an IP-address as well
+    * defines `host:port` the app will listen on
      
-#### Steam-API-Key
+#### Steam
+
+##### External Host/Port
+* Set `steam.url.host` and `steam.url.port` 
+    * defines the hostname steam **redirects** to after login
+    * should be set to the **hostname** you access the app
+
+##### API-Key
 * Go to [http://steamcommunity.com/dev/apikey](http://steamcommunity.com/dev/apikey)
 * Log in with your Steam-Account
 * Enter your `domainname` and click `register`
