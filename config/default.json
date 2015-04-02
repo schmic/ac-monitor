@@ -17,6 +17,10 @@
     "steam": {
         "api": {
             "key": ""
+        },
+        "url": {
+            "host": "localhost",
+            "port": 8081
         }
     },
     "http": {
