@@ -1,5 +1,6 @@
 var fs = require('fs');
 var fsExtra = require('fs-extra');
+var path = require('path');
 var env = require('ac-server-ctrl').env;
 
 exports.cars = require('./content-cars');

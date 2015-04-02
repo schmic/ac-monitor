@@ -17,7 +17,8 @@ function deletePreset(data, cb) {
 }
 
 function validatePreset(data, cb) {
-    data.valid = content.hasPreset(data.name) ? false : true;
+    var presetNames = content.getPresetNames();
+    data.valid = presetNames.indexOf(data.name) < 0 ? true : false;
     data.msg = format('Preset %s %s', data.name, data.valid ? 'validated' : 'already exists');
     cb(data);
     console.log('admin.presets.validate', data);
