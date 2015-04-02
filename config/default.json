@@ -28,6 +28,7 @@
         "port": 8081,
         "adminIPs": []
     },
+    "plugins": [],
     "actions": {
         "pre": {},
         "post": {}

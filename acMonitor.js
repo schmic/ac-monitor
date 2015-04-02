@@ -119,17 +119,32 @@ ac.on(ac.events.server.stop, function(server) {
     });
 });
 
+// Load Plugins
+//
+if(cfg.has('plugins')) {
+    cfg.get('plugins').forEach(function loadPlugin(plugin) {
+        require('./libs/plugins/' + plugin);
+    });
+}
+
+// Load Actions
+//
+if(cfg.has('actions.pre')) {
+    for(var action in cfg.get('actions.pre')) {
+        console.info('[action.pre]', action, 'loaded');
+        cfg.actions.pre[action] = require('./libs/actions/' + cfg.actions.pre[action]);
+    }
+}
+if(cfg.has('actions.post')) {
+    for(var action in cfg.get('actions.post')) {
+        console.info('[action.post]', action, 'loaded');
+        cfg.actions.post[action] = require('./libs/actions/' + cfg.actions.post[action]);
+    }
+}
+
 // Start Server Watchdog
 //
 require('./libs/server-watchdog').start();
 
-// Load Plugins
-//
-require('./libs/plugins/vr-console-logger');
-require('./libs/plugins/vr-racedb-laptimes');
-//
-cfg.actions.pre['vr-get-entrylist'] = require('./libs/actions/vr-get-entrylist');
-
 module.exports = app;
-
 //EOF
