@@ -71,7 +71,13 @@ ac.on(ac.events.server.start, Running.add);
 ac.on(ac.events.server.stop, Running.remove);
 
 exports.start = function() {
-    setInterval(checkServers, (cfg.get('watchdog.interval')*1000));
-    setInterval(checkEvents, (cfg.get('watchdog.interval')*1000));
+    var interval = cfg.get('watchdog.interval');
+    if(interval > 0) {
+        setInterval(checkServers, (interval*1000));
+    }
+    else {
+        console.info('Watchdog disabled');
+    }
+    setInterval(checkEvents, ((interval || 60)*1000));
     autoStartPresets();
 };
