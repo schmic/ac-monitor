@@ -13,7 +13,7 @@ var remove = function(server, cb) {
 };
 
 var get = function (callback) {
-    var cursor = collection.find({});
+    var cursor = collection.find({}, { presetName: 1 });
     return callback ? cursor.toArray(callback) : cursor;
 };
 
