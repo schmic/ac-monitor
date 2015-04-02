@@ -3,13 +3,16 @@ var request = require('request');
 var ac = require('ac-server-ctrl');
 
 var options = {
-    "url": cfg.get('vr.racedb.url'),
+    "url": undefined,
     "method": "POST",
     "json": true
 };
 
 ac.on(ac.events.server.start, function (server) {
-    if(options.url === undefined) {
+    if(cfg.has('vr.racedb.url')) {
+        options.url = cfg.get('vr.racedb.url');
+    }
+    else {
         return;
     }
 
