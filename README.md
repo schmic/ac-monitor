@@ -1,5 +1,5 @@
 ## About
-AC-Monitor is a really time web-application to configure, run and monitor multiple 
+AC-Monitor is a web-application to configure, run and monitor multiple 
 instances of [Assetto Corsa](http://store.steampowered.com/app/244210) [Servers](https://steamdb.info/app/302550/).
 
 In the case you found any bugs or problems please open an [issue](https://github.com/schmic/ac-monitor/issues).
