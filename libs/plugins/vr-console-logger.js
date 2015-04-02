@@ -10,6 +10,10 @@ ac.on(ac.events.server.start, function (server) {
     server.on(ac.events.car.disconnect, function (car) {
         console.log(ac.events.car.disconnect, car);
     });
+
+    //server.on('server.line', function(line) {
+    //    console.log('line', line.toString());
+    //});
 });
 
 module.exports = {};
