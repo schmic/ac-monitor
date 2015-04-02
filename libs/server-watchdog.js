@@ -50,12 +50,13 @@ var autoStartPresets = function () {
             console.error(err);
         }
         if(running) {
-            autostarts = autostarts.concat(running);
+			running.forEach(function(entry) {
+				autostarts.push(entry.presetName);
+			});
         }
-        console.log('Autostart presets:', autostarts);
-        autostarts.forEach(function startPreset(entry) {
-            console.log('Autostarting', entry.presetName);
-            ac.start(entry.presetName, function addToHistory(presetName) {
+        console.log('Re- / Autostarting:', autostarts);
+        autostarts.forEach(function startPreset(presetName) {
+            ac.start(presetName, function addToHistory(presetName) {
                 History.add('Watchdog', 'Autostart ' + presetName);
             });
         });
