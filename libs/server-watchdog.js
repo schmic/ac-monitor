@@ -51,7 +51,11 @@ var autoStartPresets = function () {
         }
         if(running) {
 			running.forEach(function(entry) {
-				autostarts.push(entry.presetName);
+                var presetName = entry.presetName;
+                if(autostarts.indexOf(presetName) < 0) {
+                    autostarts.push(presetName);
+                }
+
 			});
         }
         console.log('Re- / Autostarting:', autostarts);
