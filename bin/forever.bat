@@ -2,4 +2,4 @@
 
 set NODE_ENV=production
 cd %~dp0\..
-forever -o stdout.log -e stderr.log -a acMonitor.js
+forever -l forever.log -o stdout.log -e stderr.log -a -c iojs acMonitor.js
