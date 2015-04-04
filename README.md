@@ -51,8 +51,8 @@ The following steps should be done by editing the `default.json` file in the con
 * Copy & Paste your new Steam-API-Key into your configuration file
 
 #### Admins
-* For each user you want to allow admin rights enter his/her Steam-GUID and his/her name
-* The Steam-GUID can be found on the Profile-page after logging in
+* For each user you want to allow admin rights enter his/her Steam64-ID and his/her name
+* The Steam64-ID can be found on the Profile-page after logging in
 
 ## Running
 
